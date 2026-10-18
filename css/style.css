@@ -44,7 +44,7 @@ button { font: inherit; color: inherit; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .wrap { width: min(100% - 2 * var(--gut), var(--wrap)); margin-inline: auto; }
 
-h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.08; letter-spacing: -0.02em; margin: 0; overflow-wrap: break-word; hyphens: auto; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.08; letter-spacing: -0.02em; margin: 0; overflow-wrap: break-word; hyphens: manual; }
 h1 { font-size: clamp(2.5rem, 6.2vw, 5.2rem); letter-spacing: -0.03em; }
 h2 { font-size: clamp(1.9rem, 3.6vw, 3rem); }
 h3 { font-size: clamp(1.3rem, 2vw, 1.7rem); }
@@ -110,7 +110,7 @@ p { margin: 0; }
   -webkit-mask-image: radial-gradient(ellipse 75% 85% at 68% 50%, #000 20%, transparent 78%); mask-image: radial-gradient(ellipse 75% 85% at 68% 50%, #000 20%, transparent 78%); }
 .hero__in { min-height: clamp(600px, 88vh, 820px); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 64px); align-items: center; padding: clamp(40px, 7vh, 88px) 0; }
 .hero__text { padding-top: 12px; }
-.hero h1 { max-width: 11ch; }
+.hero h1 { max-width: none; font-size: clamp(2.3rem, 4.4vw, 4.4rem); hyphens: none; overflow-wrap: normal; }
 .hero .lead { color: #C3CDC8; margin-top: 26px; max-width: 42ch; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
 .hero__proof { margin-top: 34px; display: flex; align-items: center; gap: 14px; color: #C3CDC8; font-size: .98rem; min-height: 24px; }
@@ -151,7 +151,7 @@ p { margin: 0; }
 .bp .f-cab { --o: .06; } .bp .f-top { --o: .5; } .bp .f-app { --o: .16; } .bp .f-sink { --o: .22; }
 @media (max-width: 900px) {
   .hero__in { grid-template-columns: 1fr; min-height: 0; padding: 40px 0 64px; gap: 40px; }
-  .hero h1 { max-width: 12ch; }
+  .hero h1 { max-width: none; font-size: clamp(2.2rem, 9vw, 3.4rem); }
   .bp text { font-size: 26px; } .bp .tag { font-size: 17px; }
 }
 
