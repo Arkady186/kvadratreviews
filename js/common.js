@@ -35,7 +35,7 @@ const Chrome = (() => {
           <nav class="nav" id="nav" aria-label="Основное меню">
             <a href="works.html" ${active === 'works' ? 'aria-current="page"' : ''}>Наши работы</a>
             <a href="reviews.html" ${active === 'reviews' ? 'aria-current="page"' : ''}>Отзывы</a>
-            <a href="${esc(S.techCatalogUrl)}" target="_blank" rel="noopener">Каталог техники</a>
+            <a href="${esc(S.configuratorUrl)}" target="_blank" rel="noopener">Конфигуратор ремонта</a>
             ${phone}
             <a class="btn btn--brass btn--sm" href="reviews.html#leave">Оставить отзыв</a>
           </nav>
@@ -61,7 +61,7 @@ const Chrome = (() => {
             <div><h4>Разделы</h4><ul>
               <li><a href="works.html">Наши работы</a></li>
               <li><a href="reviews.html">Отзывы</a></li>
-              <li><a href="${esc(S.techCatalogUrl)}" target="_blank" rel="noopener">Каталог техники</a></li>
+              <li><a href="${esc(S.configuratorUrl)}" target="_blank" rel="noopener">Конфигуратор ремонта</a></li>
             </ul></div>
             <div><h4>Связаться</h4><ul>${contacts || '<li>Контакты скоро появятся</li>'}</ul></div>
           </div>

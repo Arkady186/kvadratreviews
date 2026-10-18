@@ -85,10 +85,10 @@
       <div class="wrap">
         <div class="tech">
           <div>
-            <h2>Подберём технику к вашей кухне</h2>
-            <p>В каталоге духовые шкафы, варочные поверхности, вытяжки, посудомоечные машины, холодильники, мойки и смесители.</p>
+            <h2>Конфигуратор ремонта</h2>
+            <p>Соберите ремонт своими руками: выберите помещения и материалы, и сразу увидите ориентировочную стоимость работ.</p>
           </div>
-          <a class="btn btn--brass" id="tech-link" href="#" target="_blank" rel="noopener">Открыть каталог техники</a>
+          <a class="btn btn--brass" id="tech-link" href="#" target="_blank" rel="noopener">Открыть конфигуратор</a>
         </div>
       </div>
     </section>
@@ -98,22 +98,24 @@
 
   <script src="js/config.js"></script>
   <script src="js/works-data.js"></script>
+  <script src="js/kitchens.js"></script>
   <script src="js/api.js"></script>
   <script src="js/common.js"></script>
   <script>
     Chrome.init('home');
     const { esc, ICONS, stars, fmtNum, plural } = Chrome;
-    document.getElementById('tech-link').href = window.SITE.techCatalogUrl;
+    document.getElementById('tech-link').href = window.SITE.configuratorUrl;
 
-    /* Чертёж: рисуется ~7 с, держится 15 с (если его видно), «перематывается» назад, пауза 5 с — и снова */
+    /* Чертежи: три кухни по кругу. Рисуется ~7 с, держится 5 с (если видно), «перематывается» назад, через 1 с — следующая */
     const W = window.WORKS;
     const bp = document.getElementById('bp');
+    const bpSvg = bp.querySelector('svg');
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0');
-    const cnts = [...bp.querySelectorAll('.cnt')];
+    let cnts = [];
     const timers = [];
     const later = (fn, ms) => timers.push(setTimeout(fn, ms));
-    let inView = true;
+    let inView = true, idx = -1;
     new IntersectionObserver((e) => { inView = e[0].isIntersecting; }, { threshold: 0.35 }).observe(bp);
 
     function counters(dir) {            // dir: 1 — набираем, -1 — откатываем
@@ -128,21 +130,29 @@
         requestAnimationFrame(tick);
       });
     }
+    function load(i) {                  // подставляем чертёж i
+      const list = window.KITCHENS || [];
+      if (!list.length) { cnts = [...bp.querySelectorAll('.cnt')]; return; }
+      bpSvg.innerHTML = list[i % list.length];
+      cnts = [...bp.querySelectorAll('.cnt')];
+    }
     function draw() {
-      bp.classList.remove('is-undrawing'); void bp.getBoundingClientRect();
+      idx = (idx + 1) % Math.max(1, (window.KITCHENS || []).length || 1);
+      bp.classList.remove('is-drawing', 'is-undrawing');
+      load(idx); void bp.getBoundingClientRect();
       bp.classList.add('is-drawing');
       cnts.forEach((el) => { el.textContent = '0'; });
       counters(1);
-      later(waitThenRewind, 7200 + 15000);
+      later(waitThenRewind, 7200 + 5000);
     }
     function waitThenRewind() {
-      if (!inView || document.hidden) { later(waitThenRewind, 1500); return; }   // не мешаем, пока чертёж не на виду
+      if (!inView || document.hidden) { later(waitThenRewind, 1000); return; }   // не мешаем, пока чертёж не на виду
       bp.classList.remove('is-drawing'); void bp.getBoundingClientRect();
       bp.classList.add('is-undrawing');
       counters(-1);
-      later(draw, 3200 + 5000);
+      later(draw, 3200 + 1000);
     }
-    if (reduce) { cnts.forEach((el) => { el.textContent = fmt(+el.dataset.val); }); bp.classList.remove('is-drawing'); }
+    if (reduce) { cnts = [...bp.querySelectorAll('.cnt')]; cnts.forEach((el) => { el.textContent = fmt(+el.dataset.val); }); bp.classList.remove('is-drawing'); }
     else draw();
 
     const counts = Chrome.counts();

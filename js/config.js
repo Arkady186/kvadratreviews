@@ -11,8 +11,8 @@ window.SITE = {
   telegram: '',                     // ссылка вида https://t.me/имя
   city: 'Ростов-на-Дону',
 
-  /* Каталог бытовой техники */
-  techCatalogUrl: 'https://catalog.ankona.net/catalog3/',
+  /* Конфигуратор ремонта */
+  configuratorUrl: 'https://arkady186.github.io/RostovNaDonuKV/configurator.html',
 
   /* Supabase — бесплатное хранилище отзывов (инструкция в README.md).
      Пока поля пустые, сайт работает в демо-режиме: отзывы видны только в вашем браузере. */
