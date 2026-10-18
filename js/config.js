@@ -16,6 +16,6 @@ window.SITE = {
 
   /* Supabase — бесплатное хранилище отзывов (инструкция в README.md).
      Пока поля пустые, сайт работает в демо-режиме: отзывы видны только в вашем браузере. */
-  supabaseUrl: '',                  // https://xxxx.supabase.co
-  supabaseAnonKey: ''               // публичный ключ anon (его можно показывать, он безопасен)
+  supabaseUrl: 'https://xjoppvhehikuoytjupkd.supabase.co',                  // https://xxxx.supabase.co
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhqb3BwdmhlaGlrdW95dGp1cGtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMzc1ODksImV4cCI6MjEwNzkxMzU4OX0.uI-uzdeTBJG62ITERqP6Nsq2geTlBwDmw9thxEHNZDI'               // публичный ключ anon (его можно показывать, он безопасен)
 };
