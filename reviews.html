@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Отзывы клиентов — Квадрат</title>
+  <meta name="description" content="Отзывы о мебели на заказ от компании Квадрат. Оставьте свой отзыв и поставьте оценку.">
+  <meta name="theme-color" content="#F4F3F0">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316201C'/%3E%3Crect x='7' y='7' width='16' height='16' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Crect x='19' y='19' width='7' height='7' fill='%23B8924A'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap page-hero__row">
+        <div>
+          <h1>Отзывы клиентов</h1>
+          <p class="lead">Что говорят те, кто уже живёт с нашей мебелью. Поделитесь и своим впечатлением — это займёт минуту.</p>
+        </div>
+        <button class="btn btn--sm" type="button" data-copy="reviews.html">Скопировать ссылку на отзывы</button>
+      </div>
+    </section>
+
+    <div class="wrap" id="demo-note" hidden>
+      <p class="demo-note"><strong>Демо-режим.</strong> Хранилище отзывов ещё не подключено, поэтому отзывы видны только в этом браузере. Как подключить — в README.md.</p>
+    </div>
+
+    <section class="section section--tight">
+      <div class="wrap">
+        <div class="summary" id="summary" hidden></div>
+
+        <div class="rv-layout">
+          <div class="rv-layout__form" id="leave">
+            <div class="form-card" id="form-card"></div>
+          </div>
+          <div>
+            <div class="filters" id="filters" role="group" aria-label="Фильтр по разделу"></div>
+            <div class="rv-list" id="rv-list" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/works-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    Chrome.init('reviews');
+    const { esc, stars, fmtNum, plural, fmtDate, ICONS } = Chrome;
+    const CATS = window.WORKS.categories;
+    const catName = (id) => (CATS.find((c) => c.id === id) || {}).title || '';
+    const WORDS = ['', 'Очень жаль', 'Так себе', 'Нормально', 'Хорошо', 'Отлично!'];
+    const $ = (id) => document.getElementById(id);
+    const openedAt = Date.now();
+    let all = [], filter = 'all';
+
+    if (!Api.configured) $('demo-note').hidden = false;
+
+    /* ----- Рейтинг ----- */
+    function renderSummary() {
+      const real = all.filter((r) => !r.sample);
+      const box = $('summary');
+      if (!real.length) { box.hidden = true; return; }
+      const avg = real.reduce((s, r) => s + r.rating, 0) / real.length;
+      const dist = [0, 0, 0, 0, 0]; real.forEach((r) => { dist[r.rating - 1]++; });
+      const max = Math.max(...dist, 1);
+      box.hidden = false;
+      box.innerHTML = `
+        <div>
+          <div class="summary__num">${fmtNum(avg)}</div>
+          <div class="summary__side">${stars(avg, 'stars--lg')}<span class="muted">${real.length} ${plural(real.length, ['отзыв', 'отзыва', 'отзывов'])}</span></div>
+        </div>
+        <div class="bars">${[5, 4, 3, 2, 1].map((n) => `
+          <div class="bar"><span>${n} ★</span><div class="bar__t"><div class="bar__f" data-w="${dist[n - 1] / max * 100}"></div></div><span>${dist[n - 1]}</span></div>`).join('')}
+        </div>`;
+      requestAnimationFrame(() => requestAnimationFrame(() => box.querySelectorAll('.bar__f').forEach((b) => { b.style.width = b.dataset.w + '%'; })));
+    }
+
+    /* ----- Список ----- */
+    function renderFilters() {
+      const counts = { all: all.length }; all.forEach((r) => { if (r.topic) counts[r.topic] = (counts[r.topic] || 0) + 1; });
+      const chips = [['all', 'Все']].concat(CATS.filter((c) => counts[c.id]).map((c) => [c.id, c.title]));
+      $('filters').hidden = chips.length < 3;
+      $('filters').innerHTML = chips.map(([id, t]) => `<button class="chip" type="button" data-f="${id}" aria-pressed="${id === filter}">${esc(t)}<small>${counts[id] || 0}</small></button>`).join('');
+    }
+    function renderList() {
+      const list = all.filter((r) => filter === 'all' || r.topic === filter);
+      if (!list.length) {
+        $('rv-list').innerHTML = `<div class="empty">${ICONS.check}<h3>Первый отзыв — ваш</h3><p>Расскажите, как всё прошло. Нам и будущим клиентам это очень важно.</p></div>`;
+        return;
+      }
+      $('rv-list').innerHTML = list.map((r) => `
+        <article class="rv">
+          <div class="rv__ava" aria-hidden="true">${esc((r.name || '?').charAt(0).toUpperCase())}</div>
+          <div class="rv__top"><span class="rv__name">${esc(r.name)}</span>${stars(r.rating)}<span class="rv__date">${fmtDate(r.created_at)}</span></div>
+          <p class="rv__body">${esc(r.body)}</p>
+          ${(r.topic || r.sample) ? `<div class="rv__meta">${r.topic ? `<span class="tag">${esc(catName(r.topic))}</span>` : ''}${r.sample ? '<span class="tag tag--sample">Пример отзыва</span>' : ''}</div>` : ''}
+        </article>`).join('');
+    }
+    $('filters').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-f]'); if (!b) return;
+      filter = b.dataset.f; renderFilters(); renderList();
+    });
+    async function load() {
+      try { all = await Api.listReviews(); }
+      catch (e) { $('rv-list').innerHTML = `<div class="empty"><h3>Отзывы не загрузились</h3><p>${esc(e.message)}</p></div>`; return; }
+      renderSummary(); renderFilters(); renderList();
+    }
+
+    /* ----- Форма ----- */
+    const checkMark = `<div class="done__mark">${ICONS.check}</div>`;
+    function doneCard(status, name, fresh) {
+      const text = fresh
+        ? (Api.configured ? 'Отзыв появится на сайте после короткой проверки. Мы обязательно его прочитаем.' : 'Ваш отзыв уже на странице — он сохранён в этом браузере.')
+        : (status === 'approved' ? 'Ваш отзыв опубликован — он виден всем посетителям.' : status === 'hidden' ? 'Ваш отзыв получен. Спасибо, что поделились мнением.' : 'Ваш отзыв получен и скоро появится на сайте.');
+      $('form-card').innerHTML = `
+        <div class="done">${checkMark}
+          <h2>${fresh ? 'Спасибо' + (name ? ', ' + esc(name) : '') + '!' : 'Вы уже оставили отзыв'}</h2>
+          <p>${esc(text)}</p>
+          <p>Один отзыв можно оставить с одного устройства — так оценки остаются честными.</p>
+          <a class="btn btn--ink" href="works.html">Посмотреть наши работы</a>
+        </div>`;
+    }
+
+    function formCard() {
+      $('form-card').innerHTML = `
+        <h2>Оставьте отзыв</h2>
+        <p>Расскажите, как вам наша мебель. Один отзыв с одного устройства.</p>
+        <div class="form-error" id="f-err" role="alert"></div>
+        <form id="rv-form" novalidate>
+          <fieldset class="field" id="g-rating">
+            <legend>Ваша оценка</legend>
+            <div class="stars-in" id="stars-in">
+              ${[5, 4, 3, 2, 1].map((n) => `<input type="radio" name="rating" id="s${n}" value="${n}"><label for="s${n}" title="${n} из 5"><span class="sr">${n} из 5</span>★</label>`).join('')}
+            </div>
+            <div class="stars-word" id="stars-word" aria-live="polite"></div>
+            <span class="err">Поставьте оценку — нажмите на звёзды</span>
+          </fieldset>
+          <div class="field" id="g-name">
+            <label for="f-name">Ваше имя</label>
+            <input class="input" id="f-name" name="name" maxlength="60" autocomplete="given-name" placeholder="Как вас зовут">
+            <span class="err">Напишите имя, хотя бы 2 буквы</span>
+          </div>
+          <div class="field">
+            <label for="f-topic">Что мы для вас делали?</label>
+            <select class="select" id="f-topic" name="topic">
+              <option value="">Выберите, если хотите</option>
+              ${CATS.map((c) => `<option value="${c.id}">${esc(c.title)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field" id="g-body">
+            <label for="f-body">Ваш отзыв</label>
+            <textarea class="textarea" id="f-body" name="body" maxlength="800" placeholder="Что понравилось? Как прошли замеры и установка?"></textarea>
+            <div class="counter"><span id="cnt">0</span> / 800</div>
+            <span class="err">Расскажите чуть подробнее, хотя бы 10 символов</span>
+          </div>
+          <div class="hp" aria-hidden="true"><label>Сайт<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <button class="btn btn--ink" type="submit" id="f-send">Отправить отзыв</button>
+          <p class="form-note">Отзыв публикуется после проверки.</p>
+        </form>`;
+
+      const form = $('rv-form');
+      form.querySelectorAll('input[name=rating]').forEach((i) => i.addEventListener('change', () => {
+        $('stars-word').textContent = WORDS[Number(i.value)]; $('g-rating').classList.remove('has-error');
+      }));
+      $('f-body').addEventListener('input', (e) => { $('cnt').textContent = e.target.value.length; $('g-body').classList.remove('has-error'); });
+      $('f-name').addEventListener('input', () => $('g-name').classList.remove('has-error'));
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        $('f-err').classList.remove('is-on');
+        const rating = Number((form.querySelector('input[name=rating]:checked') || {}).value || 0);
+        const name = $('f-name').value.trim(), body = $('f-body').value.trim();
+        const bad = { rating: !rating, name: name.length < 2, body: body.length < 10 };
+        $('g-rating').classList.toggle('has-error', bad.rating);
+        $('g-name').classList.toggle('has-error', bad.name);
+        $('g-body').classList.toggle('has-error', bad.body);
+        if (bad.rating || bad.name || bad.body) { const el = document.querySelector('.has-error'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+        if (form.elements.website.value || Date.now() - openedAt < 2500) { doneCard('pending', name, true); return; }   // бот: делаем вид, что всё хорошо
+
+        const btn = $('f-send'); btn.disabled = true; btn.textContent = 'Отправляем…';
+        try {
+          await Api.submitReview({ rating, name, body, topic: $('f-topic').value });
+          doneCard('pending', name, true);
+          Chrome.confetti();
+          if (!Api.configured) load();
+          $('form-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (er) {
+          btn.disabled = false; btn.textContent = 'Отправить отзыв';
+          if (er.code === 'duplicate') { doneCard('pending', name, false); return; }
+          $('f-err').textContent = er.message || 'Не удалось отправить отзыв. Попробуйте ещё раз.';
+          $('f-err').classList.add('is-on');
+        }
+      });
+    }
+
+    (async () => {
+      load();
+      let status = 'none';
+      try { status = await Api.myStatus(); } catch (e) { /* ignore */ }
+      if (status !== 'none') doneCard(status, '', false); else formCard();
+    })();
+  </script>
+</body>
+</html>

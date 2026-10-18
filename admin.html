@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Проверка отзывов — Квадрат</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316201C'/%3E%3Crect x='7' y='7' width='16' height='16' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Crect x='19' y='19' width='7' height='7' fill='%23B8924A'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="section section--tight">
+    <div class="wrap">
+      <div class="page-hero" style="padding-top:0">
+        <h1>Проверка отзывов</h1>
+        <p class="lead" id="sub">Войдите, чтобы публиковать или скрывать отзывы.</p>
+      </div>
+
+      <div class="admin-box form-card" id="login-box">
+        <div class="form-error" id="l-err" role="alert"></div>
+        <form id="login" novalidate>
+          <div class="field"><label for="l-email">Эл. почта</label><input class="input" id="l-email" type="email" autocomplete="username" required></div>
+          <div class="field"><label for="l-pass">Пароль</label><input class="input" id="l-pass" type="password" autocomplete="current-password" required></div>
+          <button class="btn btn--ink" type="submit">Войти</button>
+        </form>
+      </div>
+
+      <div id="panel" hidden>
+        <div class="admin-tabs">
+          <div class="filters" id="tabs" style="margin:0"></div>
+          <button class="btn btn--sm" id="logout" type="button" style="margin-left:auto">Выйти</button>
+        </div>
+        <div id="list"></div>
+      </div>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/works-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    Chrome.init('admin');
+    const { esc, stars, fmtDate } = Chrome;
+    const $ = (id) => document.getElementById(id);
+    const CATS = window.WORKS.categories;
+    const STATUS = { pending: 'На проверке', approved: 'Опубликованные', hidden: 'Скрытые' };
+    let all = [], tab = 'pending';
+
+    async function load() {
+      try { all = await Api.adminList(); }
+      catch (e) {
+        if (e.code === 'auth') { Api.adminLogout(); showLogin('Сессия закончилась. Войдите снова.'); return; }
+        $('list').innerHTML = `<div class="empty"><h3>Не удалось загрузить</h3><p>${esc(e.message)}</p></div>`; return;
+      }
+      render();
+    }
+    function render() {
+      const fpCount = {}; all.forEach((r) => { if (r.fp) fpCount[r.fp] = (fpCount[r.fp] || 0) + 1; });
+      const cnt = (s) => all.filter((r) => r.status === s).length;
+      $('tabs').innerHTML = Object.keys(STATUS).map((s) => `<button class="chip" type="button" data-t="${s}" aria-pressed="${s === tab}">${STATUS[s]}<small>${cnt(s)}</small></button>`).join('');
+      const list = all.filter((r) => r.status === tab);
+      $('list').innerHTML = list.length ? list.map((r) => `
+        <article class="adm">
+          <div class="adm__top"><strong>${esc(r.name)}</strong>${stars(r.rating)}
+            <span class="muted">${fmtDate(r.created_at)}</span>
+            ${r.topic ? `<span class="tag">${esc((CATS.find((c) => c.id === r.topic) || {}).title || r.topic)}</span>` : ''}
+            ${r.fp && fpCount[r.fp] > 1 ? '<span class="badge-warn">Похожее устройство уже оставляло отзыв</span>' : ''}</div>
+          <p style="overflow-wrap:anywhere">${esc(r.body)}</p>
+          <div class="adm__actions">
+            ${r.status !== 'approved' ? `<button class="btn btn--brass btn--sm" data-a="approved" data-id="${r.id}">Опубликовать</button>` : ''}
+            ${r.status !== 'hidden' ? `<button class="btn btn--sm" data-a="hidden" data-id="${r.id}">Скрыть</button>` : ''}
+            <button class="btn btn--sm" data-a="delete" data-id="${r.id}">Удалить</button>
+          </div>
+        </article>`).join('') : `<div class="empty"><h3>Здесь пусто</h3><p>${tab === 'pending' ? 'Новых отзывов на проверку нет.' : 'В этом списке нет отзывов.'}</p></div>`;
+    }
+    $('tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; render(); } });
+    $('list').addEventListener('click', async (e) => {
+      const b = e.target.closest('[data-a]'); if (!b) return;
+      const id = b.dataset.id, a = b.dataset.a;
+      if (a === 'delete' && !confirm('Удалить отзыв насовсем? Этот человек сможет оставить новый.')) return;
+      b.disabled = true;
+      try {
+        if (a === 'delete') await Api.adminDelete(id); else await Api.adminSet(id, a);
+        await load();
+      } catch (er) { b.disabled = false; Chrome.toast(er.message || 'Не получилось. Попробуйте ещё раз.'); }
+    });
+
+    function showLogin(msg) {
+      $('panel').hidden = true; $('login-box').hidden = false;
+      $('sub').textContent = 'Войдите, чтобы публиковать или скрывать отзывы.';
+      const err = $('l-err'); err.textContent = msg || ''; err.classList.toggle('is-on', !!msg);
+    }
+    function showPanel() { $('login-box').hidden = true; $('panel').hidden = false; $('sub').textContent = 'Новые отзывы видны на сайте только после публикации.'; load(); }
+
+    $('login').addEventListener('submit', async (e) => {
+      e.preventDefault(); const err = $('l-err'); err.classList.remove('is-on');
+      const btn = e.target.querySelector('button'); btn.disabled = true;
+      try { await Api.adminLogin($('l-email').value.trim(), $('l-pass').value); showPanel(); }
+      catch (er) { err.textContent = /invalid|credentials/i.test(er.message) ? 'Неверная почта или пароль.' : er.message; err.classList.add('is-on'); }
+      btn.disabled = false;
+    });
+    $('logout').onclick = () => { Api.adminLogout(); showLogin(); };
+    if (!Api.configured) showLogin('Хранилище отзывов не подключено (см. README.md).');
+    else if (Api.adminToken()) showPanel(); else showLogin();
+  </script>
+</body>
+</html>
