@@ -11,9 +11,6 @@ window.SITE = {
   telegram: '',                     // ссылка вида https://t.me/имя
   city: 'Ростов-на-Дону',
 
-  /* Конфигуратор ремонта */
-  configuratorUrl: 'https://arkady186.github.io/RostovNaDonuKV/configurator.html',
-
   /* Supabase — бесплатное хранилище отзывов (инструкция в README.md).
      Пока поля пустые, сайт работает в демо-режиме: отзывы видны только в вашем браузере. */
   supabaseUrl: 'https://xjoppvhehikuoytjupkd.supabase.co',                  // https://xxxx.supabase.co

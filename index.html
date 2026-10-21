@@ -85,10 +85,10 @@
       <div class="wrap">
         <div class="tech">
           <div>
-            <h2>Конфигуратор ремонта</h2>
-            <p>Соберите ремонт своими руками: выберите помещения и материалы, и сразу увидите ориентировочную стоимость работ.</p>
+            <h2>Дизайн-проект мебели для вашего дома</h2>
+            <p>Ответьте на пять коротких вопросов, и дизайнер подготовит проект мебели под вашу квартиру. План и фотографии можно приложить сразу.</p>
           </div>
-          <a class="btn btn--brass" id="tech-link" href="#" target="_blank" rel="noopener">Открыть конфигуратор</a>
+          <a class="btn btn--brass" href="quiz.html">Пройти опрос</a>
         </div>
       </div>
     </section>
@@ -104,7 +104,6 @@
   <script>
     Chrome.init('home');
     const { esc, ICONS, stars, fmtNum, plural } = Chrome;
-    document.getElementById('tech-link').href = window.SITE.configuratorUrl;
 
     /* Чертежи: три кухни по кругу. Рисуется ~7 с, держится 5 с (если видно), «перематывается» назад, через 1 с — следующая */
     const W = window.WORKS;

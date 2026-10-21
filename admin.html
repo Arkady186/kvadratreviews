@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Проверка отзывов — Квадрат</title>
+  <title>Админка — Квадрат</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316201C'/%3E%3Crect x='7' y='7' width='16' height='16' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Crect x='19' y='19' width='7' height='7' fill='%23B8924A'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +16,8 @@
   <main class="section section--tight">
     <div class="wrap">
       <div class="page-hero" style="padding-top:0">
-        <h1>Проверка отзывов</h1>
-        <p class="lead" id="sub">Войдите, чтобы публиковать или скрывать отзывы.</p>
+        <h1>Админка</h1>
+        <p class="lead" id="sub">Войдите, чтобы видеть заявки и проверять отзывы.</p>
       </div>
 
       <div class="admin-box form-card" id="login-box">
@@ -31,10 +31,12 @@
 
       <div id="panel" hidden>
         <div class="admin-tabs">
-          <div class="filters" id="tabs" style="margin:0"></div>
-          <button class="btn btn--sm" id="logout" type="button" style="margin-left:auto">Выйти</button>
+          <div class="adm-top" id="top" role="tablist" style="margin:0 0 -1px"></div>
+          <button class="btn btn--sm" id="refresh" type="button" style="margin-left:auto">Обновить</button>
+          <button class="btn btn--sm" id="logout" type="button">Выйти</button>
         </div>
-        <div id="list"></div>
+        <div class="filters" id="tabs"></div>
+        <div id="list" aria-live="polite"></div>
       </div>
     </div>
   </main>
@@ -49,22 +51,112 @@
     const { esc, stars, fmtDate } = Chrome;
     const $ = (id) => document.getElementById(id);
     const CATS = window.WORKS.categories;
-    const STATUS = { pending: 'На проверке', approved: 'Опубликованные', hidden: 'Скрытые' };
-    let all = [], tab = 'pending';
+    const RV_STATUS = { pending: 'На проверке', approved: 'Опубликованные', hidden: 'Скрытые' };
+    const LD_STATUS = { new: 'Новые', work: 'В работе', done: 'Завершённые' };
+    const EMPTY = { new: 'Новых заявок пока нет.', work: 'Нет заявок в работе.', done: 'Завершённых заявок пока нет.' };
+    let reviews = [], leads = [], leadsErr = '', section = 'leads', tab = { leads: 'new', reviews: 'pending' };
+    const fmtDT = (iso) => { try { return new Date(iso).toLocaleString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
+    const ICON_FILE = { pdf: 'PDF', other: 'ФАЙЛ' };
 
     async function load() {
-      try { all = await Api.adminList(); }
-      catch (e) {
-        if (e.code === 'auth') { Api.adminLogout(); showLogin('Сессия закончилась. Войдите снова.'); return; }
-        $('list').innerHTML = `<div class="empty"><h3>Не удалось загрузить</h3><p>${esc(e.message)}</p></div>`; return;
-      }
+      const [rv, ld] = await Promise.allSettled([Api.adminList(), Api.adminLeads()]);
+      const authFail = [rv, ld].some((r) => r.status === 'rejected' && r.reason && r.reason.code === 'auth');
+      if (authFail) { Api.adminLogout(); showLogin('Сессия закончилась. Войдите снова.'); return; }
+      reviews = rv.status === 'fulfilled' ? rv.value : [];
+      leadsErr = ''; leads = [];
+      if (ld.status === 'fulfilled') leads = ld.value;
+      else leadsErr = (ld.reason && (ld.reason.status === 404 || /schema cache|does not exist|PGRST205/i.test(ld.reason.message || '')))
+        ? 'Таблица заявок ещё не создана. Откройте в Supabase SQL Editor файл supabase/leads.sql и выполните его (см. README.md).'
+        : (ld.reason && ld.reason.message) || 'Не удалось загрузить заявки.';
       render();
     }
+
     function render() {
-      const fpCount = {}; all.forEach((r) => { if (r.fp) fpCount[r.fp] = (fpCount[r.fp] || 0) + 1; });
-      const cnt = (s) => all.filter((r) => r.status === s).length;
-      $('tabs').innerHTML = Object.keys(STATUS).map((s) => `<button class="chip" type="button" data-t="${s}" aria-pressed="${s === tab}">${STATUS[s]}<small>${cnt(s)}</small></button>`).join('');
-      const list = all.filter((r) => r.status === tab);
+      const nNew = leads.filter((l) => l.status === 'new').length, nPend = reviews.filter((r) => r.status === 'pending').length;
+      document.title = (nNew ? '(' + nNew + ') ' : '') + 'Админка — Квадрат';
+      $('top').innerHTML = [['leads', 'Заявки', nNew], ['reviews', 'Отзывы', nPend]].map(([id, t, n]) =>
+        `<button class="chip" type="button" role="tab" data-s="${id}" aria-pressed="${id === section}">${t}${n ? `<small style="opacity:1;color:var(--brass-d);font-weight:600">${n} нов.</small>` : ''}</button>`).join('');
+      const map = section === 'leads' ? LD_STATUS : RV_STATUS, src = section === 'leads' ? leads : reviews;
+      $('tabs').innerHTML = Object.keys(map).map((s) => `<button class="chip" type="button" data-t="${s}" aria-pressed="${s === tab[section]}">${map[s]}<small>${src.filter((x) => x.status === s).length}</small></button>`).join('');
+      $('sub').textContent = section === 'leads' ? 'Заявки из опросника: имя, телефон и ответы клиента.' : 'Новые отзывы видны на сайте только после публикации.';
+      if (section === 'leads') renderLeads(); else renderReviews();
+    }
+
+    /* ---------- Заявки ---------- */
+    function renderLeads() {
+      if (leadsErr) { $('list').innerHTML = `<div class="empty"><h3>Заявки недоступны</h3><p>${esc(leadsErr)}</p></div>`; return; }
+      const list = leads.filter((l) => l.status === tab.leads);
+      if (!list.length) { $('list').innerHTML = `<div class="empty"><h3>Здесь пусто</h3><p>${EMPTY[tab.leads]}</p></div>`; return; }
+      $('list').innerHTML = list.map((l) => {
+        const tel = String(l.phone || '').replace(/[^+\d]/g, '');
+        const items = (l.items || []).filter((i) => !(l.items_other && i === 'Другое')).map((i) => `<span>${esc(i)}</span>`).join('');
+        const row = (t, v) => v ? `<div><dt>${t}</dt><dd>${v}</dd></div>` : '';
+        const files = (l.files || []).map((f, i) => `<a href="#" data-file="${esc(f.path)}" data-name="${esc(f.name)}" target="_blank" rel="noopener" title="${esc(f.name)}"><span class="th" data-th="${esc(f.path)}">${/^image\/(jpeg|png|webp)/.test(f.type) ? '' : (/pdf/.test(f.type) ? 'PDF' : 'ФАЙЛ')}</span><span class="nm">${esc(f.name)}</span></a>`).join('');
+        return `
+        <article class="ld ${l.status === 'done' ? 'ld--done' : ''}" data-lid="${esc(l.id)}">
+          <div class="ld__head">
+            <span class="ld__name">${esc(l.name)}</span>
+            <a class="ld__phone" href="tel:${esc(tel)}">${esc(l.phone)}</a>
+            <button class="btn btn--sm" type="button" data-copy-phone="${esc(l.phone)}">Скопировать номер</button>
+            <span class="ld__date">${fmtDT(l.created_at)}</span>
+          </div>
+          <dl class="ld__rows">
+            ${row('Что нужно', `<div class="ld__chips">${items}${l.items_other ? `<span>Другое: ${esc(l.items_other)}</span>` : ''}</div>`)}
+            ${row('Стадия ремонта', esc(l.stage))}
+            ${row('План или проект', esc(l.plan))}
+            ${row('Комментарий', l.comment ? esc(l.comment).replace(/\n/g, '<br>') : '')}
+            ${row('Файлы', files ? `<div class="ld__files">${files}</div>` : '')}
+          </dl>
+          <textarea class="textarea ld__note" data-note="${esc(l.id)}" placeholder="Заметка для себя: о чём договорились, что уточнить" maxlength="1500">${esc(l.admin_note || '')}</textarea>
+          <div class="adm__actions">
+            ${l.status === 'new' ? `<button class="btn btn--brass btn--sm" data-la="work" data-id="${esc(l.id)}">Взять в работу</button>` : ''}
+            ${l.status !== 'done' ? `<button class="btn btn--ink btn--sm" data-la="done" data-id="${esc(l.id)}">Завершить</button>` : ''}
+            ${l.status !== 'new' ? `<button class="btn btn--sm" data-la="new" data-id="${esc(l.id)}">Вернуть в новые</button>` : ''}
+            <button class="btn btn--sm" data-la="delete" data-id="${esc(l.id)}">Удалить</button>
+          </div>
+        </article>`;
+      }).join('');
+      signThumbs(list);
+    }
+    const signed = {};                                   // path → временная ссылка
+    async function signThumbs(list) {
+      const need = list.flatMap((l) => (l.files || []).map((f) => f.path)).filter((p) => p && !signed[p]);
+      if (need.length) { try { Object.assign(signed, await Api.adminSignFiles(need)); } catch (e) { /* покажем без превью */ } }
+      document.querySelectorAll('[data-file]').forEach((a) => {
+        const u = signed[a.dataset.file]; if (!u) return; a.href = u;
+        const th = a.querySelector('.th'); const f = leads.flatMap((l) => l.files || []).find((x) => x.path === a.dataset.file);
+        if (f && /^image\/(jpeg|png|webp)/.test(f.type) && !th.querySelector('img')) { th.innerHTML = `<img src="${esc(u)}" alt="" loading="lazy">`; }
+      });
+    }
+    $('list').addEventListener('click', async (e) => {
+      const fa = e.target.closest('[data-file]');
+      if (fa && fa.getAttribute('href') === '#') { e.preventDefault(); Chrome.toast('Ссылка на файл ещё готовится, попробуйте через секунду.'); return; }
+      const cp = e.target.closest('[data-copy-phone]');
+      if (cp) { try { await navigator.clipboard.writeText(cp.dataset.copyPhone); Chrome.toast('Номер скопирован'); } catch (er) { Chrome.toast(cp.dataset.copyPhone); } return; }
+      const b = e.target.closest('[data-la]'); if (b) return leadAction(b);
+      const r = e.target.closest('[data-a]'); if (r) return reviewAction(r);
+    });
+    $('list').addEventListener('focusout', async (e) => {                // заметка сохраняется, когда выходите из поля
+      const t = e.target.closest('[data-note]'); if (!t) return;
+      const l = leads.find((x) => String(x.id) === t.dataset.note); const v = t.value.trim();
+      if (!l || (l.admin_note || '') === v) return;
+      try { await Api.adminLeadPatch(l.id, { admin_note: v || null }); l.admin_note = v || null; Chrome.toast('Заметка сохранена'); }
+      catch (er) { Chrome.toast('Заметку не удалось сохранить'); }
+    });
+    async function leadAction(b) {
+      const id = b.dataset.id, a = b.dataset.la, l = leads.find((x) => String(x.id) === id); if (!l) return;
+      if (a === 'delete' && !confirm('Удалить заявку «' + l.name + '» вместе с файлами? Это нельзя отменить.')) return;
+      b.disabled = true;
+      try {
+        if (a === 'delete') await Api.adminLeadDelete(l); else await Api.adminLeadPatch(id, { status: a });
+        await load();
+      } catch (er) { b.disabled = false; Chrome.toast(er.message || 'Не получилось. Попробуйте ещё раз.'); }
+    }
+
+    /* ---------- Отзывы ---------- */
+    function renderReviews() {
+      const fpCount = {}; reviews.forEach((r) => { if (r.fp) fpCount[r.fp] = (fpCount[r.fp] || 0) + 1; });
+      const list = reviews.filter((r) => r.status === tab.reviews);
       $('list').innerHTML = list.length ? list.map((r) => `
         <article class="adm">
           <div class="adm__top"><strong>${esc(r.name)}</strong>${stars(r.rating)}
@@ -77,11 +169,9 @@
             ${r.status !== 'hidden' ? `<button class="btn btn--sm" data-a="hidden" data-id="${r.id}">Скрыть</button>` : ''}
             <button class="btn btn--sm" data-a="delete" data-id="${r.id}">Удалить</button>
           </div>
-        </article>`).join('') : `<div class="empty"><h3>Здесь пусто</h3><p>${tab === 'pending' ? 'Новых отзывов на проверку нет.' : 'В этом списке нет отзывов.'}</p></div>`;
+        </article>`).join('') : `<div class="empty"><h3>Здесь пусто</h3><p>${tab.reviews === 'pending' ? 'Новых отзывов на проверку нет.' : 'В этом списке нет отзывов.'}</p></div>`;
     }
-    $('tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-t]'); if (b) { tab = b.dataset.t; render(); } });
-    $('list').addEventListener('click', async (e) => {
-      const b = e.target.closest('[data-a]'); if (!b) return;
+    async function reviewAction(b) {
       const id = b.dataset.id, a = b.dataset.a;
       if (a === 'delete' && !confirm('Удалить отзыв насовсем? Этот человек сможет оставить новый.')) return;
       b.disabled = true;
@@ -89,14 +179,19 @@
         if (a === 'delete') await Api.adminDelete(id); else await Api.adminSet(id, a);
         await load();
       } catch (er) { b.disabled = false; Chrome.toast(er.message || 'Не получилось. Попробуйте ещё раз.'); }
-    });
+    }
+
+    $('top').addEventListener('click', (e) => { const b = e.target.closest('[data-s]'); if (b) { section = b.dataset.s; render(); } });
+    $('tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-t]'); if (b) { tab[section] = b.dataset.t; render(); } });
+    $('refresh').onclick = async () => { $('refresh').disabled = true; await load(); $('refresh').disabled = false; Chrome.toast('Обновлено'); };
+    setInterval(() => { if (!document.hidden && !$('panel').hidden && !document.activeElement.matches('textarea')) load(); }, 90000);
 
     function showLogin(msg) {
       $('panel').hidden = true; $('login-box').hidden = false;
-      $('sub').textContent = 'Войдите, чтобы публиковать или скрывать отзывы.';
+      $('sub').textContent = 'Войдите, чтобы видеть заявки и проверять отзывы.';
       const err = $('l-err'); err.textContent = msg || ''; err.classList.toggle('is-on', !!msg);
     }
-    function showPanel() { $('login-box').hidden = true; $('panel').hidden = false; $('sub').textContent = 'Новые отзывы видны на сайте только после публикации.'; load(); }
+    function showPanel() { $('login-box').hidden = true; $('panel').hidden = false; load(); }
 
     $('login').addEventListener('submit', async (e) => {
       e.preventDefault(); const err = $('l-err'); err.classList.remove('is-on');
@@ -106,7 +201,7 @@
       btn.disabled = false;
     });
     $('logout').onclick = () => { Api.adminLogout(); showLogin(); };
-    if (!Api.configured) showLogin('Хранилище отзывов не подключено (см. README.md).');
+    if (!Api.configured) showLogin('Хранилище не подключено (см. README.md).');
     else if (Api.adminToken()) showPanel(); else showLogin();
   </script>
 </body>

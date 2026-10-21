@@ -172,8 +172,100 @@ const Api = (() => {
     return rest('/rest/v1/reviews?id=eq.' + encodeURIComponent(id), { method: 'DELETE', headers: { Prefer: 'return=minimal' } }, adminToken());
   }
 
+  /* ---------- Заявки из опросника ---------- */
+  const BUCKET = 'lead-files';
+  const MAX_FILES = 8, MAX_BYTES = 10 * 1024 * 1024;
+
+  /* Фото сжимаем в браузере (до 2000 px, JPEG): быстрее грузится и не занимает место в хранилище. PDF и HEIC уходят как есть. */
+  async function prepareFile(file) {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return { blob: file, type: file.type || 'application/octet-stream', ext: (file.name.match(/\.([A-Za-z0-9]{2,5})$/) || [, 'bin'])[1].toLowerCase() };
+    try {
+      const bmp = await createImageBitmap(file);
+      const k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+      const w = Math.round(bmp.width * k), h = Math.round(bmp.height * k);
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); g.drawImage(bmp, 0, 0, w, h);
+      const blob = await new Promise((res) => c.toBlob(res, 'image/jpeg', 0.84));
+      if (blob && blob.size < file.size) return { blob, type: 'image/jpeg', ext: 'jpg' };
+    } catch (e) { /* отправим оригинал */ }
+    return { blob: file, type: file.type, ext: file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg' };
+  }
+  async function uploadOne(path, blob, type) {
+    let res;
+    try {
+      res = await fetch(base + '/storage/v1/object/' + BUCKET + '/' + path, {
+        method: 'POST', body: blob,
+        headers: { apikey: S.supabaseAnonKey, Authorization: 'Bearer ' + S.supabaseAnonKey, 'Content-Type': type, 'x-upsert': 'false' },
+      });
+    } catch (e) { const err = new Error('Нет соединения. Проверьте интернет и попробуйте ещё раз.'); err.code = 'network'; throw err; }
+    if (!res.ok) {
+      let m = ''; try { m = (await res.json()).message || ''; } catch (e) { /* ignore */ }
+      throw new Error(/exceed|size|too large/i.test(m) ? 'Файл слишком большой (максимум 10 МБ).' : 'Не удалось загрузить файл. ' + m);
+    }
+  }
+
+  /* lead: { items[], itemsOther, stage, plan, name, phone, comment, files: File[] }, onProgress(done,total) */
+  async function submitLead(lead, onProgress) {
+    const id = uuid();
+    const payload = {
+      id, items: lead.items, items_other: lead.itemsOther || null, stage: lead.stage, plan: lead.plan,
+      name: String(lead.name || '').trim(), phone: String(lead.phone || '').trim(),
+      comment: String(lead.comment || '').trim() || null, files: [],
+    };
+    if (!configured) {
+      payload.created_at = new Date().toISOString(); payload.status = 'new';
+      payload.files = (lead.files || []).map((f) => ({ name: f.name, size: f.size, type: f.type }));
+      const list = LS.get('kv_leads_demo', []); list.push(payload); LS.set('kv_leads_demo', list);
+      return payload;
+    }
+    const files = (lead.files || []).slice(0, MAX_FILES);
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      if (f.size > 40 * 1024 * 1024) throw new Error('Файл «' + f.name + '» слишком большой.');
+      const pr = await prepareFile(f);
+      if (pr.blob.size > MAX_BYTES) throw new Error('Файл «' + f.name + '» больше 10 МБ. Уменьшите его или выберите другой.');
+      const path = id + '/' + (i + 1) + '-file.' + pr.ext.replace(/[^a-z0-9]/g, '').slice(0, 5);
+      await uploadOne(path, pr.blob, pr.type);
+      payload.files.push({ path, name: f.name.slice(0, 120), size: pr.blob.size, type: pr.type });
+      if (onProgress) onProgress(i + 1, files.length);
+    }
+    try {
+      await rest('/rest/v1/leads', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(payload) });
+    } catch (e) {
+      if (/too many|flood/i.test(e.message)) throw new Error('Сейчас очень много заявок. Попробуйте через несколько минут.');
+      throw e;
+    }
+    return payload;
+  }
+
+  async function adminLeads() {
+    const t = adminToken(); if (!t) { const e = new Error('auth'); e.code = 'auth'; throw e; }
+    try { return await rest('/rest/v1/leads?select=*&order=created_at.desc&limit=500', {}, t); }
+    catch (e) { if (e.status === 401) e.code = 'auth'; throw e; }
+  }
+  async function adminLeadPatch(id, patch) {
+    return rest('/rest/v1/leads?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(patch) }, adminToken());
+  }
+  async function adminLeadDelete(lead) {
+    const t = adminToken();
+    const paths = (lead.files || []).map((f) => f.path).filter(Boolean);
+    if (paths.length) {
+      try { await rest('/storage/v1/object/' + BUCKET, { method: 'DELETE', body: JSON.stringify({ prefixes: paths }) }, t); } catch (e) { /* файлы можно убрать и вручную */ }
+    }
+    return rest('/rest/v1/leads?id=eq.' + encodeURIComponent(lead.id), { method: 'DELETE', headers: { Prefer: 'return=minimal' } }, t);
+  }
+  /* временные ссылки (на 2 часа) для просмотра файлов заявки */
+  async function adminSignFiles(paths) {
+    if (!paths.length) return {};
+    const r = await rest('/storage/v1/object/sign/' + BUCKET, { method: 'POST', body: JSON.stringify({ expiresIn: 7200, paths }) }, adminToken());
+    const out = {};
+    (r || []).forEach((x) => { if (x && x.signedURL) out[x.path || x.signedURL] = base + '/storage/v1' + x.signedURL; });
+    return out;
+  }
+
   return {
     configured, listReviews, myStatus, submitReview, deviceId,
     adminToken, adminLogin, adminLogout, adminList, adminSet, adminDelete,
+    submitLead, MAX_FILES, MAX_BYTES, adminLeads, adminLeadPatch, adminLeadDelete, adminSignFiles,
   };
 })();

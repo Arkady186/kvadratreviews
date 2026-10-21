@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Дизайн-проект мебели для вашего дома — Квадрат</title>
+  <meta name="description" content="Ответьте на пять коротких вопросов, и дизайнер подготовит проект мебели для вашего дома.">
+  <meta name="theme-color" content="#F4F3F0">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2316201C'/%3E%3Crect x='7' y='7' width='16' height='16' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Crect x='19' y='19' width='7' height='7' fill='%23B8924A'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <h1>Дизайн-проект мебели для вашего дома</h1>
+        <p class="lead">Ответьте на несколько вопросов, и дизайнер подготовит проект мебели под вашу квартиру. Это займёт около двух минут, а фотографии и планы можно приложить сразу.</p>
+      </div>
+    </section>
+
+    <div class="wrap" id="demo-note" hidden>
+      <p class="demo-note"><strong>Демо-режим.</strong> Хранилище заявок ещё не подключено, поэтому заявка сохранится только в этом браузере и администратор её не увидит.</p>
+    </div>
+
+    <section class="section section--tight">
+      <div class="wrap">
+        <div class="quiz">
+          <form class="form-card quiz__card" id="quiz" novalidate>
+            <div class="quiz__top">
+              <span class="quiz__count" id="q-count" aria-live="polite">Шаг 1 из 5</span>
+              <span class="quiz__name" id="q-name"></span>
+            </div>
+            <div class="quiz__bar" id="q-bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+
+            <!-- Шаг 1 -->
+            <section class="qstep" data-step="1" aria-labelledby="t1">
+              <h2 id="t1" tabindex="-1">Что вам необходимо из мебели для уюта вашего дома?</h2>
+              <p class="qhint">Можно выбрать несколько вариантов.</p>
+              <div class="opts opts--2" id="o-items" role="group" aria-labelledby="t1"></div>
+              <div class="other" id="items-other-wrap" hidden>
+                <label class="sr" for="items-other">Что именно вам нужно</label>
+                <input class="input" id="items-other" type="text" maxlength="200" placeholder="Напишите, какая мебель вам нужна" autocomplete="off">
+              </div>
+              <p class="err" id="e1" role="alert"></p>
+            </section>
+
+            <!-- Шаг 2 -->
+            <section class="qstep" data-step="2" aria-labelledby="t2" hidden>
+              <h2 id="t2" tabindex="-1">Стадия ремонта</h2>
+              <p class="qhint">На каком этапе сейчас ремонт?</p>
+              <div class="opts" id="o-stage" role="radiogroup" aria-labelledby="t2"></div>
+              <div class="other" id="stage-other-wrap" hidden>
+                <label class="sr" for="stage-other">Ваш вариант</label>
+                <input class="input" id="stage-other" type="text" maxlength="70" placeholder="Опишите, на каком этапе ремонт" autocomplete="off">
+              </div>
+              <p class="err" id="e2" role="alert"></p>
+            </section>
+
+            <!-- Шаг 3 -->
+            <section class="qstep" data-step="3" aria-labelledby="t3" hidden>
+              <h2 id="t3" tabindex="-1">Есть ли уже план помещения или дизайн-проект?</h2>
+              <p class="qhint">Выберите один вариант.</p>
+              <div class="opts" id="o-plan" role="radiogroup" aria-labelledby="t3"></div>
+              <p class="err" id="e3" role="alert"></p>
+            </section>
+
+            <!-- Шаг 4 -->
+            <section class="qstep" data-step="4" aria-labelledby="t4" hidden>
+              <h2 id="t4" tabindex="-1">Прикрепите план, чертёж или фотографии</h2>
+              <p class="qhint">Фотографии плана помещения, размеры, снимки комнат и референсы: в каком стиле вам хочется мебель. Этот шаг можно пропустить.</p>
+              <label class="drop" id="drop" for="files">
+                <input class="sr" id="files" type="file" multiple accept="image/*,application/pdf,.pdf,.heic,.heif">
+                <span class="drop__icon" aria-hidden="true"></span>
+                <span class="drop__t">Выберите файлы или перетащите их сюда</span>
+                <span class="drop__s">Фото и PDF, до 8 файлов, каждый до 10 МБ</span>
+              </label>
+              <ul class="files" id="files-list" aria-live="polite"></ul>
+              <p class="err" id="e4" role="alert"></p>
+            </section>
+
+            <!-- Шаг 5 -->
+            <section class="qstep" data-step="5" aria-labelledby="t5" hidden>
+              <h2 id="t5" tabindex="-1">Как с вами связаться?</h2>
+              <p class="qhint">Дизайнер позвонит вам, уточнит детали и расскажет, что можно сделать.</p>
+              <div class="form-error" id="send-err" role="alert"></div>
+              <div class="qgrid">
+                <div class="field" id="f-name">
+                  <label for="name">Ваше имя</label>
+                  <input class="input" id="name" type="text" maxlength="60" autocomplete="name" placeholder="Как к вам обращаться">
+                  <span class="err">Напишите имя, чтобы мы знали, как к вам обращаться.</span>
+                </div>
+                <div class="field" id="f-phone">
+                  <label for="phone">Номер телефона</label>
+                  <input class="input" id="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="+7 (900) 000-00-00">
+                  <span class="err">Проверьте номер: нужно 11 цифр, например +7 900 000-00-00.</span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="comment">Комментарий <span class="muted" style="font-weight:400">(необязательно)</span></label>
+                <textarea class="textarea" id="comment" maxlength="1500" style="min-height:110px" placeholder="Пожелания, сроки, бюджет, удобное время для звонка"></textarea>
+              </div>
+              <div class="hp" aria-hidden="true"><label>Сайт<input type="text" id="site" tabindex="-1" autocomplete="off"></label></div>
+              <div class="field consent" id="f-consent">
+                <label class="chk"><input type="checkbox" id="consent"><span class="chk__box" aria-hidden="true"></span><span>Согласен на обработку персональных данных: имени и телефона, чтобы со мной связались по заявке.</span></label>
+                <span class="err">Поставьте галочку, чтобы мы могли с вами связаться.</span>
+              </div>
+            </section>
+
+            <div class="quiz__nav">
+              <button class="btn" type="button" id="q-back" hidden>Назад</button>
+              <button class="btn btn--ink" type="submit" id="q-next">Далее</button>
+            </div>
+          </form>
+
+          <div class="form-card done" id="done" hidden tabindex="-1" aria-live="polite"></div>
+
+          <aside class="quiz__side" aria-label="О проекте">
+            <h3>Как это работает</h3>
+            <ol>
+              <li><b>Вы отвечаете на вопросы.</b> Так мы сразу понимаем, что вам нужно.</li>
+              <li><b>Дизайнер связывается с вами</b> по телефону и уточняет детали.</li>
+              <li><b>Готовим проект мебели</b> под размеры и стиль вашего дома.</li>
+            </ol>
+            <p class="muted">Заявка ни к чему вас не обязывает.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/works-data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script>
+    Chrome.init('quiz');
+    const { esc, ICONS } = Chrome;
+    const $ = (id) => document.getElementById(id);
+    if (!Api.configured) $('demo-note').hidden = false;
+
+    const ITEMS = ['Комплексную меблировку квартиры', 'Кухню', 'Шкаф или гардеробную', 'Мебель в прихожую', 'Мебель в гостиную',
+      'Мебель в спальню', 'Детскую', 'Мебель для ванной', 'Рабочую зону или домашний кабинет', 'Другое'];
+    const STAGES = ['Планируем ремонт', 'Идёт черновой ремонт', 'Сейчас делаем электрику и сантехнику', 'Идёт чистовая отделка',
+      'Ремонт почти завершён', 'Квартира с ремонтом', 'Свой вариант'];
+    const PLANS = ['Да, есть дизайн-проект', 'Есть план с размерами', 'Есть только планировка от застройщика', 'Пока ничего нет'];
+    const TITLES = ['', 'Мебель', 'Ремонт', 'План', 'Файлы', 'Контакты'];
+    const LAST = 5, OTHER_ITEM = ITEMS.length - 1, OTHER_STAGE = STAGES.length - 1;
+
+    const S = { step: 1, items: [], itemsOther: '', stage: -1, stageOther: '', plan: -1, name: '', phone: '', comment: '', consent: false };
+    let files = [];
+    try { Object.assign(S, JSON.parse(sessionStorage.getItem('kv_quiz') || '{}'), { step: 1, consent: false }); } catch (e) { /* ignore */ }
+    const save = () => { try { sessionStorage.setItem('kv_quiz', JSON.stringify(S)); } catch (e) { /* ignore */ } };
+
+    /* ----- варианты ответов ----- */
+    function opts(el, list, type, name, isOn) {
+      el.innerHTML = list.map((t, i) => `
+        <label class="opt"><input type="${type}" name="${name}" value="${i}" ${isOn(i) ? 'checked' : ''}>
+          <span class="opt__mark" aria-hidden="true"></span><span class="opt__t">${esc(t)}</span></label>`).join('');
+    }
+    opts($('o-items'), ITEMS, 'checkbox', 'items', (i) => S.items.includes(i));
+    opts($('o-stage'), STAGES, 'radio', 'stage', (i) => S.stage === i);
+    opts($('o-plan'), PLANS, 'radio', 'plan', (i) => S.plan === i);
+    $('items-other').value = S.itemsOther; $('stage-other').value = S.stageOther;
+    $('name').value = S.name; $('phone').value = S.phone; $('comment').value = S.comment;
+
+    function syncOther() {
+      $('items-other-wrap').hidden = !S.items.includes(OTHER_ITEM);
+      $('stage-other-wrap').hidden = S.stage !== OTHER_STAGE;
+    }
+    syncOther();
+
+    $('o-items').addEventListener('change', () => {
+      S.items = [...$('o-items').querySelectorAll('input:checked')].map((i) => +i.value); syncOther(); save(); clearErr(1);
+      if (S.items.includes(OTHER_ITEM)) $('items-other').focus({ preventScroll: true });
+    });
+    $('o-stage').addEventListener('change', (e) => { S.stage = +e.target.value; syncOther(); save(); clearErr(2); if (S.stage === OTHER_STAGE) $('stage-other').focus({ preventScroll: true }); });
+    $('o-plan').addEventListener('change', (e) => { S.plan = +e.target.value; save(); clearErr(3); });
+    ['items-other', 'stage-other', 'name', 'comment'].forEach((id) => $(id).addEventListener('input', () => {
+      S[{ 'items-other': 'itemsOther', 'stage-other': 'stageOther', name: 'name', comment: 'comment' }[id]] = $(id).value; save();
+      if (id === 'name') $('f-name').classList.remove('has-error');
+    }));
+
+    /* ----- телефон: +7 (900) 000-00-00 ----- */
+    function fmtPhone(v) {
+      let d = v.replace(/\D/g, '');
+      if (!d) return '';
+      if (d[0] === '8') d = '7' + d.slice(1);
+      if (d[0] !== '7' && v.trim()[0] !== '+') d = '7' + d;
+      if (v.trim()[0] === '+' && d[0] !== '7') return '+' + d.slice(0, 15);   // иностранный номер — не форматируем
+      d = d.slice(0, 11);
+      let o = '+7';
+      if (d.length > 1) o += ' (' + d.slice(1, 4);
+      if (d.length >= 4) o += ')';
+      if (d.length > 4) o += ' ' + d.slice(4, 7);
+      if (d.length > 7) o += '-' + d.slice(7, 9);
+      if (d.length > 9) o += '-' + d.slice(9, 11);
+      return o;
+    }
+    const phoneOk = (v) => { const d = v.replace(/\D/g, ''); return d.length === 11 && d[0] === '7' || (v.trim()[0] === '+' && d.length >= 10 && d.length <= 15); };
+    $('phone').addEventListener('input', (e) => {
+      const el = e.target; if (e.inputType && e.inputType.startsWith('delete') && el.selectionStart !== el.value.length) { S.phone = el.value; return; }
+      if (e.inputType && e.inputType.startsWith('delete') && el.value.replace(/\D/g, '').length <= 1) { el.value = ''; S.phone = ''; return; }
+      el.value = fmtPhone(el.value); S.phone = el.value; save(); $('f-phone').classList.remove('has-error');
+    });
+    $('consent').addEventListener('change', () => $('f-consent').classList.remove('has-error'));
+
+    /* ----- файлы ----- */
+    const drop = $('drop'), fInput = $('files');
+    const sz = (b) => b > 1048576 ? (b / 1048576).toFixed(1).replace('.', ',') + ' МБ' : Math.max(1, Math.round(b / 1024)) + ' КБ';
+    const okType = (f) => /^image\//.test(f.type) || f.type === 'application/pdf' || /\.(pdf|heic|heif|jpe?g|png|webp)$/i.test(f.name);
+    function addFiles(list) {
+      const err = [];
+      [...list].forEach((f) => {
+        if (!okType(f)) { err.push('«' + f.name + '»: подходят только фото и PDF.'); return; }
+        if (files.some((x) => x.name === f.name && x.size === f.size)) return;
+        if (files.length >= Api.MAX_FILES) { err.push('Можно прикрепить не больше ' + Api.MAX_FILES + ' файлов.'); return; }
+        if (f.size > 40 * 1024 * 1024) { err.push('«' + f.name + '» слишком большой.'); return; }
+        files.push(f);
+      });
+      showErr(4, [...new Set(err)].join(' '));
+      renderFiles();
+    }
+    function renderFiles() {
+      files.forEach((f) => { if (!f._url && /^image\/(jpeg|png|webp|gif)/.test(f.type)) f._url = URL.createObjectURL(f); });
+      $('files-list').innerHTML = files.map((f, i) => `
+        <li class="file">
+          <span class="file__th">${f._url ? `<img src="${f._url}" alt="">` : `<b>${/pdf/i.test(f.type + f.name) ? 'PDF' : 'IMG'}</b>`}</span>
+          <span class="file__n"><span>${esc(f.name)}</span><small>${sz(f.size)}</small></span>
+          <button class="file__x" type="button" data-i="${i}" aria-label="Убрать файл ${esc(f.name)}">×</button>
+        </li>`).join('');
+      refreshNext();
+    }
+    $('files-list').addEventListener('click', (e) => { const b = e.target.closest('[data-i]'); if (!b) return; files.splice(+b.dataset.i, 1); renderFiles(); showErr(4, ''); });
+    fInput.addEventListener('change', () => { addFiles(fInput.files); fInput.value = ''; });
+    ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('is-over'); }));
+    ['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('is-over'); }));
+    drop.addEventListener('drop', (e) => { if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files); });
+
+    /* ----- ошибки и шаги ----- */
+    function showErr(n, msg) { const e = $('e' + n); e.textContent = msg || ''; e.classList.toggle('is-on', !!msg); }
+    function clearErr(n) { showErr(n, ''); }
+
+    function validate(n) {
+      if (n === 1) {
+        if (!S.items.length) { showErr(1, 'Выберите хотя бы один вариант.'); return false; }
+        if (S.items.includes(OTHER_ITEM) && !S.itemsOther.trim()) { showErr(1, 'Напишите, какая мебель вам нужна, или уберите «Другое».'); $('items-other').focus(); return false; }
+      }
+      if (n === 2) {
+        if (S.stage < 0) { showErr(2, 'Выберите, на каком этапе ремонт.'); return false; }
+        if (S.stage === OTHER_STAGE && !S.stageOther.trim()) { showErr(2, 'Опишите свой вариант.'); $('stage-other').focus(); return false; }
+      }
+      if (n === 3 && S.plan < 0) { showErr(3, 'Выберите один из вариантов.'); return false; }
+      if (n === 5) {
+        let ok = true, first = null;
+        const bad = (id, cond) => { $(id).classList.toggle('has-error', cond); if (cond) { ok = false; first = first || $(id); } };
+        bad('f-name', S.name.trim().length < 2);
+        bad('f-phone', !phoneOk(S.phone));
+        bad('f-consent', !$('consent').checked);
+        if (first) (first.querySelector('input') || first).focus();
+        return ok;
+      }
+      return true;
+    }
+
+    function refreshNext() {
+      const b = $('q-next');
+      b.textContent = S.step === LAST ? 'Отправить заявку' : (S.step === 4 && !files.length ? 'Пропустить' : 'Далее');
+      b.classList.toggle('btn--brass', S.step === LAST); b.classList.toggle('btn--ink', S.step !== LAST);
+    }
+    function go(n, focus) {
+      S.step = n;
+      document.querySelectorAll('.qstep').forEach((s) => { s.hidden = +s.dataset.step !== n; });
+      $('q-count').textContent = 'Шаг ' + n + ' из ' + LAST;
+      $('q-name').textContent = TITLES[n];
+      [...$('q-bar').children].forEach((b, i) => b.classList.toggle('on', i < n));
+      $('q-back').hidden = n === 1;
+      refreshNext();
+      if (focus !== false) {
+        const h = $('t' + n); h.focus({ preventScroll: true });
+        const top = $('quiz').getBoundingClientRect().top + scrollY - 96;
+        if (Math.abs(scrollY - top) > 40) scrollTo({ top: Math.max(0, top), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }
+    }
+    $('q-back').onclick = () => go(S.step - 1);
+    $('quiz').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validate(S.step)) return;
+      if (S.step < LAST) { go(S.step + 1); return; }
+      await send();
+    });
+
+    /* ----- отправка ----- */
+    async function send() {
+      if ($('site').value) { finish(); return; }                         // «ловушка» для роботов
+      const btn = $('q-next'), err = $('send-err'); err.classList.remove('is-on');
+      btn.disabled = true; $('q-back').disabled = true; const old = btn.textContent; btn.textContent = 'Отправляем…';
+      try {
+        await Api.submitLead({
+          items: S.items.map((i) => ITEMS[i]), itemsOther: S.items.includes(OTHER_ITEM) ? S.itemsOther.trim() : '',
+          stage: S.stage === OTHER_STAGE ? 'Свой вариант: ' + S.stageOther.trim() : STAGES[S.stage],
+          plan: PLANS[S.plan], name: S.name, phone: S.phone, comment: S.comment, files,
+        }, (d, t) => { btn.textContent = 'Загружаем файлы ' + d + ' из ' + t + '…'; });
+        finish();
+      } catch (er) {
+        err.textContent = (er.message || 'Не получилось отправить.') + ' Данные сохранены, нажмите «Отправить заявку» ещё раз.';
+        err.classList.add('is-on'); err.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        btn.disabled = false; $('q-back').disabled = false; btn.textContent = old;
+      }
+    }
+    function finish() {
+      try { sessionStorage.removeItem('kv_quiz'); } catch (e) { /* ignore */ }
+      $('quiz').hidden = true; document.querySelector('.quiz__side').hidden = true;
+      const d = $('done'), first = (S.name.trim().split(/\s+/)[0] || '');
+      d.hidden = false;
+      d.innerHTML = `<div class="done__mark">${ICONS.check}</div>
+        <h2>Спасибо${first ? ', ' + esc(first) : ''}! Заявка отправлена</h2>
+        <p>Дизайнер свяжется с вами по номеру <strong>${esc(S.phone)}</strong> и уточнит детали проекта.</p>
+        <p>Пока ждёте, посмотрите наши работы: может быть, найдёте то, что хочется видеть у себя дома.</p>
+        <div class="done__act"><a class="btn btn--brass" href="works.html">Смотреть работы</a><a class="btn" href="index.html">На главную</a></div>`;
+      d.focus({ preventScroll: true }); scrollTo({ top: 0, behavior: 'smooth' }); Chrome.confetti();
+    }
+
+    go(1, false);
+    window.addEventListener('beforeunload', (e) => { if (!$('quiz').hidden && files.length) { e.preventDefault(); e.returnValue = ''; } });
+  </script>
+</body>
+</html>
