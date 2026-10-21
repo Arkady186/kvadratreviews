@@ -30,7 +30,7 @@ const Chrome = (() => {
     return `
       <header class="site-header">
         <div class="wrap site-header__in">
-          <a class="logo" href="index.html" aria-label="${esc(S.brand)} — на главную"><span class="logo__mark" aria-hidden="true"></span>${esc(S.brand)}</a>
+          <a class="logo" href="index.html" aria-label="${esc(S.brand)} — на главную"><img src="img/logo.svg" alt="${esc(S.brand)}" width="116" height="42"></a>
           <button class="menu-btn" id="menu-btn" aria-label="Меню" aria-expanded="false" aria-controls="nav"><span></span></button>
           <nav class="nav" id="nav" aria-label="Основное меню">
             <a href="works.html" ${active === 'works' ? 'aria-current="page"' : ''}>Наши работы</a>
@@ -55,7 +55,7 @@ const Chrome = (() => {
         <div class="wrap">
           <div class="site-footer__grid">
             <div>
-              <a class="logo" href="index.html" style="color:#fff"><span class="logo__mark" aria-hidden="true"></span>${esc(S.brand)}</a>
+              <a class="logo logo--foot" href="index.html" aria-label="${esc(S.brand)} — на главную"><img src="img/logo-light.svg" alt="${esc(S.brand)}" width="150" height="55"></a>
               <p style="margin-top:16px;max-width:34ch">${esc(S.tagline || '')}. Смотрите наши работы и читайте отзывы тех, кто уже живёт с нашей мебелью.</p>
             </div>
             <div><h4>Разделы</h4><ul>
