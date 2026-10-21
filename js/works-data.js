@@ -1,5 +1,4 @@
-/* Этот файл создаёт скрипт tools/process_photos.py. Вручную менять не нужно:
-   разложите фото по папкам photos/<раздел>/ и запустите скрипт заново. */
+/* Этот файл создают скрипты tools/process_photos.py и tools/add_photos.py. Вручную менять не нужно. */
 window.WORKS = {
   "categories": [
     {
@@ -2590,6 +2589,156 @@ window.WORKS = {
       "th": 640
     },
     {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-257-8a2e3c.webp",
+      "thumb": "img/works/kuhni/t-kuhni-257-8a2e3c.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-258-c9a3e3.webp",
+      "thumb": "img/works/kuhni/t-kuhni-258-c9a3e3.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-259-3481f1.webp",
+      "thumb": "img/works/kuhni/t-kuhni-259-3481f1.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-260-c28a67.webp",
+      "thumb": "img/works/kuhni/t-kuhni-260-c28a67.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-261-10b74b.webp",
+      "thumb": "img/works/kuhni/t-kuhni-261-10b74b.webp",
+      "w": 1800,
+      "h": 1350,
+      "tw": 640,
+      "th": 480
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-262-f5ffb6.webp",
+      "thumb": "img/works/kuhni/t-kuhni-262-f5ffb6.webp",
+      "w": 1800,
+      "h": 1350,
+      "tw": 640,
+      "th": 480
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-263-2bd2f5.webp",
+      "thumb": "img/works/kuhni/t-kuhni-263-2bd2f5.webp",
+      "w": 1280,
+      "h": 1707,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-264-d5ad60.webp",
+      "thumb": "img/works/kuhni/t-kuhni-264-d5ad60.webp",
+      "w": 1280,
+      "h": 1707,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-265-19c3af.webp",
+      "thumb": "img/works/kuhni/t-kuhni-265-19c3af.webp",
+      "w": 1280,
+      "h": 1707,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-266-fd5639.webp",
+      "thumb": "img/works/kuhni/t-kuhni-266-fd5639.webp",
+      "w": 1280,
+      "h": 1707,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-267-b58785.webp",
+      "thumb": "img/works/kuhni/t-kuhni-267-b58785.webp",
+      "w": 1800,
+      "h": 1350,
+      "tw": 640,
+      "th": 480
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-268-610870.webp",
+      "thumb": "img/works/kuhni/t-kuhni-268-610870.webp",
+      "w": 1800,
+      "h": 1350,
+      "tw": 640,
+      "th": 480
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-269-b68b45.webp",
+      "thumb": "img/works/kuhni/t-kuhni-269-b68b45.webp",
+      "w": 1800,
+      "h": 1350,
+      "tw": 640,
+      "th": 480
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-270-80a968.webp",
+      "thumb": "img/works/kuhni/t-kuhni-270-80a968.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "kuhni",
+      "sub": "",
+      "full": "img/works/kuhni/kuhni-271-f1823a.webp",
+      "thumb": "img/works/kuhni/t-kuhni-271-f1823a.webp",
+      "w": 1280,
+      "h": 1707,
+      "tw": 480,
+      "th": 640
+    },
+    {
       "cat": "ofis",
       "sub": "",
       "full": "img/works/ofis/ofis-001-c32b07.webp",
@@ -3220,6 +3369,26 @@ window.WORKS = {
       "th": 480
     },
     {
+      "cat": "ofis",
+      "sub": "",
+      "full": "img/works/ofis/ofis-064-28dd8a.webp",
+      "thumb": "img/works/ofis/t-ofis-064-28dd8a.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "ofis",
+      "sub": "",
+      "full": "img/works/ofis/ofis-065-03534b.webp",
+      "thumb": "img/works/ofis/t-ofis-065-03534b.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
       "cat": "sanuzly",
       "sub": "",
       "full": "img/works/sanuzly/sanuzly-001-c6413a.webp",
@@ -3414,6 +3583,16 @@ window.WORKS = {
       "sub": "",
       "full": "img/works/sanuzly/sanuzly-020-cc2e03.webp",
       "thumb": "img/works/sanuzly/t-sanuzly-020-cc2e03.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "sanuzly",
+      "sub": "",
+      "full": "img/works/sanuzly/sanuzly-021-38576a.webp",
+      "thumb": "img/works/sanuzly/t-sanuzly-021-38576a.webp",
       "w": 1350,
       "h": 1800,
       "tw": 480,
@@ -4850,6 +5029,176 @@ window.WORKS = {
       "th": 640
     },
     {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-144-c32e39.webp",
+      "thumb": "img/works/shkafy/t-shkafy-144-c32e39.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-145-1a276e.webp",
+      "thumb": "img/works/shkafy/t-shkafy-145-1a276e.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-146-b113e5.webp",
+      "thumb": "img/works/shkafy/t-shkafy-146-b113e5.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-147-ca0c00.webp",
+      "thumb": "img/works/shkafy/t-shkafy-147-ca0c00.webp",
+      "w": 1280,
+      "h": 1707,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-148-70ded7.webp",
+      "thumb": "img/works/shkafy/t-shkafy-148-70ded7.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-149-b2c536.webp",
+      "thumb": "img/works/shkafy/t-shkafy-149-b2c536.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-150-3dc001.webp",
+      "thumb": "img/works/shkafy/t-shkafy-150-3dc001.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-151-a08d1e.webp",
+      "thumb": "img/works/shkafy/t-shkafy-151-a08d1e.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-152-0721f7.webp",
+      "thumb": "img/works/shkafy/t-shkafy-152-0721f7.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-153-1215a4.webp",
+      "thumb": "img/works/shkafy/t-shkafy-153-1215a4.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-154-6da553.webp",
+      "thumb": "img/works/shkafy/t-shkafy-154-6da553.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-155-8d3af0.webp",
+      "thumb": "img/works/shkafy/t-shkafy-155-8d3af0.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-156-228b14.webp",
+      "thumb": "img/works/shkafy/t-shkafy-156-228b14.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-157-d54cbb.webp",
+      "thumb": "img/works/shkafy/t-shkafy-157-d54cbb.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-158-fcdf2b.webp",
+      "thumb": "img/works/shkafy/t-shkafy-158-fcdf2b.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-159-d5c5f6.webp",
+      "thumb": "img/works/shkafy/t-shkafy-159-d5c5f6.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "shkafy",
+      "sub": "",
+      "full": "img/works/shkafy/shkafy-160-6b6485.webp",
+      "thumb": "img/works/shkafy/t-shkafy-160-6b6485.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
       "cat": "tv-zony",
       "sub": "",
       "full": "img/works/tv-zony/tv-zony-001-4479ee.webp",
@@ -4904,6 +5253,16 @@ window.WORKS = {
       "sub": "",
       "full": "img/works/tv-zony/tv-zony-006-adf8ad.webp",
       "thumb": "img/works/tv-zony/t-tv-zony-006-adf8ad.webp",
+      "w": 1350,
+      "h": 1800,
+      "tw": 480,
+      "th": 640
+    },
+    {
+      "cat": "tv-zony",
+      "sub": "",
+      "full": "img/works/tv-zony/tv-zony-007-084faa.webp",
+      "thumb": "img/works/tv-zony/t-tv-zony-007-084faa.webp",
       "w": 1350,
       "h": 1800,
       "tw": 480,
