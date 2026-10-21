@@ -99,6 +99,7 @@
   <script src="js/config.js"></script>
   <script src="js/works-data.js"></script>
   <script src="js/kitchens.js"></script>
+  <script src="js/cat-art.js"></script>
   <script src="js/api.js"></script>
   <script src="js/common.js"></script>
   <script>
@@ -156,10 +157,10 @@
 
     const counts = Chrome.counts();
     document.getElementById('cats').innerHTML = W.categories.map((c) => {
-      const it = W.items.find((i) => i.cat === c.id);
+      const art = (window.CAT_ART || {})[c.id];
       return `
-      <a class="cat ${it ? 'cat--photo' : ''}" href="works.html?c=${c.id}">
-        ${it ? `<img src="${esc(it.thumb)}" alt="" loading="lazy">` : `<span class="cat__icon">${ICONS[c.id]}</span>`}
+      <a class="cat ${art ? 'cat--bp' : ''}" href="works.html?c=${c.id}">
+        ${art ? `<span class="cat__art" aria-hidden="true">${art}</span>` : `<span class="cat__icon">${ICONS[c.id]}</span>`}
         <span class="cat__name">${esc(c.title)}<span class="cat__n">${counts[c.id] ? Chrome.photosWord(counts[c.id]) : 'скоро'}</span></span>
       </a>`; }).join('');
 
