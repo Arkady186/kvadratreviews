@@ -330,3 +330,5 @@ const Api = (() => {
     submitLead, MAX_FILES, MAX_BYTES, adminLeads, adminLeadPatch, adminLeadDelete, adminSignFiles,
   };
 })();
+
+window.Api = Api; // глобальный доступ для страниц, собранных из шаблонов

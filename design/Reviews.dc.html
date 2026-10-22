@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Отзывы клиентов — ASD</title>
+  <meta name="description" content="Отзывы о мебели на заказ от компании ASD. Оставьте свой отзыв и поставьте оценку."></meta>
+  <meta name="theme-color" content="#F4F1EC"></meta>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml"></link>
+  <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""></link>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"></link>
+  <style>
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: #F4F1EC; color: #1A1714; font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+    a { color: inherit; } a:hover { color: #8C6239; }
+    ::selection { background: #C9A074; color: #14120F; }
+    :focus-visible { outline: 2px solid #B98D5E; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+</helmet>
+
+<dc-import name="SiteHeader" active="reviews" tone="light" hint-size="100%,0px"></dc-import>
+
+<main>
+  <section data-screen-label="Reviews hero" style="padding:calc(84px + clamp(48px,7vw,104px)) 0 clamp(32px,4vw,56px)">
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px 48px">
+      <div data-in="0" style="max-width:820px">
+        <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Отзывы</div>
+        <h1 style="margin:0;font:300 clamp(3rem,7vw,6.6rem)/.98 'Noto Serif Display', serif;letter-spacing:-.035em">Отзывы <em style="font-style:italic;color:#8C6239">клиентов</em></h1>
+        <p style="margin:24px 0 0;max-width:50ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty">Что говорят те, кто уже живёт с нашей мебелью. Поделитесь и своим впечатлением — это займёт минуту.</p>
+      </div>
+      <button data-in="1" type="button" onClick="{{ share }}" style="display:inline-flex;align-items:center;gap:10px;height:50px;padding:0 22px;border-radius:999px;border:1px solid rgba(26,23,20,.25);background:transparent;color:#1A1714;font:600 14px Manrope, sans-serif;cursor:pointer;transition:border-color .3s, background-color .3s" style-hover="border-color:#1A1714;background:#FBFAF7">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg>
+        Скопировать ссылку на отзывы
+      </button>
+    </div>
+  </section>
+
+  <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
+    <sc-if value="{{ demo }}" hint-placeholder-val="{{ false }}">
+      <p style="margin:0 0 28px;padding:16px 22px;border-radius:14px;background:#FBFAF7;border:1px solid #E2DCD3;color:#6B635A;font:400 14.5px/1.6 Manrope, sans-serif"><strong style="color:#1A1714">Демо-режим.</strong> Хранилище отзывов ещё не подключено, поэтому отзывы видны только в этом браузере. Как подключить — в README.md.</p>
+    </sc-if>
+
+    <sc-if value="{{ summary }}" hint-placeholder-val="{{ false }}">
+      <div data-in="2" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:32px clamp(32px,6vw,96px);align-items:center;padding:clamp(28px,4vw,48px) 0;border-top:1px solid #1A1714;border-bottom:1px solid #E2DCD3;margin-bottom:clamp(40px,5vw,72px)">
+        <div style="display:flex;align-items:center;gap:28px">
+          <span style="font:300 clamp(4.6rem,9vw,7.4rem)/.85 'Noto Serif Display', serif;letter-spacing:-.05em">{{ summary.avg }}</span>
+          <div>
+            <span role="img" aria-label="{{ summary.aria }}" style="display:flex;gap:4px;font-size:22px"><sc-for list="{{ summary.stars }}" as="st"><span aria-hidden="true" style="color:{{ st }}">★</span></sc-for></span>
+            <span style="display:block;margin-top:10px;color:#6B635A;font:500 14px Manrope, sans-serif">{{ summary.count }}</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:560px;width:100%">
+          <sc-for list="{{ summary.bars }}" as="b" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:36px 1fr 32px;gap:16px;align-items:center;font:500 13.5px Manrope, sans-serif;color:#6B635A;font-variant-numeric:tabular-nums">
+              <span>{{ b.n }} ★</span>
+              <span style="height:4px;border-radius:999px;background:#E2DCD3;overflow:hidden"><span style="display:block;height:100%;border-radius:999px;background:#B98D5E;width:{{ b.w }};transition:width 1.4s cubic-bezier(.2,.8,.2,1)"></span></span>
+              <span style="text-align:right">{{ b.c }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="display:grid;grid-template-columns:{{ layoutCols }};gap:clamp(40px,6vw,96px);align-items:start;padding-bottom:clamp(80px,10vw,140px)">
+      <div id="leave" ref="{{ formWrapRef }}" style="position:{{ formPos }};top:96px;scroll-margin-top:96px">
+        <div style="background:#FBFAF7;border:1px solid #E2DCD3;border-radius:24px;padding:clamp(26px,3.4vw,44px);box-shadow:0 30px 60px -40px rgba(26,23,20,.25)">
+          <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+            <h2 style="margin:0 0 10px;font:300 clamp(2rem,2.8vw,2.6rem)/1.05 'Noto Serif Display', serif;letter-spacing:-.02em">Оставьте отзыв</h2>
+            <p style="margin:0 0 28px;color:#6B635A;font:400 15px/1.6 Manrope, sans-serif">Расскажите, как вам наша мебель. Один отзыв с одного устройства.</p>
+            <sc-if value="{{ formErr }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="margin-bottom:20px;padding:12px 16px;border-radius:12px;background:#F8E9E4;color:#8A2B1C;font:500 14px/1.5 Manrope, sans-serif">{{ formErr }}</div>
+            </sc-if>
+            <form onSubmit="{{ submit }}" novalidate="" style="display:flex;flex-direction:column;gap:22px">
+              <fieldset ref="{{ ratingRef }}" style="border:0;margin:0;padding:0;min-width:0">
+                <legend style="padding:0;margin-bottom:8px;font:600 14px Manrope, sans-serif">Ваша оценка</legend>
+                <div role="radiogroup" aria-label="Оценка" onMouseLeave="{{ starsLeave }}" style="display:flex;gap:2px;width:fit-content;outline:{{ ratingOutline }};outline-offset:6px;border-radius:8px">
+                  <sc-for list="{{ starInputs }}" as="s" hint-placeholder-count="5">
+                    <button type="button" role="radio" aria-checked="{{ s.on }}" aria-label="{{ s.label }}" onClick="{{ s.pick }}" onMouseEnter="{{ s.hover }}" style="padding:0 3px;border:0;background:transparent;cursor:pointer;font-size:clamp(2.2rem,6vw,2.7rem);line-height:1;color:{{ s.color }};transform:translateY({{ s.ty }});transition:color .2s ease, transform .25s cubic-bezier(.2,.8,.2,1)">★</button>
+                  </sc-for>
+                </div>
+                <div aria-live="polite" style="min-height:1.6em;margin-top:6px;font:italic 300 19px 'Noto Serif Display', serif;color:#8C6239">{{ starWord }}</div>
+                <sc-if value="{{ eRating }}" hint-placeholder-val="{{ false }}"><span style="color:#A33A28;font:500 13.5px Manrope, sans-serif">Поставьте оценку — нажмите на звёзды</span></sc-if>
+              </fieldset>
+              <label ref="{{ nameRef }}" style="display:flex;flex-direction:column;gap:8px">
+                <span style="font:600 14px Manrope, sans-serif">Ваше имя</span>
+                <input name="name" maxlength="60" autocomplete="given-name" placeholder="Как вас зовут" value="{{ name }}" onInput="{{ onName }}" style="height:54px;padding:0 18px;border:1px solid {{ nameBd }};border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none;transition:border-color .2s, box-shadow .2s" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></input>
+                <sc-if value="{{ eName }}" hint-placeholder-val="{{ false }}"><span style="color:#A33A28;font:500 13.5px Manrope, sans-serif">Напишите имя, хотя бы 2 буквы</span></sc-if>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:8px">
+                <span style="font:600 14px Manrope, sans-serif">Что мы для вас делали?</span>
+                <span style="position:relative;display:block">
+                <select name="topic" value="{{ topic }}" onChange="{{ onTopic }}" style="width:100%;height:54px;padding:0 44px 0 18px;border:1px solid #DCD5CA;border-radius:14px;background:#fff;-webkit-appearance:none;appearance:none;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none;cursor:pointer" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)">
+                  <option value="">Выберите, если хотите</option>
+                  <sc-for list="{{ topics }}" as="t"><option value="{{ t.id }}">{{ t.title }}</option></sc-for>
+                </select>
+                <svg aria-hidden="true" width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="#1A1714" stroke-width="1.4" style="position:absolute;right:18px;top:50%;margin-top:-4px;pointer-events:none"><path d="M1 1l5 5 5-5"></path></svg>
+                </span>
+              </label>
+              <label ref="{{ bodyRef }}" style="display:flex;flex-direction:column;gap:8px">
+                <span style="font:600 14px Manrope, sans-serif">Ваш отзыв</span>
+                <textarea name="body" maxlength="800" placeholder="Что понравилось? Как прошли замеры и установка?" value="{{ body }}" onInput="{{ onBody }}" style="min-height:160px;padding:16px 18px;border:1px solid {{ bodyBd }};border-radius:14px;background:#fff;font:400 16px/1.6 Manrope, sans-serif;color:#1A1714;resize:vertical;outline:none;transition:border-color .2s, box-shadow .2s" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></textarea>
+                <span style="display:flex;justify-content:space-between;gap:12px;font:500 12.5px Manrope, sans-serif;color:#8A8177">
+                  <span style="color:#A33A28">{{ bodyErr }}</span><span style="font-variant-numeric:tabular-nums">{{ bodyLen }} / 800</span>
+                </span>
+              </label>
+              <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><label>Сайт<input type="text" name="website" tabindex="-1" autocomplete="off" value="{{ website }}" onInput="{{ onWebsite }}"></input></label></div>
+              <button type="submit" disabled="{{ sending }}" style="display:flex;align-items:center;justify-content:center;gap:12px;height:58px;border-radius:999px;border:0;background:#1A1714;color:#FBFAF7;font:600 15.5px Manrope, sans-serif;cursor:pointer;transition:background-color .3s, gap .4s cubic-bezier(.2,.8,.2,1)" style-hover="background:#3A332C;gap:18px">{{ sendLabel }}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+              </button>
+              <p style="margin:-6px 0 0;text-align:center;color:#8A8177;font:400 13px Manrope, sans-serif">Отзыв публикуется после проверки.</p>
+            </form>
+          </sc-if>
+          <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+            <div ref="{{ doneRef }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+              <div style="width:68px;height:68px;border-radius:999px;background:#EFE6DA;display:grid;place-items:center;color:#8C6239;margin-bottom:8px">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path data-check="" pathLength="1" stroke-dasharray="1" d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+              </div>
+              <h2 style="margin:0;font:300 clamp(2rem,2.8vw,2.6rem)/1.05 'Noto Serif Display', serif;letter-spacing:-.02em">{{ doneTitle }}</h2>
+              <p style="margin:0;color:#6B635A;font:400 15.5px/1.65 Manrope, sans-serif;max-width:44ch">{{ doneText }}</p>
+              <p style="margin:0;color:#6B635A;font:400 15.5px/1.65 Manrope, sans-serif;max-width:44ch">Один отзыв можно оставить с одного устройства — так оценки остаются честными.</p>
+              <a href="Works.dc.html" style="margin-top:12px;display:inline-flex;align-items:center;gap:12px;height:54px;padding:0 26px;border-radius:999px;background:#1A1714;color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .3s" style-hover="gap:18px;background:#3A332C;color:#FBFAF7">Посмотреть наши работы
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+              </a>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <div>
+        <sc-if value="{{ showFilters }}" hint-placeholder-val="{{ false }}">
+          <div role="group" aria-label="Фильтр по разделу" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px">
+            <sc-for list="{{ filters }}" as="f">
+              <button type="button" aria-pressed="{{ f.on }}" onClick="{{ f.pick }}" style="display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border-radius:999px;border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }};font:600 14px Manrope, sans-serif;cursor:pointer;transition:all .3s" style-hover="border-color:#1A1714">{{ f.label }}<span style="font:500 12px Manrope, sans-serif;opacity:.6">{{ f.n }}</span></button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div aria-live="polite" style="display:flex;flex-direction:column;border-top:1px solid #1A1714">
+          <sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:40px 0;color:#8A8177;font:500 14px Manrope, sans-serif">Загружаем отзывы…</div>
+          </sc-if>
+          <sc-for list="{{ list }}" as="r" hint-placeholder-count="0">
+            <article data-rv="" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 22px;padding:clamp(26px,3vw,36px) 0;border-bottom:1px solid #E2DCD3">
+              <div aria-hidden="true" style="grid-row:1 / 4;width:52px;height:52px;border-radius:999px;border:1px solid #CDBFAE;background:#FBFAF7;display:grid;place-items:center;font:300 22px 'Noto Serif Display', serif;color:#8C6239">{{ r.initial }}</div>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px">
+                <span style="font:700 15.5px Manrope, sans-serif">{{ r.name }}</span>
+                <span role="img" aria-label="{{ r.aria }}" style="display:flex;gap:2px;font-size:15px"><sc-for list="{{ r.stars }}" as="st"><span aria-hidden="true" style="color:{{ st }}">★</span></sc-for></span>
+                <span style="color:#8A8177;font:400 13.5px Manrope, sans-serif">{{ r.date }}</span>
+              </div>
+              <p style="margin:8px 0 0;max-width:62ch;font:400 17px/1.75 Manrope, sans-serif;overflow-wrap:anywhere;text-wrap:pretty">{{ r.body }}</p>
+              <sc-if value="{{ r.hasTags }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+                  <sc-if value="{{ r.topic }}" hint-placeholder-val="{{ false }}"><span style="padding:5px 12px;border-radius:999px;background:#ECE6DD;font:500 12.5px Manrope, sans-serif;color:#6B635A">{{ r.topic }}</span></sc-if>
+                  <sc-if value="{{ r.sample }}" hint-placeholder-val="{{ false }}"><span style="padding:5px 12px;border-radius:999px;border:1px solid #CDB08E;font:500 12.5px Manrope, sans-serif;color:#8C6239">Пример отзыва</span></sc-if>
+                </div>
+              </sc-if>
+            </article>
+          </sc-for>
+          <sc-if value="{{ emptyList }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:clamp(48px,8vw,96px) 20px">
+              <h3 style="margin:0;font:300 30px/1.1 'Noto Serif Display', serif">{{ emptyTitle }}</h3>
+              <p style="margin:0;max-width:42ch;color:#6B635A;font:400 15.5px/1.6 Manrope, sans-serif">{{ emptyText }}</p>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<dc-import name="SiteFooter" hint-size="100%,560px"></dc-import>
+
+<div role="status" aria-live="polite" style="position:fixed;left:50%;bottom:28px;z-index:150;transform:translateX(-50%) translateY({{ toastY }});opacity:{{ toastOp }};transition:opacity .35s, transform .5s cubic-bezier(.2,.8,.2,1);background:#1A1714;color:#FBFAF7;padding:14px 22px;border-radius:999px;font:500 14px Manrope, sans-serif;box-shadow:0 20px 40px -16px rgba(0,0,0,.5);pointer-events:none;display:flex;align-items:center;gap:10px">
+  <span style="width:6px;height:6px;border-radius:999px;background:#C9A074"></span>Ссылка скопирована
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { ready: false, w: 1280, all: [], loadErr: '', filter: 'all', status: 'checking', doneMode: null, doneName: '', fresh: false,
+    rating: 0, hoverStar: 0, name: '', topic: '', body: '', website: '', errs: {}, formErr: '', sending: false, barsOn: false, toastOn: false };
+  formWrapRef = React.createRef(); ratingRef = React.createRef(); nameRef = React.createRef(); bodyRef = React.createRef(); doneRef = React.createRef();
+  reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  WORDS = ['', 'Очень жаль', 'Так себе', 'Нормально', 'Хорошо', 'Отлично!'];
+
+  boot() {
+    return window.__asdBoot || (window.__asdBoot = ['js/config.js', 'js/works-data.js', 'js/api.js'].reduce((p, src) => p.then(() => new Promise((res) => {
+      const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = res; document.head.appendChild(s);
+    })), Promise.resolve()));
+  }
+  plural(n, f) { const a = Math.abs(n) % 100, b = a % 10; return (a > 10 && a < 20) ? f[2] : b > 1 && b < 5 ? f[1] : b === 1 ? f[0] : f[2]; }
+  fmtNum(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
+  fmtDate(iso) { try { return new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return ''; } }
+  stars(n) { return [1, 2, 3, 4, 5].map((i) => (i <= Math.round(n) ? '#B98D5E' : '#D9D1C5')); }
+
+  componentDidMount() {
+    this.openedAt = Date.now();
+    this.onR = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onR); this.onR();
+    if (!this.reduce) document.querySelectorAll('[data-in]').forEach((el) => el.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 1100, delay: 100 + (+el.dataset.in) * 120, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' }));
+    this.boot().then(async () => {
+      this.setState({ ready: true });
+      this.load();
+      let status = 'none';
+      try { status = await window.Api.myStatus(); } catch (e) {}
+      this.setState(status !== 'none' ? { status, doneMode: status, fresh: false } : { status: 'none' });
+      if (location.hash === '#leave') setTimeout(() => this.scrollToEl(this.formWrapRef.current, 'start'), 300);
+    });
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); clearTimeout(this.tT); }
+  async load() {
+    try { const all = await window.Api.listReviews(); this.setState({ all: all || [], loadErr: '' }, () => { setTimeout(() => this.setState({ barsOn: true }), 200); this.animList(); }); }
+    catch (e) { this.setState({ loadErr: (e && e.message) || 'Ошибка' }); }
+  }
+  animList() {
+    if (this.reduce) return;
+    requestAnimationFrame(() => document.querySelectorAll('[data-rv]').forEach((el, i) => { if (i < 8) el.animate([{ opacity: 0, transform: 'translateY(20px)' }, { opacity: 1, transform: 'none' }], { duration: 800, delay: i * 70, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' }); }));
+  }
+  scrollToEl(el, where) {
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const top = where === 'start' ? r.top + window.scrollY - 96 : r.top + window.scrollY - window.innerHeight / 2 + r.height / 2;
+    window.scrollTo({ top: Math.max(0, top), behavior: this.reduce ? 'auto' : 'smooth' });
+  }
+  async submit(e) {
+    e.preventDefault();
+    const { rating } = this.state, name = this.state.name.trim(), body = this.state.body.trim();
+    const errs = { rating: !rating, name: name.length < 2, body: body.length < 10 };
+    this.setState({ errs, formErr: '' });
+    if (errs.rating || errs.name || errs.body) { this.scrollToEl(errs.rating ? this.ratingRef.current : errs.name ? this.nameRef.current : this.bodyRef.current); return; }
+    if (this.state.website || Date.now() - this.openedAt < 2500) { this.finish('pending', name, true); return; }
+    this.setState({ sending: true });
+    try {
+      await window.Api.submitReview({ rating, name, body, topic: this.state.topic });
+      this.finish('pending', name, true);
+      if (!window.Api.configured) this.load();
+    } catch (er) {
+      this.setState({ sending: false });
+      if (er && er.code === 'duplicate') { this.finish('pending', name, false); return; }
+      this.setState({ formErr: (er && er.message) || 'Не удалось отправить отзыв. Попробуйте ещё раз.' });
+    }
+  }
+  finish(mode, name, fresh) {
+    this.setState({ doneMode: mode, doneName: name, fresh, sending: false }, () => {
+      this.scrollToEl(this.formWrapRef.current);
+      const p = document.querySelector('[data-check]');
+      if (p && !this.reduce) p.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 900, delay: 200, easing: 'cubic-bezier(.55,.1,.25,1)', fill: 'both' });
+    });
+  }
+  share() {
+    const url = new URL('Reviews.dc.html', location.href).href;
+    const done = () => { this.setState({ toastOn: true }); clearTimeout(this.tT); this.tT = setTimeout(() => this.setState({ toastOn: false }), 2200); };
+    if (navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent)) { navigator.share({ url, title: 'ASD' }).catch(() => {}); return; }
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(done).catch(() => {
+      const ta = document.createElement('textarea'); ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {} ta.remove(); done();
+    });
+  }
+
+  renderVals() {
+    const W = window.WORKS || { categories: [] };
+    const CATS = W.categories || [];
+    const catName = (id) => (CATS.find((c) => c.id === id) || {}).title || '';
+    const s = this.state, all = s.all;
+    const real = all.filter((r) => !r.sample);
+    let summary = false;
+    if (real.length) {
+      const avg = real.reduce((a, r) => a + r.rating, 0) / real.length;
+      const dist = [0, 0, 0, 0, 0]; real.forEach((r) => { dist[r.rating - 1]++; });
+      const max = Math.max(...dist, 1);
+      summary = { avg: this.fmtNum(avg), stars: this.stars(avg), aria: 'Оценка ' + this.fmtNum(avg) + ' из 5', count: real.length + ' ' + this.plural(real.length, ['отзыв', 'отзыва', 'отзывов']),
+        bars: [5, 4, 3, 2, 1].map((n) => ({ n, c: dist[n - 1], w: s.barsOn ? (dist[n - 1] / max * 100) + '%' : '0%' })) };
+    }
+    const counts = { all: all.length }; all.forEach((r) => { if (r.topic) counts[r.topic] = (counts[r.topic] || 0) + 1; });
+    const fsrc = [['all', 'Все']].concat(CATS.filter((c) => counts[c.id]).map((c) => [c.id, c.title]));
+    const filters = fsrc.map(([id, t]) => { const on = id === s.filter; return { label: t, n: counts[id] || 0, on: String(on), pick: () => this.setState({ filter: id }, () => this.animList()), bg: on ? '#1A1714' : 'transparent', fg: on ? '#FBFAF7' : '#1A1714', bd: on ? '#1A1714' : 'rgba(26,23,20,.18)' }; });
+    const list = all.filter((r) => s.filter === 'all' || r.topic === s.filter).map((r) => ({
+      initial: (r.name || '?').charAt(0).toUpperCase(), name: r.name, stars: this.stars(r.rating), aria: 'Оценка ' + r.rating + ' из 5', date: this.fmtDate(r.created_at), body: r.body,
+      topic: r.topic ? catName(r.topic) : false, sample: !!r.sample, hasTags: !!(r.topic || r.sample),
+    }));
+    const shown = s.hoverStar || s.rating;
+    const starInputs = [1, 2, 3, 4, 5].map((n) => ({
+      label: n + ' из 5', on: String(s.rating === n), color: n <= shown ? '#B98D5E' : '#D9D1C5', ty: s.hoverStar === n ? '-3px' : '0px',
+      pick: () => this.setState({ rating: n, errs: Object.assign({}, s.errs, { rating: false }) }), hover: () => this.setState({ hoverStar: n }),
+    }));
+    const configured = window.Api ? window.Api.configured : true;
+    const dm = s.doneMode, fresh = s.fresh;
+    const doneText = fresh
+      ? (configured ? 'Отзыв появится на сайте после короткой проверки. Мы обязательно его прочитаем.' : 'Ваш отзыв уже на странице — он сохранён в этом браузере.')
+      : (dm === 'approved' ? 'Ваш отзыв опубликован — он виден всем посетителям.' : dm === 'hidden' ? 'Ваш отзыв получен. Спасибо, что поделились мнением.' : 'Ваш отзыв получен и скоро появится на сайте.');
+    return {
+      share: () => this.share(), demo: s.ready && !configured, summary,
+      layoutCols: s.w > 980 ? 'minmax(0,5fr) minmax(0,7fr)' : 'minmax(0,1fr)', formPos: s.w > 980 ? 'sticky' : 'static',
+      formWrapRef: this.formWrapRef, ratingRef: this.ratingRef, nameRef: this.nameRef, bodyRef: this.bodyRef, doneRef: this.doneRef,
+      showForm: !dm, done: !!dm,
+      doneTitle: fresh ? 'Спасибо' + (s.doneName ? ', ' + s.doneName : '') + '!' : 'Вы уже оставили отзыв', doneText,
+      formErr: s.formErr, starInputs, starsLeave: () => this.setState({ hoverStar: 0 }), starWord: this.WORDS[shown] || '',
+      eRating: !!s.errs.rating, ratingOutline: s.errs.rating ? '1px solid #A33A28' : 'none',
+      name: s.name, onName: (e) => this.setState({ name: e.target.value, errs: Object.assign({}, s.errs, { name: false }) }), eName: !!s.errs.name, nameBd: s.errs.name ? '#A33A28' : '#DCD5CA',
+      topic: s.topic, onTopic: (e) => this.setState({ topic: e.target.value }), topics: CATS.map((c) => ({ id: c.id, title: c.title })),
+      body: s.body, onBody: (e) => this.setState({ body: e.target.value, errs: Object.assign({}, s.errs, { body: false }) }), bodyLen: s.body.length,
+      bodyErr: s.errs.body ? 'Расскажите чуть подробнее, хотя бы 10 символов' : '', bodyBd: s.errs.body ? '#A33A28' : '#DCD5CA',
+      website: s.website, onWebsite: (e) => this.setState({ website: e.target.value }),
+      submit: (e) => this.submit(e), sending: s.sending, sendLabel: s.sending ? 'Отправляем…' : 'Отправить отзыв',
+      showFilters: fsrc.length >= 3, filters, list, loading: !s.ready || (!all.length && !s.loadErr && s.status === 'checking'),
+      emptyList: s.ready && s.status !== 'checking' && !list.length,
+      emptyTitle: s.loadErr ? 'Отзывы не загрузились' : 'Первый отзыв — ваш', emptyText: s.loadErr || 'Расскажите, как всё прошло. Нам и будущим клиентам это очень важно.',
+      toastOp: s.toastOn ? 1 : 0, toastY: s.toastOn ? '0px' : '20px',
+    };
+  }
+}
+</script>
+</body>
+</html>

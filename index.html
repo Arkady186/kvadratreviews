@@ -1,206 +1,254 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ASD — мебель на заказ: наши работы и отзывы</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASD — мебель на заказ: наши работы и отзывы</title>
   <meta name="description" content="Кухни, шкафы, санузлы, ТВ-зоны и офисная мебель на заказ. Смотрите наши работы и читайте отзывы клиентов.">
-  <meta name="theme-color" content="#0F1613">
+  <meta name="theme-color" content="#14120F">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Golos+Text:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/home.css">
-  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: #F4F1EC; color: #1A1714; font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+    a { color: inherit; } a:hover { color: #8C6239; }
+    ::selection { background: #C9A074; color: #14120F; }
+    :focus-visible { outline: 2px solid #B98D5E; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+<link rel="stylesheet" href="css/dc.css">
 </head>
-<body class="home">
-  <div class="h-progress" id="h-progress" aria-hidden="true"></div>
-  <div id="site-header"></div>
+<body>
+<div data-dc="Home" style="display:contents"></div>
+<noscript><p style="padding:40px;font:16px sans-serif">Для работы сайта нужен включённый JavaScript.</p></noscript>
+<script src="js/dc.js"></script>
+<script src="js/dc-site.js"></script>
+<script>
+DC.define("Home",(function(){
+class Component extends DCLogic {
+  state = { ready: false, w: 1280, slide: 0, reviews: [], cur: 0, cnt: 0, hov: -1, toast: '', toastOn: false, sheet: 1, sheets: 3 };
+  bpRef = React.createRef(); prevRef = React.createRef(); marqRef = React.createRef();
+  reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  SLIDES = [
+    { src: 'img/works/kuhni/kuhni-121-738113.webp', label: 'Кухни' },
+    { src: 'img/works/tv-zony/tv-zony-004-029cba.webp', label: 'ТВ-зоны' },
+    { src: 'img/works/kuhni/kuhni-125-0a1707.webp', label: 'Кухни' },
+  ];
+  CAT_IMG = { kuhni: 'img/works/kuhni/kuhni-144-376436.webp', shkafy: 'img/works/shkafy/shkafy-017-94616f.webp', sanuzly: 'img/works/sanuzly/sanuzly-014-8acf25.webp', 'tv-zony': 'img/works/tv-zony/tv-zony-004-029cba.webp', ofis: 'img/works/ofis/ofis-005-e30479.webp' };
+  PICKS = [['a', 'kuhni', 'kuhni-121-738113'], ['b', 'kuhni', 'kuhni-144-376436'], ['c', 'sanuzly', 'sanuzly-014-8acf25'], ['d', 'shkafy', 'shkafy-017-94616f'], ['e', 'tv-zony', 'tv-zony-004-029cba'], ['f', 'shkafy', 'shkafy-031-508fd6'], ['g', 'kuhni', 'kuhni-125-0a1707']];
+  AREAS = { a: ['1 / 7', '1 / 3'], b: ['7 / 10', '1 / 4'], c: ['10 / 13', '1 / 3'], d: ['1 / 4', '3 / 5'], e: ['4 / 7', '3 / 5'], f: ['10 / 13', '3 / 5'], g: ['7 / 10', '4 / 5'] };
 
-  <main>
-    <!-- ===== Первый экран ===== -->
-    <section class="hero" id="hero">
-      <div class="hero__spot" id="hero-spot" aria-hidden="true"></div>
-      <div class="wrap hero__in">
-        <div class="hero__text">
-          <div class="eyebrow">Мебель на заказ · Ростов-на-Дону</div>
-          <h1 id="h-title">
-            <span class="w"><span style="--d:0">Мебель,</span></span>
-            <span class="w"><span style="--d:1">сделанная</span></span>
-            <span class="w"><span style="--d:2">под ваш <em>дом</em></span></span>
-          </h1>
-          <p class="lead">Кухни, шкафы, санузлы и ТВ-зоны на заказ. Посмотрите наши работы и прочитайте, что говорят те, кто уже живёт с нашей мебелью.</p>
-          <div class="hero__actions">
-            <a class="btn btn--brass" href="works.html">Смотреть работы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
-            <a class="btn btn--light" href="reviews.html">Читать отзывы</a>
-          </div>
-          <div class="hero__proof" id="hero-proof"></div>
-        </div>
+  R(u) { return (window.__resources && window.__resources[u]) || u; }
+  boot() {
+    return window.__asdBoot || (window.__asdBoot = ['js/config.js', 'js/works-data.js', 'js/api.js'].reduce((p, src) => p.then(() => new Promise((res) => {
+      const s = document.createElement('script'); s.src = (window.__resources && window.__resources[src]) || src; s.onload = res; s.onerror = res; document.head.appendChild(s);
+    })), Promise.resolve()));
+  }
+  loadScript(src) { return new Promise((res) => { const s = document.createElement('script'); s.src = this.R(src); s.onload = res; s.onerror = res; document.head.appendChild(s); }); }
+  plural(n, f) { const a = Math.abs(n) % 100, b = a % 10; return (a > 10 && a < 20) ? f[2] : b > 1 && b < 5 ? f[1] : b === 1 ? f[0] : f[2]; }
+  fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0'); }
+  fmtNum(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
+  fmtDate(iso) { try { return new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return ''; } }
+  stars(n, on, off) { return [1, 2, 3, 4, 5].map((i) => (i <= Math.round(n) ? on : off)); }
 
-        <div class="sheet" data-reveal style="--i:2">
-          <i class="sheet__c sheet__c--tl"></i><i class="sheet__c sheet__c--tr"></i><i class="sheet__c sheet__c--bl"></i><i class="sheet__c sheet__c--br"></i>
-          <span class="sheet__live"><i></i>Чертёж · онлайн</span>
-          <div class="bp is-drawing" id="bp" role="img" aria-label="Чертёж кухни с размерами, рисующийся линиями">
-            <svg viewBox="40 -32.0 1010 656.0" fill="none" aria-hidden="true" focusable="false">
-  <defs><linearGradient id="scan-g" x1="0" x2="1"><stop offset="0" stop-color="#DDBF85" stop-opacity="0"/><stop offset=".85" stop-color="#DDBF85" stop-opacity=".28"/><stop offset="1" stop-color="#F3E3BC" stop-opacity=".7"/></linearGradient></defs>
-  <rect class="fill f-cab" style="--d:5.00" x="111.0" y="317.0" width="142.0" height="178.0"/><rect class="fill f-cab" style="--d:5.10" x="255.0" y="317.0" width="142.0" height="178.0"/><rect class="fill f-cab" style="--d:5.20" x="399.0" y="317.0" width="190.0" height="178.0"/><rect class="fill f-cab" style="--d:5.30" x="591.0" y="317.0" width="142.0" height="178.0"/><rect class="fill f-cab" style="--d:5.40" x="735.0" y="317.0" width="142.0" height="178.0"/><rect class="fill f-top" style="--d:5.20" x="102.8" y="306.9" width="782.4000000000001" height="9.100000000000023"/><rect class="fill f-cab" style="--d:5.10" x="111.0" y="41.0" width="142.0" height="130.0"/><rect class="fill f-cab" style="--d:5.20" x="255.0" y="41.0" width="142.0" height="130.0"/><rect class="fill f-cab" style="--d:5.40" x="591.0" y="41.0" width="142.0" height="130.0"/><rect class="fill f-cab" style="--d:5.50" x="735.0" y="41.0" width="142.0" height="130.0"/><rect class="fill f-app" style="--d:5.40" x="412.0" y="332.0" width="164.0" height="148.0"/><rect class="fill f-app" style="--d:5.50" x="428.0" y="300.9" width="132.0" height="10"/><rect class="fill f-sink" style="--d:5.60" x="612.0" y="306.9" width="100.0" height="22"/><polygon class="fill f-app" style="--d:5.50" points="420,172 568,172 538,112 450,112"/>
-  <path class="ln " pathLength="1" style="--d:0.00;--t:1.2s" d="M74.0 520.0H914.0"/><path class="ln thin" pathLength="1" style="--d:0.20;--t:1.0s" d="M110.0 520.0V-20.0"/><path class="ln thin" pathLength="1" style="--d:0.30;--t:1.0s" d="M878.0 520.0V-20.0"/><path class="ln thin" pathLength="1" style="--d:0.60;--t:1.0s" d="M110.0 496.0h768.0v24.0h-768.0Z"/><path class="ln " pathLength="1" style="--d:0.90;--t:1.0s" d="M110.0 316.0h144.0v180.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:1.08;--t:1.0s" d="M254.0 316.0h144.0v180.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:1.26;--t:1.0s" d="M398.0 316.0h192.0v180.0h-192.0Z"/><path class="ln " pathLength="1" style="--d:1.44;--t:1.0s" d="M590.0 316.0h144.0v180.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:1.62;--t:1.0s" d="M734.0 316.0h144.0v180.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:1.90;--t:1.6s" d="M102.8 306.9h782.4000000000001v9.100000000000023h-782.4000000000001Z"/><path class="ln thin" pathLength="1" style="--d:2.20;--t:0.8s" d="M110.0 306.9V172.0"/><path class="ln thin" pathLength="1" style="--d:2.20;--t:0.8s" d="M878.0 306.9V172.0"/><path class="ln " pathLength="1" style="--d:2.40;--t:1.0s" d="M110.0 40.0h144.0v132.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:2.60;--t:1.0s" d="M254.0 40.0h144.0v132.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:3.00;--t:1.0s" d="M590.0 40.0h144.0v132.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:3.20;--t:1.0s" d="M734.0 40.0h144.0v132.0h-144.0Z"/><path class="ln thin" pathLength="1" style="--d:4.00;--t:0.6s" d="M182.0 316.0V496.0"/><path class="ln thin" pathLength="1" style="--d:4.10;--t:0.5s" d="M176.0 328.0L176.0 346.0"/><path class="ln thin" pathLength="1" style="--d:4.15;--t:0.5s" d="M188.0 328.0L188.0 346.0"/><path class="ln thin" pathLength="1" style="--d:4.20;--t:0.6s" d="M254.0 376.0H398.0"/><path class="ln thin" pathLength="1" style="--d:4.30;--t:0.6s" d="M254.0 436.0H398.0"/><path class="ln thin" pathLength="1" style="--d:4.40;--t:0.5s" d="M276.0 346.0H376.0"/><path class="ln thin" pathLength="1" style="--d:4.48;--t:0.5s" d="M276.0 406.0H376.0"/><path class="ln thin" pathLength="1" style="--d:4.56;--t:0.5s" d="M276.0 466.0H376.0"/><path class="ln thin" pathLength="1" style="--d:3.70;--t:1.0s" d="M412.0 332.0h164.0v148.0h-164.0Z"/><path class="ln thin" pathLength="1" style="--d:3.90;--t:0.8s" d="M428.0 378.0h132.0v64h-132.0Z"/><path class="ln thin" pathLength="1" style="--d:4.20;--t:0.5s" d="M420.0 360.0H568.0"/><path class="ln " pathLength="1" style="--d:4.30;--t:0.3s" d="M452.0 344.0h0.1"/><path class="ln " pathLength="1" style="--d:4.30;--t:0.3s" d="M486.0 344.0h0.1"/><path class="ln " pathLength="1" style="--d:4.30;--t:0.3s" d="M520.0 344.0h0.1"/><path class="ln thin" pathLength="1" style="--d:4.20;--t:0.6s" d="M662.0 316.0V496.0"/><path class="ln thin" pathLength="1" style="--d:4.30;--t:0.5s" d="M656.0 328.0L656.0 346.0"/><path class="ln thin" pathLength="1" style="--d:4.35;--t:0.5s" d="M668.0 328.0L668.0 346.0"/><path class="ln thin" pathLength="1" style="--d:4.30;--t:0.5s" d="M748.0 328.0L748.0 352.0"/><path class="ln " pathLength="1" style="--d:3.30;--t:0.7s" d="M428.0 300.9h132.0v10h-132.0Z"/><path class="ln thin" pathLength="1" style="--d:3.50;--t:0.5s" d="M442.0 298.9h36"/><path class="ln thin" pathLength="1" style="--d:3.60;--t:0.4s" d="M450.0 294.9h20"/><path class="ln thin" pathLength="1" style="--d:3.50;--t:0.5s" d="M510.0 298.9h36"/><path class="ln thin" pathLength="1" style="--d:3.60;--t:0.4s" d="M518.0 294.9h20"/><path class="ln " pathLength="1" style="--d:3.40;--t:0.9s" d="M612.0 306.9L624.0 328.9H700.0L712.0 306.9"/><path class="ln " pathLength="1" style="--d:3.90;--t:0.9s" d="M688.0 306.9V272.9Q688.0 258.9 674.0 258.9H660.0"/><path class="ln thin" pathLength="1" style="--d:0.00;--t:0.1s" d="M398.0 172.0H398.0"/><path class="ln " pathLength="1" style="--d:2.90;--t:1.0s" d="M420.0 172.0L450.0 112.0V40.0"/><path class="ln " pathLength="1" style="--d:2.95;--t:1.0s" d="M568.0 172.0L538.0 112.0V40.0"/><path class="ln " pathLength="1" style="--d:3.00;--t:0.7s" d="M420.0 172.0H568.0"/><path class="ln thin" pathLength="1" style="--d:3.10;--t:0.5s" d="M450.0 40.0H538.0"/><path class="ln dim" pathLength="1" style="--d:5.60;--t:1.0s" d="M110.0 554H878.0"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M110.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M254.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M398.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M590.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M734.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M878.0 547V561"/><path class="ln dim" pathLength="1" style="--d:6.20;--t:1.0s" d="M110.0 594H878.0"/><path class="ln dim" pathLength="1" style="--d:6.30;--t:0.4s" d="M110.0 587V601"/><path class="ln dim" pathLength="1" style="--d:6.30;--t:0.4s" d="M878.0 587V601"/><path class="ln dim" pathLength="1" style="--d:6.00;--t:1.2s" d="M930.0 520.0V40.0"/><path class="ln dim" pathLength="1" style="--d:6.10;--t:0.4s" d="M923.0 520.0H937.0"/><path class="ln dim" pathLength="1" style="--d:6.10;--t:0.4s" d="M923.0 316.0H937.0"/><path class="ln dim" pathLength="1" style="--d:6.10;--t:0.4s" d="M923.0 172.0H937.0"/><path class="ln dim" pathLength="1" style="--d:6.10;--t:0.4s" d="M923.0 40.0H937.0"/>
-  <text x="182.0" y="545" text-anchor="middle" class="cnt" data-val="600" style="--d:5.90">0</text><text x="326.0" y="545" text-anchor="middle" class="cnt" data-val="600" style="--d:6.02">0</text><text x="494.0" y="545" text-anchor="middle" class="cnt" data-val="800" style="--d:6.14">0</text><text x="662.0" y="545" text-anchor="middle" class="cnt" data-val="600" style="--d:6.26">0</text><text x="806.0" y="545" text-anchor="middle" class="cnt" data-val="600" style="--d:6.38">0</text><text x="494.0" y="585" text-anchor="middle" class="cnt" data-val="3200" style="--d:6.4">0</text><text x="944.0" y="422.0" class="cnt" data-val="850" style="--d:6.20">0</text><text x="944.0" y="248.0" class="cnt" data-val="600" style="--d:6.41">0</text><text x="944.0" y="110.0" class="cnt" data-val="550" style="--d:6.56">0</text><text class="tag" x="138.8" y="-6" style="--d:6.8">Фасады МДФ · фурнитура Blum</text><text class="tag" x="138.8" y="15" style="--d:7.0">Масштаб 1 : 20</text>
-  <rect class="scan" x="50.0" y="16.0" width="60" height="504.0"/>
-</svg>
-          </div>
-          <div class="sheet__title" aria-hidden="true">
-            <div><small>Проект</small><b>ASD · Кухня на заказ</b></div>
-            <div><small>Лист</small><b id="sheet-no">01 / 03</b></div>
-            <div><small>Масштаб</small><b>1 : 20</b></div>
-          </div>
-        </div>
-      </div>
-      <div class="wrap">
-        <div class="hero__stats" id="hero-stats" data-reveal style="--i:4">
-          <div><b data-count="0" id="st-works">0</b><span>фото готовых работ</span></div>
-          <div><b data-count="5">5</b><span>направлений мебели</span></div>
-          <div><b data-count="100" data-suffix="%">100<sup>%</sup></b><span>по вашим размерам</span></div>
-          <div><b style="font-size:clamp(1.6rem,2.6vw,2.4rem);padding-top:.4em">Ростов-на-Дону</b><span>и область</span></div>
-        </div>
-      </div>
-    </section>
+  componentDidMount() {
+    this.onR = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onR); this.onR();
+    this.heroIn();
+    this.reveal();
+    if (!this.reduce) {
+      this.slideT = setInterval(() => this.setState((s) => ({ slide: (s.slide + 1) % this.SLIDES.length })), 6500);
+      document.querySelectorAll('[data-kb]').forEach((img, i) => img.animate([{ transform: 'scale(1.02)' }, { transform: 'scale(1.12)' }], { duration: 16000 + i * 2000, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' }));
+      if (this.marqRef.current) this.marq = this.marqRef.current.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], { duration: 60000, iterations: Infinity });
+    }
+    this.boot().then(() => {
+      this.setState({ ready: true }, () => this.reveal());
+      this.countUp(((window.WORKS || {}).items || []).length);
+      if (window.Api) window.Api.listReviews().then((list) => this.setState({ reviews: list || [] }, () => { this.reveal(); this.showQ(0); })).catch(() => {});
+    });
+    this.loadScript('js/kitchens.js').then(() => this.bpInit());
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onR); clearInterval(this.slideT); clearTimeout(this.qT); clearTimeout(this.toastT);
+    (this.bpTimers || []).forEach(clearTimeout); if (this.io) this.io.disconnect(); if (this.bpIo) this.bpIo.disconnect();
+  }
 
-    <!-- ===== Бегущая строка ===== -->
-    <div class="marq" aria-hidden="true"><div class="marq__track" id="marq"></div></div>
+  heroIn() {
+    if (this.reduce) return;
+    const ease = 'cubic-bezier(.2,.8,.2,1)';
+    document.querySelectorAll('[data-line]').forEach((el) => el.animate([{ transform: 'translateY(110%)' }, { transform: 'none' }], { duration: 1400, delay: 150 + (+el.dataset.line) * 130, easing: ease, fill: 'both' }));
+    document.querySelectorAll('[data-hero-fade]').forEach((el) => el.animate([{ opacity: 0, transform: 'translateY(20px)' }, { opacity: 1, transform: 'none' }], { duration: 1200, delay: 600 + (+el.dataset.heroFade) * 150, easing: ease, fill: 'both' }));
+  }
+  reveal() {
+    if (this.reduce || !('IntersectionObserver' in window)) return;
+    if (!this.io) {
+      this.anims = new WeakMap();
+      this.io = new IntersectionObserver((es) => es.forEach((en) => {
+        if (!en.isIntersecting) return;
+        (this.anims.get(en.target) || []).forEach((a) => a.play());
+        this.io.unobserve(en.target);
+      }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }
+    const ease = 'cubic-bezier(.2,.8,.2,1)';
+    const add = (el, kf, opt) => {
+      if (this.anims.has(el)) return;
+      const a = el.animate(kf, Object.assign({ easing: ease, fill: 'both' }, opt)); a.pause();
+      this.anims.set(el, [a]); this.io.observe(el);
+    };
+    document.querySelectorAll('[data-reveal]').forEach((el) => add(el, [{ opacity: 0, transform: 'translateY(36px)' }, { opacity: 1, transform: 'none' }], { duration: 1100, delay: (+el.dataset.reveal || 0) * 90 }));
+    document.querySelectorAll('[data-grow]').forEach((el) => add(el, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 1400, delay: (+el.dataset.grow) * 160 }));
+    document.querySelectorAll('[data-draw]').forEach((el) => add(el, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 1800, delay: 400 + (+el.dataset.draw) * 160 }));
+  }
+  countUp(to) {
+    if (this.reduce || !to) { this.setState({ cnt: to }); return; }
+    const t0 = performance.now(), dur = 1800;
+    const tick = (t) => { const p = Math.min(1, (t - t0) / dur); this.setState({ cnt: Math.round(to * (1 - Math.pow(1 - p, 3))) }); if (p < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  }
 
-    <!-- ===== Витрина работ ===== -->
-    <section class="sec sc" id="works">
-      <div class="wrap">
-        <div class="sec-head">
-          <div data-reveal>
-            <div class="eyebrow">Портфолио</div>
-            <h2 class="h2">Наши <em>работы</em></h2>
-            <p class="h-lead">Фотографии готовых кухонь, шкафов, санузлов и ТВ-зон из квартир наших клиентов.</p>
-          </div>
-          <div class="sc-head__count" data-reveal style="--i:1"><b id="sc-total" data-count="0">0</b><span>готовых работ в&nbsp;портфолио</span></div>
-        </div>
-        <div class="mosaic" id="mosaic"></div>
-        <div class="sc-foot" data-reveal>
-          <a class="btn btn--ink" href="works.html">Все работы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
-          <button class="btn" type="button" data-copy="works.html">Скопировать ссылку</button>
-          <p>Можно отправить клиенту ссылку сразу на нужный раздел&nbsp;— откройте раздел и скопируйте адрес.</p>
-        </div>
-      </div>
-    </section>
+  showQ(n) {
+    const len = Math.min(5, this.state.reviews.length); if (!len) return;
+    this.setState({ cur: (n + len) % len });
+    clearTimeout(this.qT);
+    if (!this.reduce && len > 1 && !this.qPaused) this.qT = setTimeout(() => this.showQ(this.state.cur + 1), 7000);
+  }
 
-    <!-- ===== Направления ===== -->
-    <section class="sec sec--dark on-dark" id="cats-sec">
-      <div class="wrap">
-        <div class="sec-head">
-          <div data-reveal>
-            <div class="eyebrow">Что мы делаем</div>
-            <h2 class="h2" style="color:#fff">Пять направлений <em>мебели</em></h2>
-          </div>
-          <p class="h-lead" data-reveal style="--i:1;margin:0">Выберите раздел, чтобы посмотреть работы. Каждая карточка&nbsp;— чертёж изделия, которое мы делаем.</p>
-        </div>
-        <div class="cats" id="cats"></div>
-      </div>
-    </section>
+  bpInit() {
+    const svg = this.bpRef.current, list = window.KITCHENS || [];
+    if (!svg || !list.length) return;
+    this.bpTimers = []; this.bpIdx = -1; this.bpVisible = false; this.setState({ sheets: list.length });
+    if (this.reduce) { this.bpLoad(0); this.bpStatic(); return; }
+    this.bpIo = new IntersectionObserver((e) => { this.bpVisible = e[0].isIntersecting; if (this.bpVisible && this.bpIdx < 0) this.bpDraw(); }, { threshold: 0.3 });
+    this.bpIo.observe(svg);
+  }
+  bpLoad(i) {
+    const svg = this.bpRef.current, list = window.KITCHENS;
+    svg.innerHTML = list[i % list.length];
+    const scan = svg.querySelector('.scan'); if (scan) scan.remove();
+    svg.querySelectorAll('.ln').forEach((p) => {
+      const thin = p.classList.contains('thin'), dim = p.classList.contains('dim');
+      p.setAttribute('fill', 'none'); p.setAttribute('stroke', 'currentColor'); p.setAttribute('stroke-width', thin || dim ? '1' : '1.4');
+      p.setAttribute('vector-effect', 'non-scaling-stroke'); p.setAttribute('stroke-linecap', 'square'); p.setAttribute('stroke-dasharray', '1');
+      if (thin) p.setAttribute('opacity', '.7'); if (dim) p.setAttribute('opacity', '.55');
+    });
+    const OP = { 'f-cab': 0.07, 'f-top': 0.5, 'f-app': 0.16, 'f-sink': 0.22 };
+    svg.querySelectorAll('.fill').forEach((f) => { f.setAttribute('fill', 'currentColor'); const k = Object.keys(OP).find((c) => f.classList.contains(c)); f.dataset.o = OP[k] || 0.1; f.setAttribute('opacity', f.dataset.o); });
+    svg.querySelectorAll('text').forEach((t) => {
+      const tag = t.classList.contains('tag');
+      t.setAttribute('fill', tag ? '#A79E93' : '#EAD6B4');
+      t.style.font = (tag ? '600 11px' : '500 13px') + ' Manrope, sans-serif'; t.style.letterSpacing = tag ? '.16em' : '.08em'; if (tag) t.style.textTransform = 'uppercase';
+    });
+    this.setState({ sheet: (i % list.length) + 1 });
+  }
+  bpStatic() { this.bpRef.current.querySelectorAll('.cnt').forEach((el) => { el.textContent = this.fmt(+el.dataset.val); }); }
+  bpDraw() {
+    const svg = this.bpRef.current; if (!svg) return;
+    this.bpIdx++; this.bpLoad(this.bpIdx);
+    const k = 0.75, D = (el) => parseFloat(el.style.getPropertyValue('--d')) || 0;
+    svg.style.opacity = 1;
+    svg.querySelectorAll('.ln').forEach((p) => { const t = parseFloat(p.style.getPropertyValue('--t')) || 1; p.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: t * 1000 * k, delay: D(p) * 1000 * k, easing: 'cubic-bezier(.55,.1,.25,1)', fill: 'both' }); });
+    svg.querySelectorAll('.fill').forEach((f) => f.animate([{ opacity: 0 }, { opacity: f.dataset.o }], { duration: 900, delay: D(f) * 1000 * k, fill: 'both' }));
+    svg.querySelectorAll('text').forEach((t) => t.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: D(t) * 1000 * k, fill: 'both' }));
+    svg.querySelectorAll('.cnt').forEach((el) => {
+      const v = +el.dataset.val, t0 = performance.now() + D(el) * 1000 * k; el.textContent = '0';
+      const tick = (now) => { const p = Math.min(1, Math.max(0, (now - t0) / 1100)); el.textContent = this.fmt(Math.round(v * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    });
+    this.bpTimers.push(setTimeout(() => this.bpNext(), 7.2 * 1000 * k + 5000));
+  }
+  bpNext() {
+    if (!this.bpVisible || document.hidden) { this.bpTimers.push(setTimeout(() => this.bpNext(), 1000)); return; }
+    const svg = this.bpRef.current; if (!svg) return;
+    svg.animate([{ opacity: 1, filter: 'blur(0)' }, { opacity: 0, filter: 'blur(4px)' }], { duration: 700, fill: 'forwards' }).onfinish = () => { svg.getAnimations().forEach((a) => a.cancel()); this.bpDraw(); };
+  }
 
-    <!-- ===== Как мы работаем ===== -->
-    <section class="sec pr" id="process">
-      <div class="wrap">
-        <div class="sec-head">
-          <div data-reveal>
-            <div class="eyebrow">Процесс</div>
-            <h2 class="h2">Как мы <em>работаем</em></h2>
-          </div>
-          <p class="h-lead" data-reveal style="--i:1;margin:0">От первого разговора до готовой мебели в&nbsp;вашем доме&nbsp;— четыре понятных шага.</p>
-        </div>
-        <div class="pr-steps">
-          <article class="pr-step" style="--i:0" data-reveal>
-            <div class="pr-step__n">01</div>
-            <div class="pr-step__ico"><svg viewBox="0 0 60 60" fill="none"><path class="ln" pathLength="1" d="M10 22 30 8l20 14v4H10zM14 26v22M46 26v22M8 54h44M8 48v12M52 48v12"/></svg></div>
-            <h3>Замер и задача</h3>
-            <p>Обсуждаем, что и&nbsp;как вам нужно, снимаем точные размеры помещения.</p>
-          </article>
-          <article class="pr-step" style="--i:1" data-reveal>
-            <div class="pr-step__n">02</div>
-            <div class="pr-step__ico"><svg viewBox="0 0 60 60" fill="none"><path class="ln" pathLength="1" d="M12 6h28l8 8v40H12zM40 6v8h8M20 26h20M20 34h20M20 42h12"/></svg></div>
-            <h3>Дизайн-проект</h3>
-            <p>Готовим чертёж с&nbsp;размерами и&nbsp;подбираем материалы ещё до производства.</p>
-          </article>
-          <article class="pr-step" style="--i:2" data-reveal>
-            <div class="pr-step__n">03</div>
-            <div class="pr-step__ico"><svg viewBox="0 0 60 60" fill="none"><path class="ln" pathLength="1" d="M30 6l22 12v24L30 54 8 42V18zM8 18l22 12 22-12M30 30v24"/></svg></div>
-            <h3>Изготовление</h3>
-            <p>Делаем мебель точно под ваши размеры и&nbsp;утверждённый проект.</p>
-          </article>
-          <article class="pr-step" style="--i:3" data-reveal>
-            <div class="pr-step__n">04</div>
-            <div class="pr-step__ico"><svg viewBox="0 0 60 60" fill="none"><path class="ln" pathLength="1" d="M10 6h40v46H10zM30 6v46M24 26v8M36 26v8M10 52v5M50 52v5"/></svg></div>
-            <h3>Доставка и монтаж</h3>
-            <p>Привозим, собираем и&nbsp;аккуратно устанавливаем&nbsp;— мебель готова к&nbsp;жизни.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+  copy(page) {
+    const url = new URL(page, location.href).href;
+    const done = () => { this.setState({ toast: 'Ссылка скопирована', toastOn: true }); clearTimeout(this.toastT); this.toastT = setTimeout(() => this.setState({ toastOn: false }), 2200); };
+    if (navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent)) { navigator.share({ url, title: 'ASD' }).catch(() => {}); return; }
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(done).catch(() => {
+      const ta = document.createElement('textarea'); ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {} ta.remove(); done();
+    });
+  }
 
-    <!-- ===== Отзывы ===== -->
-    <section class="sec rvs on-dark" id="latest" hidden>
-      <div class="wrap">
-        <div class="rvs__grid">
-          <div data-reveal>
-            <div class="eyebrow">Отзывы</div>
-            <h2 class="h2">Что говорят <em>клиенты</em></h2>
-            <div class="rvs__score" id="rvs-score"></div>
-            <div class="rvs__act">
-              <a class="btn btn--brass" href="reviews.html">Все отзывы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
-              <a class="btn btn--light" href="reviews.html#leave">Оставить отзыв</a>
-              <button class="btn btn--light" type="button" data-copy="reviews.html">Скопировать ссылку</button>
-            </div>
-          </div>
-          <div data-reveal style="--i:1">
-            <div class="qc" id="qc"></div>
-            <div class="qc__nav">
-              <div class="qc__dots" id="qc-dots"></div>
-              <div class="qc__arrows">
-                <button type="button" id="qc-prev" aria-label="Предыдущий отзыв"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button>
-                <button type="button" id="qc-next" aria-label="Следующий отзыв"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+  renderVals() {
+    const W = window.WORKS || { categories: [], items: [] };
+    const counts = {}; (W.items || []).forEach((i) => { counts[i.cat] = (counts[i.cat] || 0) + 1; });
+    const photos = (n) => n + ' фото';
+    const wide = this.state.w > 900, desk = this.state.w > 900;
+    const slide = this.state.slide;
 
-    <!-- ===== Опросник ===== -->
-    <section class="sec qz">
-      <div class="wrap">
-        <div class="qz-card" data-reveal>
-          <div>
-            <div class="eyebrow">Дизайн-проект</div>
-            <h2>Дизайн-проект мебели для <em>вашего дома</em></h2>
-            <p>Ответьте на&nbsp;пять коротких вопросов, и&nbsp;дизайнер подготовит проект мебели под вашу квартиру. План и&nbsp;фотографии можно приложить сразу.</p>
-            <a class="btn btn--brass" href="quiz.html">Пройти опрос <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
-          </div>
-          <ol class="qz-steps">
-            <li><b>Что вам необходимо</b><span>Мебель</span></li>
-            <li><b>Стадия ремонта</b><span>Ремонт</span></li>
-            <li><b>Есть ли план или проект</b><span>План</span></li>
-            <li><b>План, фото и референсы</b><span>Файлы</span></li>
-            <li><b>Ваши контакты</b><span>Связь</span></li>
-          </ol>
-        </div>
-      </div>
-    </section>
-  </main>
+    const slides = this.SLIDES.map((s, i) => ({
+      src: this.R(s.src), op: i === slide ? 1 : 0, aria: 'Слайд ' + (i + 1),
+      fill: i < slide ? 1 : i === slide ? 1 : 0, tr: i === slide && !this.reduce ? 'transform 6.5s linear' : 'none',
+      go: () => { this.setState({ slide: i }); clearInterval(this.slideT); if (!this.reduce) this.slideT = setInterval(() => this.setState((st) => ({ slide: (st.slide + 1) % this.SLIDES.length })), 6500); },
+    }));
+    const tiles = this.PICKS.map(([k, cat, file], i) => {
+      const item = (W.items || []).find((x) => x.full.indexOf(file) !== -1);
+      const c = (W.categories || []).find((x) => x.id === cat) || { title: '' };
+      const big = k === 'a' || k === 'g';
+      return {
+        href: 'works.html?c=' + cat, src: this.R(item ? item.full : 'img/works/' + cat + '/' + file + '.webp'), alt: c.title + ' на заказ — работа ASD',
+        title: c.title, n: counts[cat] ? photos(counts[cat]) : '', aria: 'Раздел «' + c.title + '»', ri: i % 4,
+        col: desk ? this.AREAS[k][0] : (big ? '1 / -1' : 'auto'), row: desk ? this.AREAS[k][1] : 'auto', ar: desk ? 'auto' : (big ? '4 / 3' : '3 / 4'),
+      };
+    });
+    const hov = this.state.hov;
+    const cats = (W.categories || []).map((c, i) => ({
+      href: 'works.html?c=' + c.id, idx: '0' + (i + 1), title: c.title, text: c.text, n: counts[c.id] ? photos(counts[c.id]) : 'скоро',
+      img: this.R(this.CAT_IMG[c.id]), ri: i, op: wide && hov >= 0 && hov !== i ? 0.35 : 1,
+      enter: () => this.setState({ hov: i }),
+      arrowBd: hov === i ? '#E2C7A2' : 'rgba(251,250,247,.3)', arrowBg: hov === i ? '#E2C7A2' : 'transparent', arrowFg: hov === i ? '#14120F' : '#FBFAF7', arrowTf: hov === i ? 'rotate(-45deg)' : 'none',
+      pop: hov === i ? 1 : 0, pscale: hov === i ? 1 : 1.12,
+    }));
 
-  <div id="site-footer"></div>
+    const all = this.state.reviews || [];
+    const real = all.filter((r) => !r.sample);
+    let proof = false;
+    if (real.length) {
+      const avg = real.reduce((s, r) => s + r.rating, 0) / real.length;
+      proof = { avg: this.fmtNum(avg), label: 'по ' + real.length + ' ' + this.plural(real.length, ['отзыву', 'отзывам', 'отзывам']), stars: this.stars(avg, '#E2C7A2', 'rgba(251,250,247,.3)'), aria: 'Оценка ' + this.fmtNum(avg) + ' из 5' };
+    }
+    const base = real.length ? real : all;
+    const avgB = base.length ? base.reduce((s, r) => s + r.rating, 0) / base.length : 0;
+    const top = all.slice(0, 5), cur = this.state.cur;
+    const quotes = top.map((r, i) => ({
+      body: r.body.length > 260 ? r.body.slice(0, 257).trim() + '…' : r.body, name: r.name, initial: (r.name || '?').trim().charAt(0).toUpperCase(),
+      meta: this.fmtDate(r.created_at) + (r.sample ? ' · пример отзыва' : ''), stars: this.stars(r.rating, '#E2C7A2', 'rgba(251,250,247,.25)'), aria: 'Оценка ' + r.rating + ' из 5',
+      op: i === cur ? 1 : 0, ty: i === cur ? '0px' : '18px', pe: i === cur ? 'auto' : 'none', hidden: i === cur ? 'false' : 'true',
+      tr: i === cur ? 'opacity .9s cubic-bezier(.2,.8,.2,1) .25s, transform .9s cubic-bezier(.2,.8,.2,1) .25s' : 'opacity .3s ease, transform .3s ease',
+      fill: i <= cur ? 1 : 0, ftr: i === cur && !this.reduce ? 'transform 7s linear' : 'none', dotLabel: 'Отзыв ' + (i + 1), go: () => this.showQ(i),
+    }));
+    const marqWords = (W.categories || []).map((c) => c.title).concat(['Под ваши размеры', 'Дизайн-проект']);
 
-  <script src="js/config.js"></script>
-  <script src="js/works-data.js"></script>
-  <script src="js/kitchens.js"></script>
-  <script src="js/cat-art.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/common.js"></script>
-  <script src="js/home.js"></script>
+    return {
+      slides, slideNo: String(slide + 1).padStart(2, '0') + ' / ' + String(this.SLIDES.length).padStart(2, '0'), slideLabel: this.SLIDES[slide].label,
+      cntStr: this.fmt(this.state.cnt), proof,
+      marqRef: this.marqRef, marqGroups: [0, 1], marqWords: marqWords.length > 2 ? marqWords : ['Кухни', 'Шкафы', 'Санузлы', 'ТВ-зоны', 'Офисная мебель', 'Под ваши размеры', 'Дизайн-проект'],
+      marqPause: () => this.marq && this.marq.pause(), marqPlay: () => this.marq && this.marq.play(),
+      mosaicCols: desk ? 'repeat(12, minmax(0,1fr))' : 'repeat(2, minmax(0,1fr))', mosaicRows: desk ? 'clamp(120px, 13vw, 200px)' : 'auto', tiles,
+      copyWorks: () => this.copy('works.html'), copyReviews: () => this.copy('reviews.html'),
+      cats, wide, narrow: !wide, catCols: wide ? '64px minmax(0,1.3fr) minmax(0,1fr) auto 52px' : '36px minmax(0,1fr) 64px 52px',
+      prevRef: this.prevRef, prevOp: hov >= 0 ? 1 : 0, prevScale: hov >= 0 ? 1 : 0.86, prevRot: hov >= 0 ? '-2deg' : '0deg',
+      onCatMove: (e) => { const el = this.prevRef.current; if (el) el.style.transform = 'translate3d(' + (e.clientX + 32) + 'px,' + (e.clientY - 190) + 'px,0)'; },
+      onCatLeave: () => this.setState({ hov: -1 }),
+      hasReviews: top.length > 0,
+      score: { avg: this.fmtNum(avgB), stars: this.stars(avgB, '#E2C7A2', 'rgba(251,250,247,.25)'), aria: 'Оценка ' + this.fmtNum(avgB) + ' из 5', label: 'средняя оценка по ' + base.length + ' ' + this.plural(base.length, ['отзыву', 'отзывам', 'отзывам']) },
+      quotes, multiQuotes: top.length > 1,
+      qcPrev: () => this.showQ(cur - 1), qcNext: () => this.showQ(cur + 1),
+      qcPause: () => { this.qPaused = true; clearTimeout(this.qT); }, qcResume: () => { this.qPaused = false; this.showQ(this.state.cur); },
+      bpRef: this.bpRef, sheetNo: String(this.state.sheet).padStart(2, '0') + ' / ' + String(this.state.sheets).padStart(2, '0'),
+      toast: this.state.toast, toastOp: this.state.toastOn ? 1 : 0, toastY: this.state.toastOn ? '0px' : '20px',
+    };
+  }
+}
+
+return Component;})(),(function(v,__H,__E){let __o="";__o+="<div data-dc=\"SiteHeader\" data-p-active=\"home\" data-p-tone=\"dark\" style=\"display:contents\"></div>";__o+="<main";__o+=">";__o+="<section";__o+=" style=\"position:relative;min-height:max(680px,100svh);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;background:#14120F;color:#FBFAF7\"";__o+=">";__o+="<div";__o+=" aria-hidden=\"true\"";__o+=" style=\"position:absolute;inset:0;z-index:-2\"";__o+=">";for(const s of (v.slides||[])){__o+="<div";__o+=" style=\""+"position:absolute;inset:0;opacity:"+__E(s?.op)+";transition:opacity 1.8s ease"+"\"";__o+=">";__o+="<img";__o+=" data-kb=\"\"";{const __v=s?.src;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" src=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" alt=\"\"";__o+=" style=\"width:100%;height:100%;object-fit:cover;display:block;transform-origin:60% 40%\"";__o+=">";__o+="</div>";}__o+="</div>";__o+="<div";__o+=" aria-hidden=\"true\"";__o+=" style=\"position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg, rgba(20,18,15,.62) 0%, rgba(20,18,15,.18) 32%, rgba(20,18,15,.35) 58%, rgba(20,18,15,.92) 100%), linear-gradient(90deg, rgba(20,18,15,.55) 0%, rgba(20,18,15,0) 60%)\"";__o+=">";__o+="</div>";__o+="<div";__o+=" style=\"width:100%;max-width:1440px;margin:0 auto;padding:140px clamp(20px,4vw,56px) 0;box-sizing:border-box\"";__o+=">";__o+="<div";__o+=" style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:40px clamp(32px,5vw,96px);align-items:end\"";__o+=">";__o+="<div";__o+=">";__o+="<div";__o+=" data-hero-fade=\"0\"";__o+=" style=\"display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#E2C7A2;margin-bottom:clamp(22px,3vh,34px)\"";__o+=">";__o+="<span";__o+=" style=\"width:36px;height:1px;background:currentColor\"";__o+=">";__o+="</span>";__o+="Мебель на заказ · Ростов-на-Дону";__o+="</div>";__o+="<h1";__o+=" style=\"margin:0;font:300 clamp(3.4rem,8.2vw,8.6rem)/.94 'Noto Serif Display', serif;letter-spacing:-.035em\"";__o+=">";__o+="<span";__o+=" style=\"display:block;overflow:hidden;padding:.02em 0 .1em;margin-bottom:-.1em\"";__o+=">";__o+="<span";__o+=" data-line=\"0\"";__o+=" style=\"display:block\"";__o+=">";__o+="Мебель,";__o+="</span>";__o+="</span>";__o+="<span";__o+=" style=\"display:block;overflow:hidden;padding:.02em 0 .1em;margin-bottom:-.1em\"";__o+=">";__o+="<span";__o+=" data-line=\"1\"";__o+=" style=\"display:block\"";__o+=">";__o+="сделанная";__o+="</span>";__o+="</span>";__o+="<span";__o+=" style=\"display:block;overflow:hidden;padding:.02em 0 .1em\"";__o+=">";__o+="<span";__o+=" data-line=\"2\"";__o+=" style=\"display:block\"";__o+=">";__o+="под ваш ";__o+="<em";__o+=" style=\"font-style:italic;color:#E2C7A2\"";__o+=">";__o+="дом";__o+="</em>";__o+="</span>";__o+="</span>";__o+="</h1>";__o+="</div>";__o+="<div";__o+=" style=\"justify-self:end;max-width:440px;display:flex;flex-direction:column;gap:30px;padding-bottom:8px\"";__o+=">";__o+="<p";__o+=" data-hero-fade=\"1\"";__o+=" style=\"margin:0;font:400 clamp(16px,1.25vw,18px)/1.7 Manrope, sans-serif;color:#E4DED5;text-wrap:pretty\"";__o+=">";__o+="Кухни, шкафы, санузлы и ТВ-зоны на заказ. Посмотрите наши работы и прочитайте, что говорят те, кто уже живёт с нашей мебелью.";__o+="</p>";__o+="<div";__o+=" data-hero-fade=\"2\"";__o+=" style=\"display:flex;flex-wrap:wrap;gap:12px\"";__o+=">";__o+="<a";__o+=" href=\"works.html\"";__o+=" style=\"display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 28px;border-radius:999px;background:#FBFAF7;color:#14120F;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .35s\"";__o+=" class=\"dc14\"";__o+=">";__o+="Смотреть работы";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</a>";__o+="<a";__o+=" href=\"reviews.html\"";__o+=" style=\"display:inline-flex;align-items:center;height:56px;padding:0 28px;border-radius:999px;border:1px solid rgba(251,250,247,.45);color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background-color .35s, border-color .35s\"";__o+=" class=\"dc15\"";__o+=">";__o+="Читать отзывы";__o+="</a>";__o+="</div>";if(v.proof){__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:14px;font:400 14.5px Manrope, sans-serif;color:#E4DED5\"";__o+=">";__o+="<span";__o+=" role=\"img\"";{const __v=v.proof?.aria;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" style=\"display:flex;gap:2px;font-size:15px;letter-spacing:0\"";__o+=">";for(const st of (v.proof?.stars||[])){__o+="<span";__o+=" aria-hidden=\"true\"";__o+=" style=\""+"color:"+__E(st)+"\"";__o+=">";__o+="★";__o+="</span>";}__o+="</span>";__o+="<span";__o+=">";__o+="<strong";__o+=" style=\"color:#FBFAF7;font-weight:700\"";__o+=">";__o+=__E(v.proof?.avg);__o+="</strong>";__o+=" ";__o+=__E(v.proof?.label);__o+="</span>";__o+="</div>";}__o+="</div>";__o+="</div>";__o+="<div";__o+=" data-hero-fade=\"3\"";__o+=" style=\"margin-top:clamp(48px,8vh,96px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));border-top:1px solid rgba(251,250,247,.2)\"";__o+=">";__o+="<div";__o+=" style=\"padding:26px 24px 30px 0;border-right:1px solid rgba(251,250,247,.12)\"";__o+=">";__o+="<div";__o+=" style=\"font:300 clamp(2.2rem,3.4vw,3.2rem)/1 'Noto Serif Display', serif;letter-spacing:-.02em;font-variant-numeric:tabular-nums\"";__o+=">";__o+=__E(v.cntStr);__o+="</div>";__o+="<div";__o+=" style=\"margin-top:10px;font:600 11px/1.4 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#B5ACA1\"";__o+=">";__o+="фото готовых работ";__o+="</div>";__o+="</div>";__o+="<div";__o+=" style=\"padding:26px 24px 30px;border-right:1px solid rgba(251,250,247,.12)\"";__o+=">";__o+="<div";__o+=" style=\"font:300 clamp(2.2rem,3.4vw,3.2rem)/1 'Noto Serif Display', serif;letter-spacing:-.02em\"";__o+=">";__o+="5";__o+="</div>";__o+="<div";__o+=" style=\"margin-top:10px;font:600 11px/1.4 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#B5ACA1\"";__o+=">";__o+="направлений мебели";__o+="</div>";__o+="</div>";__o+="<div";__o+=" style=\"padding:26px 24px 30px;border-right:1px solid rgba(251,250,247,.12)\"";__o+=">";__o+="<div";__o+=" style=\"font:300 clamp(2.2rem,3.4vw,3.2rem)/1 'Noto Serif Display', serif;letter-spacing:-.02em\"";__o+=">";__o+="100";__o+="<span";__o+=" style=\"font-size:.5em;color:#E2C7A2;vertical-align:super;margin-left:2px\"";__o+=">";__o+="%";__o+="</span>";__o+="</div>";__o+="<div";__o+=" style=\"margin-top:10px;font:600 11px/1.4 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#B5ACA1\"";__o+=">";__o+="по вашим размерам";__o+="</div>";__o+="</div>";__o+="<div";__o+=" style=\"padding:26px 0 30px 24px;display:flex;flex-direction:column;justify-content:space-between;gap:14px\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;align-items:baseline;justify-content:space-between;gap:12px;font:500 13px Manrope, sans-serif;color:#E4DED5\"";__o+=">";__o+="<span";__o+=" style=\"font-variant-numeric:tabular-nums;letter-spacing:.08em\"";__o+=">";__o+=__E(v.slideNo);__o+="</span>";__o+="<span";__o+=" style=\"font:italic 300 20px 'Noto Serif Display', serif\"";__o+=">";__o+=__E(v.slideLabel);__o+="</span>";__o+="</div>";__o+="<div";__o+=" style=\"display:flex;gap:6px\"";__o+=">";for(const s of (v.slides||[])){__o+="<button";__o+=" type=\"button\"";{const __v=s?.aria;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" data-on-click=\""+__H(s?.go)+"\"";__o+=" style=\"flex:1;height:22px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center\"";__o+=">";__o+="<span";__o+=" style=\"display:block;width:100%;height:2px;background:rgba(251,250,247,.22);position:relative;overflow:hidden\"";__o+=">";__o+="<span";__o+=" style=\""+"position:absolute;inset:0;background:#E2C7A2;transform-origin:left;transform:scaleX("+__E(s?.fill)+");transition:"+__E(s?.tr)+"\"";__o+=">";__o+="</span>";__o+="</span>";__o+="</button>";}__o+="</div>";__o+="</div>";__o+="</div>";__o+="</div>";__o+="</section>";__o+="<div";__o+=" aria-hidden=\"true\"";__o+=" data-on-mouseenter=\""+__H(v.marqPause)+"\"";__o+=" data-on-mouseleave=\""+__H(v.marqPlay)+"\"";__o+=" style=\"overflow:hidden;background:#F4F1EC;border-bottom:1px solid #E2DCD3;padding:26px 0\"";__o+=">";__o+="<div";__o+=" data-ref=\""+__H(v.marqRef)+"\"";__o+=" style=\"display:flex;width:max-content\"";__o+=">";for(const g of (v.marqGroups||[])){__o+="<div";__o+=" style=\"display:flex;align-items:center;flex:none\"";__o+=">";for(const mw of (v.marqWords||[])){__o+="<span";__o+=" style=\"font:italic 300 clamp(1.6rem,2.8vw,2.5rem)/1 'Noto Serif Display', serif;color:#1A1714;padding:0 clamp(20px,2.6vw,40px);white-space:nowrap\"";__o+=">";__o+=__E(mw);__o+="</span>";__o+="<span";__o+=" style=\"width:7px;height:7px;background:#B98D5E;transform:rotate(45deg);flex:none\"";__o+=">";__o+="</span>";}__o+="</div>";}__o+="</div>";__o+="</div>";__o+="<section";__o+=" id=\"works\"";__o+=" style=\"padding:clamp(88px,11vw,168px) 0;background:#F4F1EC\"";__o+=">";__o+="<div";__o+=" style=\"max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px 64px;margin-bottom:clamp(40px,5vw,72px)\"";__o+=">";__o+="<div";__o+=" data-reveal=\"0\"";__o+=" style=\"max-width:640px\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px\"";__o+=">";__o+="<span";__o+=" style=\"width:36px;height:1px;background:currentColor\"";__o+=">";__o+="</span>";__o+="Портфолио";__o+="</div>";__o+="<h2";__o+=" style=\"margin:0;font:300 clamp(2.8rem,5.6vw,5.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.03em\"";__o+=">";__o+="Наши ";__o+="<em";__o+=" style=\"font-style:italic;color:#8C6239\"";__o+=">";__o+="работы";__o+="</em>";__o+="</h2>";__o+="<p";__o+=" style=\"margin:24px 0 0;max-width:44ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty\"";__o+=">";__o+="Фотографии готовых кухонь, шкафов, санузлов и ТВ-зон из квартир наших клиентов.";__o+="</p>";__o+="</div>";__o+="<div";__o+=" data-reveal=\"1\"";__o+=" style=\"display:flex;align-items:flex-end;gap:18px\"";__o+=">";__o+="<span";__o+=" style=\"font:300 clamp(5rem,10vw,9rem)/.78 'Noto Serif Display', serif;letter-spacing:-.05em;font-variant-numeric:tabular-nums\"";__o+=">";__o+=__E(v.cntStr);__o+="</span>";__o+="<span";__o+=" style=\"max-width:13ch;padding-bottom:4px;font:600 11px/1.5 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#6B635A\"";__o+=">";__o+="готовых работ в портфолио";__o+="</span>";__o+="</div>";__o+="</div>";__o+="<div";__o+=" style=\""+"display:grid;grid-template-columns:"+__E(v.mosaicCols)+";grid-auto-rows:"+__E(v.mosaicRows)+";gap:clamp(10px,1.2vw,18px)"+"\"";__o+=">";for(const t of (v.tiles||[])){__o+="<a";{const __v=t?.href;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" href=\""+(__v===true?"":__E(__v))+"\"";}}{const __v=t?.ri;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" data-reveal=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" data-reveal=\"false\"";}}{const __v=t?.aria;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" style=\""+"position:relative;display:block;overflow:hidden;border-radius:6px;background:#E2DCD3;grid-column:"+__E(t?.col)+";grid-row:"+__E(t?.row)+";aspect-ratio:"+__E(t?.ar)+";color:#FBFAF7;text-decoration:none;isolation:isolate"+"\"";__o+=">";__o+="<img";{const __v=t?.src;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" src=\""+(__v===true?"":__E(__v))+"\"";}}{const __v=t?.alt;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" alt=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" loading=\"lazy\"";__o+=" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.8,.2,1), filter 1s;z-index:-2\"";__o+=" class=\"dc16\"";__o+=">";__o+="<span";__o+=" aria-hidden=\"true\"";__o+=" style=\"position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg, rgba(20,18,15,0) 45%, rgba(20,18,15,.78) 100%)\"";__o+=">";__o+="</span>";__o+="<span";__o+=" style=\"position:absolute;left:clamp(16px,1.8vw,26px);right:clamp(16px,1.8vw,26px);bottom:clamp(16px,1.8vw,24px);display:flex;align-items:flex-end;justify-content:space-between;gap:12px;pointer-events:none\"";__o+=">";__o+="<span";__o+=">";__o+="<span";__o+=" style=\"display:block;font:600 10.5px/1 Manrope, sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#E2C7A2\"";__o+=">";__o+=__E(t?.n);__o+="</span>";__o+="<span";__o+=" style=\"display:block;margin-top:8px;font:300 clamp(1.4rem,2.1vw,2rem)/1.05 'Noto Serif Display', serif;letter-spacing:-.01em\"";__o+=">";__o+=__E(t?.title);__o+="</span>";__o+="</span>";__o+="<span";__o+=" style=\"flex:none;width:44px;height:44px;border-radius:999px;border:1px solid rgba(251,250,247,.55);display:grid;place-items:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)\"";__o+=">";__o+="<svg";__o+=" width=\"16\"";__o+=" height=\"16\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=" style=\"transform:rotate(-45deg)\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</span>";__o+="</span>";__o+="</a>";}__o+="</div>";__o+="<div";__o+=" data-reveal=\"0\"";__o+=" style=\"display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px;margin-top:clamp(32px,4vw,52px)\"";__o+=">";__o+="<a";__o+=" href=\"works.html\"";__o+=" style=\"display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 28px;border-radius:999px;background:#1A1714;color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .35s\"";__o+=" class=\"dc17\"";__o+=">";__o+="Все работы";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</a>";__o+="<button";__o+=" type=\"button\"";__o+=" data-on-click=\""+__H(v.copyWorks)+"\"";__o+=" style=\"display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 26px;border-radius:999px;border:1px solid rgba(26,23,20,.25);background:transparent;color:#1A1714;font:600 15px Manrope, sans-serif;cursor:pointer;transition:border-color .3s, background-color .3s\"";__o+=" class=\"dc18\"";__o+=">";__o+="<svg";__o+=" width=\"16\"";__o+=" height=\"16\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="Скопировать ссылку";__o+="</button>";__o+="<p";__o+=" style=\"margin:0 0 0 auto;max-width:46ch;color:#6B635A;font:400 14.5px/1.6 Manrope, sans-serif\"";__o+=">";__o+="Можно отправить клиенту ссылку сразу на нужный раздел — откройте раздел и скопируйте адрес.";__o+="</p>";__o+="</div>";__o+="</div>";__o+="</section>";__o+="<section";__o+=" style=\"position:relative;padding:clamp(88px,11vw,168px) 0;background:#14120F;color:#FBFAF7\"";__o+=">";__o+="<div";__o+=" style=\"max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px 64px;margin-bottom:clamp(40px,5vw,72px)\"";__o+=">";__o+="<div";__o+=" data-reveal=\"0\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#C9A074;margin-bottom:24px\"";__o+=">";__o+="<span";__o+=" style=\"width:36px;height:1px;background:currentColor\"";__o+=">";__o+="</span>";__o+="Что мы делаем";__o+="</div>";__o+="<h2";__o+=" style=\"margin:0;font:300 clamp(2.8rem,5.6vw,5.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.03em\"";__o+=">";__o+="Пять направлений ";__o+="<em";__o+=" style=\"font-style:italic;color:#C9A074\"";__o+=">";__o+="мебели";__o+="</em>";__o+="</h2>";__o+="</div>";__o+="<p";__o+=" data-reveal=\"1\"";__o+=" style=\"margin:0;max-width:36ch;color:#A79E93;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty\"";__o+=">";__o+="Выберите раздел, чтобы посмотреть работы. В каждом — фотографии изделий, которые мы сделали для клиентов.";__o+="</p>";__o+="</div>";__o+="<div";__o+=" data-on-mousemove=\""+__H(v.onCatMove)+"\"";__o+=" data-on-mouseleave=\""+__H(v.onCatLeave)+"\"";__o+=" style=\"border-top:1px solid rgba(251,250,247,.14)\"";__o+=">";for(const c of (v.cats||[])){__o+="<a";{const __v=c?.href;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" href=\""+(__v===true?"":__E(__v))+"\"";}}{const __v=c?.ri;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" data-reveal=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" data-reveal=\"false\"";}}__o+=" data-on-mouseenter=\""+__H(c?.enter)+"\"";__o+=" data-on-focus=\""+__H(c?.enter)+"\"";__o+=" style=\""+"display:grid;grid-template-columns:"+__E(v.catCols)+";align-items:center;gap:clamp(14px,3vw,48px);padding:clamp(22px,3vw,40px) 0;border-bottom:1px solid rgba(251,250,247,.14);color:#FBFAF7;text-decoration:none;opacity:"+__E(c?.op)+";transition:opacity .5s ease, padding-left .6s cubic-bezier(.2,.8,.2,1)"+"\"";__o+=" class=\"dc19\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 clamp(1rem,1.4vw,1.25rem)/1 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+=__E(c?.idx);__o+="</span>";__o+="<span";__o+=" style=\"min-width:0\"";__o+=">";__o+="<span";__o+=" style=\"display:block;font:300 clamp(2rem,4.6vw,4.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.025em\"";__o+=">";__o+=__E(c?.title);__o+="</span>";if(v.narrow){__o+="<span";__o+=" style=\"display:block;margin-top:8px;color:#A79E93;font:400 13.5px/1.5 Manrope, sans-serif\"";__o+=">";__o+=__E(c?.n);__o+="</span>";}__o+="</span>";if(v.wide){__o+="<span";__o+=" style=\"color:#A79E93;font:400 15px/1.6 Manrope, sans-serif;max-width:30ch\"";__o+=">";__o+=__E(c?.text);__o+="</span>";}if(v.wide){__o+="<span";__o+=" style=\"font:600 11px/1 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#A79E93;white-space:nowrap\"";__o+=">";__o+=__E(c?.n);__o+="</span>";}if(v.narrow){__o+="<img";{const __v=c?.img;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" src=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" alt=\"\"";__o+=" loading=\"lazy\"";__o+=" style=\"width:64px;height:80px;object-fit:cover;border-radius:4px\"";__o+=">";}__o+="<span";__o+=" style=\""+"width:52px;height:52px;border-radius:999px;border:1px solid "+__E(c?.arrowBd)+";background:"+__E(c?.arrowBg)+";color:"+__E(c?.arrowFg)+";display:grid;place-items:center;transition:background-color .4s, color .4s, border-color .4s, transform .6s cubic-bezier(.2,.8,.2,1);transform:"+__E(c?.arrowTf)+"\"";__o+=">";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</span>";__o+="</a>";}__o+="</div>";__o+="</div>";if(v.wide){__o+="<div";__o+=" data-ref=\""+__H(v.prevRef)+"\"";__o+=" aria-hidden=\"true\"";__o+=" style=\"position:fixed;left:0;top:0;width:300px;height:380px;pointer-events:none;z-index:30;will-change:transform\"";__o+=">";__o+="<div";__o+=" style=\""+"position:absolute;inset:0;border-radius:8px;overflow:hidden;opacity:"+__E(v.prevOp)+";transform:scale("+__E(v.prevScale)+") rotate("+__E(v.prevRot)+");transition:opacity .45s ease, transform .7s cubic-bezier(.2,.8,.2,1);box-shadow:0 40px 80px -30px rgba(0,0,0,.7)"+"\"";__o+=">";for(const c of (v.cats||[])){__o+="<img";{const __v=c?.img;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" src=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" alt=\"\"";__o+=" style=\""+"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:"+__E(c?.pop)+";transform:scale("+__E(c?.pscale)+");transition:opacity .5s ease, transform 1.2s cubic-bezier(.2,.8,.2,1)"+"\"";__o+=">";}__o+="</div>";__o+="</div>";}__o+="</section>";__o+="<section";__o+=" style=\"padding:clamp(88px,11vw,168px) 0;background:#F4F1EC\"";__o+=">";__o+="<div";__o+=" style=\"max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px 64px;margin-bottom:clamp(48px,6vw,88px)\"";__o+=">";__o+="<div";__o+=" data-reveal=\"0\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px\"";__o+=">";__o+="<span";__o+=" style=\"width:36px;height:1px;background:currentColor\"";__o+=">";__o+="</span>";__o+="Процесс";__o+="</div>";__o+="<h2";__o+=" style=\"margin:0;font:300 clamp(2.8rem,5.6vw,5.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.03em\"";__o+=">";__o+="Как мы ";__o+="<em";__o+=" style=\"font-style:italic;color:#8C6239\"";__o+=">";__o+="работаем";__o+="</em>";__o+="</h2>";__o+="</div>";__o+="<p";__o+=" data-reveal=\"1\"";__o+=" style=\"margin:0;max-width:36ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty\"";__o+=">";__o+="От первого разговора до готовой мебели в вашем доме — четыре понятных шага.";__o+="</p>";__o+="</div>";__o+="<div";__o+=" style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:56px clamp(24px,3vw,48px)\"";__o+=">";__o+="<article";__o+=" data-reveal=\"0\"";__o+=" style=\"position:relative;padding-top:36px\"";__o+=">";__o+="<span";__o+=" data-grow=\"0\"";__o+=" style=\"position:absolute;left:0;right:0;top:0;height:1px;background:#1A1714;transform-origin:left\"";__o+=">";__o+="</span>";__o+="<span";__o+=" style=\"position:absolute;left:0;top:-4px;width:9px;height:9px;background:#B98D5E;transform:rotate(45deg)\"";__o+=">";__o+="</span>";__o+="<div";__o+=" style=\"display:flex;justify-content:space-between;align-items:flex-start\"";__o+=">";__o+="<span";__o+=" style=\"font:300 clamp(3.6rem,5vw,5rem)/.85 'Noto Serif Display', serif;color:#B98D5E;letter-spacing:-.03em\"";__o+=">";__o+="01";__o+="</span>";__o+="<svg";__o+=" width=\"56\"";__o+=" height=\"56\"";__o+=" viewBox=\"0 0 60 60\"";__o+=" fill=\"none\"";__o+=" aria-hidden=\"true\"";__o+=">";__o+="<path";__o+=" data-draw=\"0\"";__o+=" pathLength=\"1\"";__o+=" stroke-dasharray=\"1\"";__o+=" d=\"M10 22 30 8l20 14v4H10zM14 26v22M46 26v22M8 54h44M8 48v12M52 48v12\"";__o+=" stroke=\"#1A1714\"";__o+=" stroke-width=\"1.3\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</div>";__o+="<h3";__o+=" style=\"margin:36px 0 0;font:300 clamp(1.7rem,2.2vw,2.1rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.01em\"";__o+=">";__o+="Замер и задача";__o+="</h3>";__o+="<p";__o+=" style=\"margin:14px 0 0;color:#6B635A;font:400 15.5px/1.7 Manrope, sans-serif;max-width:30ch\"";__o+=">";__o+="Обсуждаем, что и как вам нужно, снимаем точные размеры помещения.";__o+="</p>";__o+="</article>";__o+="<article";__o+=" data-reveal=\"1\"";__o+=" style=\"position:relative;padding-top:36px\"";__o+=">";__o+="<span";__o+=" data-grow=\"1\"";__o+=" style=\"position:absolute;left:0;right:0;top:0;height:1px;background:#1A1714;transform-origin:left\"";__o+=">";__o+="</span>";__o+="<span";__o+=" style=\"position:absolute;left:0;top:-4px;width:9px;height:9px;background:#B98D5E;transform:rotate(45deg)\"";__o+=">";__o+="</span>";__o+="<div";__o+=" style=\"display:flex;justify-content:space-between;align-items:flex-start\"";__o+=">";__o+="<span";__o+=" style=\"font:300 clamp(3.6rem,5vw,5rem)/.85 'Noto Serif Display', serif;color:#B98D5E;letter-spacing:-.03em\"";__o+=">";__o+="02";__o+="</span>";__o+="<svg";__o+=" width=\"56\"";__o+=" height=\"56\"";__o+=" viewBox=\"0 0 60 60\"";__o+=" fill=\"none\"";__o+=" aria-hidden=\"true\"";__o+=">";__o+="<path";__o+=" data-draw=\"1\"";__o+=" pathLength=\"1\"";__o+=" stroke-dasharray=\"1\"";__o+=" d=\"M12 6h28l8 8v40H12zM40 6v8h8M20 26h20M20 34h20M20 42h12\"";__o+=" stroke=\"#1A1714\"";__o+=" stroke-width=\"1.3\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</div>";__o+="<h3";__o+=" style=\"margin:36px 0 0;font:300 clamp(1.7rem,2.2vw,2.1rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.01em\"";__o+=">";__o+="Дизайн-проект";__o+="</h3>";__o+="<p";__o+=" style=\"margin:14px 0 0;color:#6B635A;font:400 15.5px/1.7 Manrope, sans-serif;max-width:30ch\"";__o+=">";__o+="Готовим чертёж с размерами и подбираем материалы ещё до производства.";__o+="</p>";__o+="</article>";__o+="<article";__o+=" data-reveal=\"2\"";__o+=" style=\"position:relative;padding-top:36px\"";__o+=">";__o+="<span";__o+=" data-grow=\"2\"";__o+=" style=\"position:absolute;left:0;right:0;top:0;height:1px;background:#1A1714;transform-origin:left\"";__o+=">";__o+="</span>";__o+="<span";__o+=" style=\"position:absolute;left:0;top:-4px;width:9px;height:9px;background:#B98D5E;transform:rotate(45deg)\"";__o+=">";__o+="</span>";__o+="<div";__o+=" style=\"display:flex;justify-content:space-between;align-items:flex-start\"";__o+=">";__o+="<span";__o+=" style=\"font:300 clamp(3.6rem,5vw,5rem)/.85 'Noto Serif Display', serif;color:#B98D5E;letter-spacing:-.03em\"";__o+=">";__o+="03";__o+="</span>";__o+="<svg";__o+=" width=\"56\"";__o+=" height=\"56\"";__o+=" viewBox=\"0 0 60 60\"";__o+=" fill=\"none\"";__o+=" aria-hidden=\"true\"";__o+=">";__o+="<path";__o+=" data-draw=\"2\"";__o+=" pathLength=\"1\"";__o+=" stroke-dasharray=\"1\"";__o+=" d=\"M30 6l22 12v24L30 54 8 42V18zM8 18l22 12 22-12M30 30v24\"";__o+=" stroke=\"#1A1714\"";__o+=" stroke-width=\"1.3\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</div>";__o+="<h3";__o+=" style=\"margin:36px 0 0;font:300 clamp(1.7rem,2.2vw,2.1rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.01em\"";__o+=">";__o+="Изготовление";__o+="</h3>";__o+="<p";__o+=" style=\"margin:14px 0 0;color:#6B635A;font:400 15.5px/1.7 Manrope, sans-serif;max-width:30ch\"";__o+=">";__o+="Делаем мебель точно под ваши размеры и утверждённый проект.";__o+="</p>";__o+="</article>";__o+="<article";__o+=" data-reveal=\"3\"";__o+=" style=\"position:relative;padding-top:36px\"";__o+=">";__o+="<span";__o+=" data-grow=\"3\"";__o+=" style=\"position:absolute;left:0;right:0;top:0;height:1px;background:#1A1714;transform-origin:left\"";__o+=">";__o+="</span>";__o+="<span";__o+=" style=\"position:absolute;left:0;top:-4px;width:9px;height:9px;background:#B98D5E;transform:rotate(45deg)\"";__o+=">";__o+="</span>";__o+="<div";__o+=" style=\"display:flex;justify-content:space-between;align-items:flex-start\"";__o+=">";__o+="<span";__o+=" style=\"font:300 clamp(3.6rem,5vw,5rem)/.85 'Noto Serif Display', serif;color:#B98D5E;letter-spacing:-.03em\"";__o+=">";__o+="04";__o+="</span>";__o+="<svg";__o+=" width=\"56\"";__o+=" height=\"56\"";__o+=" viewBox=\"0 0 60 60\"";__o+=" fill=\"none\"";__o+=" aria-hidden=\"true\"";__o+=">";__o+="<path";__o+=" data-draw=\"3\"";__o+=" pathLength=\"1\"";__o+=" stroke-dasharray=\"1\"";__o+=" d=\"M10 6h40v46H10zM30 6v46M24 26v8M36 26v8M10 52v5M50 52v5\"";__o+=" stroke=\"#1A1714\"";__o+=" stroke-width=\"1.3\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</div>";__o+="<h3";__o+=" style=\"margin:36px 0 0;font:300 clamp(1.7rem,2.2vw,2.1rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.01em\"";__o+=">";__o+="Доставка и монтаж";__o+="</h3>";__o+="<p";__o+=" style=\"margin:14px 0 0;color:#6B635A;font:400 15.5px/1.7 Manrope, sans-serif;max-width:30ch\"";__o+=">";__o+="Привозим, собираем и аккуратно устанавливаем — мебель готова к жизни.";__o+="</p>";__o+="</article>";__o+="</div>";__o+="</div>";__o+="</section>";if(v.hasReviews){__o+="<section";__o+=" id=\"latest\"";__o+=" style=\"position:relative;overflow:hidden;padding:clamp(88px,11vw,168px) 0;background:#1D1A16;color:#FBFAF7\"";__o+=">";__o+="<div";__o+=" aria-hidden=\"true\"";__o+=" style=\"position:absolute;left:-2vw;top:-12vw;font:300 clamp(22rem,46vw,46rem)/1 'Noto Serif Display', serif;color:rgba(201,160,116,.07);pointer-events:none;user-select:none\"";__o+=">";__o+="“";__o+="</div>";__o+="<div";__o+=" style=\"position:relative;max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px clamp(40px,7vw,120px);align-items:center\"";__o+=">";__o+="<div";__o+=" data-reveal=\"0\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#C9A074;margin-bottom:24px\"";__o+=">";__o+="<span";__o+=" style=\"width:36px;height:1px;background:currentColor\"";__o+=">";__o+="</span>";__o+="Отзывы";__o+="</div>";__o+="<h2";__o+=" style=\"margin:0;font:300 clamp(2.8rem,5.6vw,5.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.03em\"";__o+=">";__o+="Что говорят ";__o+="<em";__o+=" style=\"font-style:italic;color:#C9A074\"";__o+=">";__o+="клиенты";__o+="</em>";__o+="</h2>";__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:22px;margin-top:36px;padding-top:30px;border-top:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:300 clamp(3.8rem,6vw,5.4rem)/.9 'Noto Serif Display', serif;color:#E2C7A2;letter-spacing:-.03em\"";__o+=">";__o+=__E(v.score?.avg);__o+="</span>";__o+="<div";__o+=">";__o+="<span";__o+=" role=\"img\"";{const __v=v.score?.aria;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" style=\"display:flex;gap:3px;font-size:17px\"";__o+=">";for(const st of (v.score?.stars||[])){__o+="<span";__o+=" aria-hidden=\"true\"";__o+=" style=\""+"color:"+__E(st)+"\"";__o+=">";__o+="★";__o+="</span>";}__o+="</span>";__o+="<span";__o+=" style=\"display:block;margin-top:8px;color:#A79E93;font:400 14px Manrope, sans-serif\"";__o+=">";__o+=__E(v.score?.label);__o+="</span>";__o+="</div>";__o+="</div>";__o+="<div";__o+=" style=\"display:flex;flex-wrap:wrap;gap:12px;margin-top:36px\"";__o+=">";__o+="<a";__o+=" href=\"reviews.html\"";__o+=" style=\"display:inline-flex;align-items:center;gap:12px;height:54px;padding:0 26px;border-radius:999px;background:#E2C7A2;color:#14120F;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .35s\"";__o+=" class=\"dc20\"";__o+=">";__o+="Все отзывы";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</a>";__o+="<a";__o+=" href=\"reviews.html#leave\"";__o+=" style=\"display:inline-flex;align-items:center;height:54px;padding:0 24px;border-radius:999px;border:1px solid rgba(251,250,247,.3);color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;transition:border-color .3s, background-color .3s\"";__o+=" class=\"dc21\"";__o+=">";__o+="Оставить отзыв";__o+="</a>";__o+="<button";__o+=" type=\"button\"";__o+=" data-on-click=\""+__H(v.copyReviews)+"\"";__o+=" style=\"display:inline-flex;align-items:center;height:54px;padding:0 24px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:transparent;color:#FBFAF7;font:600 15px Manrope, sans-serif;cursor:pointer;transition:border-color .3s, background-color .3s\"";__o+=" class=\"dc22\"";__o+=">";__o+="Скопировать ссылку";__o+="</button>";__o+="</div>";__o+="</div>";__o+="<div";__o+=" data-reveal=\"1\"";__o+=" data-on-mouseenter=\""+__H(v.qcPause)+"\"";__o+=" data-on-mouseleave=\""+__H(v.qcResume)+"\"";__o+=">";__o+="<div";__o+=" style=\"display:grid\"";__o+=">";for(const q of (v.quotes||[])){__o+="<figure";{const __v=q?.hidden;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-hidden=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-hidden=\"false\"";}}__o+=" style=\""+"grid-area:1/1;margin:0;display:flex;flex-direction:column;justify-content:center;gap:32px;opacity:"+__E(q?.op)+";transform:translateY("+__E(q?.ty)+");transition:"+__E(q?.tr)+";pointer-events:"+__E(q?.pe)+"\"";__o+=">";__o+="<blockquote";__o+=" style=\"margin:0;font:italic 300 clamp(1.6rem,2.8vw,2.6rem)/1.3 'Noto Serif Display', serif;letter-spacing:-.01em;text-wrap:pretty\"";__o+=">";__o+="«";__o+=__E(q?.body);__o+="»";__o+="</blockquote>";__o+="<figcaption";__o+=" style=\"display:flex;align-items:center;gap:16px;flex-wrap:wrap;color:#A79E93\"";__o+=">";__o+="<span";__o+=" style=\"width:50px;height:50px;border-radius:999px;border:1px solid #C9A074;display:grid;place-items:center;font:300 22px 'Noto Serif Display', serif;color:#E2C7A2\"";__o+=">";__o+=__E(q?.initial);__o+="</span>";__o+="<span";__o+=">";__o+="<strong";__o+=" style=\"display:block;color:#FBFAF7;font:600 15px Manrope, sans-serif\"";__o+=">";__o+=__E(q?.name);__o+="</strong>";__o+="<small";__o+=" style=\"font:400 13.5px Manrope, sans-serif\"";__o+=">";__o+=__E(q?.meta);__o+="</small>";__o+="</span>";__o+="<span";__o+=" role=\"img\"";{const __v=q?.aria;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" style=\"margin-left:auto;display:flex;gap:2px;font-size:15px\"";__o+=">";for(const st of (q?.stars||[])){__o+="<span";__o+=" aria-hidden=\"true\"";__o+=" style=\""+"color:"+__E(st)+"\"";__o+=">";__o+="★";__o+="</span>";}__o+="</span>";__o+="</figcaption>";__o+="</figure>";}__o+="</div>";if(v.multiQuotes){__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:16px;margin-top:40px\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;gap:8px\"";__o+=">";for(const q of (v.quotes||[])){__o+="<button";__o+=" type=\"button\"";{const __v=q?.dotLabel;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" data-on-click=\""+__H(q?.go)+"\"";__o+=" style=\"width:40px;height:20px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center\"";__o+=">";__o+="<span";__o+=" style=\"display:block;width:100%;height:2px;background:rgba(251,250,247,.2);position:relative;overflow:hidden\"";__o+=">";__o+="<span";__o+=" style=\""+"position:absolute;inset:0;background:#C9A074;transform-origin:left;transform:scaleX("+__E(q?.fill)+");transition:"+__E(q?.ftr)+"\"";__o+=">";__o+="</span>";__o+="</span>";__o+="</button>";}__o+="</div>";__o+="<div";__o+=" style=\"margin-left:auto;display:flex;gap:10px\"";__o+=">";__o+="<button";__o+=" type=\"button\"";__o+=" aria-label=\"Предыдущий отзыв\"";__o+=" data-on-click=\""+__H(v.qcPrev)+"\"";__o+=" style=\"width:52px;height:52px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:transparent;color:#FBFAF7;cursor:pointer;display:grid;place-items:center;transition:background-color .3s, color .3s, border-color .3s\"";__o+=" class=\"dc23\"";__o+=">";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M20 12H4M10 6l-6 6 6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</button>";__o+="<button";__o+=" type=\"button\"";__o+=" aria-label=\"Следующий отзыв\"";__o+=" data-on-click=\""+__H(v.qcNext)+"\"";__o+=" style=\"width:52px;height:52px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:transparent;color:#FBFAF7;cursor:pointer;display:grid;place-items:center;transition:background-color .3s, color .3s, border-color .3s\"";__o+=" class=\"dc24\"";__o+=">";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</button>";__o+="</div>";__o+="</div>";}__o+="</div>";__o+="</div>";__o+="</section>";}__o+="<section";__o+=" style=\"padding:clamp(72px,9vw,140px) 0;background:#F4F1EC\"";__o+=">";__o+="<div";__o+=" style=\"max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)\"";__o+=">";__o+="<div";__o+=" data-reveal=\"0\"";__o+=" style=\"position:relative;overflow:hidden;border-radius:28px;background:#1D1A16;color:#FBFAF7;padding:clamp(32px,5.5vw,88px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px clamp(40px,6vw,96px);align-items:center\"";__o+=">";__o+="<div";__o+=">";__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#C9A074;margin-bottom:24px\"";__o+=">";__o+="<span";__o+=" style=\"width:36px;height:1px;background:currentColor\"";__o+=">";__o+="</span>";__o+="Дизайн-проект";__o+="</div>";__o+="<h2";__o+=" style=\"margin:0;font:300 clamp(2.4rem,4.4vw,4.2rem)/1.04 'Noto Serif Display', serif;letter-spacing:-.03em;text-wrap:balance\"";__o+=">";__o+="Дизайн-проект мебели для ";__o+="<em";__o+=" style=\"font-style:italic;color:#E2C7A2\"";__o+=">";__o+="вашего дома";__o+="</em>";__o+="</h2>";__o+="<p";__o+=" style=\"margin:24px 0 0;color:#A79E93;max-width:44ch;font:400 16.5px/1.7 Manrope, sans-serif;text-wrap:pretty\"";__o+=">";__o+="Ответьте на пять коротких вопросов, и дизайнер подготовит проект мебели под вашу квартиру. План и фотографии можно приложить сразу.";__o+="</p>";__o+="<ol";__o+=" style=\"list-style:none;margin:36px 0 0;padding:0;border-top:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<li";__o+=" style=\"display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+="01";__o+="</span>";__o+="<b";__o+=" style=\"font:400 19px/1.25 'Noto Serif Display', serif\"";__o+=">";__o+="Что вам необходимо";__o+="</b>";__o+="<span";__o+=" style=\"font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177\"";__o+=">";__o+="Мебель";__o+="</span>";__o+="</li>";__o+="<li";__o+=" style=\"display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+="02";__o+="</span>";__o+="<b";__o+=" style=\"font:400 19px/1.25 'Noto Serif Display', serif\"";__o+=">";__o+="Стадия ремонта";__o+="</b>";__o+="<span";__o+=" style=\"font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177\"";__o+=">";__o+="Ремонт";__o+="</span>";__o+="</li>";__o+="<li";__o+=" style=\"display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+="03";__o+="</span>";__o+="<b";__o+=" style=\"font:400 19px/1.25 'Noto Serif Display', serif\"";__o+=">";__o+="Есть ли план или проект";__o+="</b>";__o+="<span";__o+=" style=\"font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177\"";__o+=">";__o+="План";__o+="</span>";__o+="</li>";__o+="<li";__o+=" style=\"display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+="04";__o+="</span>";__o+="<b";__o+=" style=\"font:400 19px/1.25 'Noto Serif Display', serif\"";__o+=">";__o+="План, фото и референсы";__o+="</b>";__o+="<span";__o+=" style=\"font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177\"";__o+=">";__o+="Файлы";__o+="</span>";__o+="</li>";__o+="<li";__o+=" style=\"display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+="05";__o+="</span>";__o+="<b";__o+=" style=\"font:400 19px/1.25 'Noto Serif Display', serif\"";__o+=">";__o+="Ваши контакты";__o+="</b>";__o+="<span";__o+=" style=\"font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177\"";__o+=">";__o+="Связь";__o+="</span>";__o+="</li>";__o+="</ol>";__o+="<a";__o+=" href=\"quiz.html\"";__o+=" style=\"margin-top:36px;display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 28px;border-radius:999px;background:#E2C7A2;color:#14120F;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .35s\"";__o+=" class=\"dc25\"";__o+=">";__o+="Пройти опрос";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</a>";__o+="</div>";__o+="<div";__o+=" style=\"position:relative;border:1px solid rgba(201,160,116,.28);border-radius:16px;background:linear-gradient(160deg, rgba(251,250,247,.04), rgba(251,250,247,0));overflow:hidden\"";__o+=">";__o+="<div";__o+=" aria-hidden=\"true\"";__o+=" style=\"position:absolute;inset:0;background-image:linear-gradient(rgba(201,160,116,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(201,160,116,.06) 1px, transparent 1px);background-size:32px 32px;pointer-events:none\"";__o+=">";__o+="</div>";__o+="<div";__o+=" style=\"position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(201,160,116,.2)\"";__o+=">";__o+="<span";__o+=" style=\"display:inline-flex;align-items:center;gap:10px;font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E2C7A2\"";__o+=">";__o+="<span";__o+=" style=\"width:6px;height:6px;border-radius:999px;background:#C9A074\"";__o+=">";__o+="</span>";__o+="Чертёж · онлайн";__o+="</span>";__o+="<span";__o+=" style=\"font:500 12px Manrope, sans-serif;color:#8A8177;font-variant-numeric:tabular-nums\"";__o+=">";__o+=__E(v.sheetNo);__o+="</span>";__o+="</div>";__o+="<div";__o+=" style=\"position:relative;padding:clamp(16px,2.4vw,32px) clamp(12px,2vw,28px) 8px;color:#C9A074\"";__o+=">";__o+="<svg";__o+=" data-ref=\""+__H(v.bpRef)+"\"";__o+=" role=\"img\"";__o+=" aria-label=\"Чертёж кухни с размерами\"";__o+=" viewBox=\"40 -32 1010 656\"";__o+=" fill=\"none\"";__o+=" style=\"width:100%;height:auto;display:block;overflow:visible\"";__o+=">";__o+="</svg>";__o+="</div>";__o+="<div";__o+=" aria-hidden=\"true\"";__o+=" style=\"position:relative;display:grid;grid-template-columns:1.4fr 1fr .8fr;border-top:1px solid rgba(201,160,116,.2)\"";__o+=">";__o+="<div";__o+=" style=\"padding:14px 20px;border-right:1px solid rgba(201,160,116,.2)\"";__o+=">";__o+="<small";__o+=" style=\"display:block;font:600 9.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177\"";__o+=">";__o+="Проект";__o+="</small>";__o+="<b";__o+=" style=\"display:block;margin-top:6px;font:400 14px 'Noto Serif Display', serif;color:#E2C7A2\"";__o+=">";__o+="ASD · Кухня на заказ";__o+="</b>";__o+="</div>";__o+="<div";__o+=" style=\"padding:14px 20px;border-right:1px solid rgba(201,160,116,.2)\"";__o+=">";__o+="<small";__o+=" style=\"display:block;font:600 9.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177\"";__o+=">";__o+="Лист";__o+="</small>";__o+="<b";__o+=" style=\"display:block;margin-top:6px;font:400 14px 'Noto Serif Display', serif;color:#E2C7A2\"";__o+=">";__o+=__E(v.sheetNo);__o+="</b>";__o+="</div>";__o+="<div";__o+=" style=\"padding:14px 20px\"";__o+=">";__o+="<small";__o+=" style=\"display:block;font:600 9.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177\"";__o+=">";__o+="Масштаб";__o+="</small>";__o+="<b";__o+=" style=\"display:block;margin-top:6px;font:400 14px 'Noto Serif Display', serif;color:#E2C7A2\"";__o+=">";__o+="1 : 20";__o+="</b>";__o+="</div>";__o+="</div>";__o+="</div>";__o+="</div>";__o+="</div>";__o+="</section>";__o+="</main>";__o+="<div data-dc=\"SiteFooter\" style=\"display:contents\"></div>";__o+="<div";__o+=" role=\"status\"";__o+=" aria-live=\"polite\"";__o+=" style=\""+"position:fixed;left:50%;bottom:28px;z-index:150;transform:translateX(-50%) translateY("+__E(v.toastY)+");opacity:"+__E(v.toastOp)+";transition:opacity .35s, transform .5s cubic-bezier(.2,.8,.2,1);background:#1A1714;color:#FBFAF7;padding:14px 22px;border-radius:999px;font:500 14px Manrope, sans-serif;box-shadow:0 20px 40px -16px rgba(0,0,0,.5);pointer-events:none;display:flex;align-items:center;gap:10px"+"\"";__o+=">";__o+="<span";__o+=" style=\"width:6px;height:6px;border-radius:999px;background:#C9A074\"";__o+=">";__o+="</span>";__o+=__E(v.toast);__o+="</div>";return __o;}));
+
+DC.start();
+</script>
 </body>
 </html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Дизайн-проект мебели для вашего дома — ASD</title>
+  <meta name="description" content="Ответьте на пять коротких вопросов, и дизайнер подготовит проект мебели для вашего дома."></meta>
+  <meta name="theme-color" content="#F4F1EC"></meta>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml"></link>
+  <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""></link>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"></link>
+  <style>
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: #F4F1EC; color: #1A1714; font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+    a { color: inherit; } a:hover { color: #8C6239; }
+    ::selection { background: #C9A074; color: #14120F; }
+    :focus-visible { outline: 2px solid #B98D5E; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+</helmet>
+
+<dc-import name="SiteHeader" active="quiz" tone="light" hint-size="100%,0px"></dc-import>
+
+<main>
+  <section data-screen-label="Quiz hero" style="padding:calc(84px + clamp(48px,7vw,104px)) 0 clamp(32px,4vw,56px)">
+    <div data-in="0" style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
+      <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Дизайн-проект</div>
+      <h1 style="margin:0;max-width:16ch;font:300 clamp(2.8rem,6.2vw,6rem)/1 'Noto Serif Display', serif;letter-spacing:-.035em;text-wrap:balance">Дизайн-проект мебели для <em style="font-style:italic;color:#8C6239">вашего дома</em></h1>
+      <p style="margin:24px 0 0;max-width:56ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty">Ответьте на несколько вопросов, и дизайнер подготовит проект мебели под вашу квартиру. Это займёт около двух минут, а фотографии и планы можно приложить сразу.</p>
+    </div>
+  </section>
+
+  <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px) clamp(80px,10vw,140px)">
+    <sc-if value="{{ demo }}" hint-placeholder-val="{{ false }}">
+      <p style="margin:0 0 28px;padding:16px 22px;border-radius:14px;background:#FBFAF7;border:1px solid #E2DCD3;color:#6B635A;font:400 14.5px/1.6 Manrope, sans-serif"><strong style="color:#1A1714">Демо-режим.</strong> Хранилище заявок ещё не подключено, поэтому заявка сохранится только в этом браузере и администратор её не увидит.</p>
+    </sc-if>
+
+    <div style="display:grid;grid-template-columns:{{ cols }};gap:clamp(28px,4vw,64px);align-items:start">
+      <sc-if value="{{ showQuiz }}" hint-placeholder-val="{{ true }}">
+        <form ref="{{ formRef }}" onSubmit="{{ submit }}" novalidate="" style="background:#FBFAF7;border:1px solid #E2DCD3;border-radius:28px;padding:clamp(24px,3.6vw,48px);min-height:480px;display:flex;flex-direction:column;box-shadow:0 30px 60px -40px rgba(26,23,20,.25);scroll-margin-top:96px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px">
+            <span aria-live="polite" style="font:600 13.5px Manrope, sans-serif;font-variant-numeric:tabular-nums">Шаг {{ step }} <span style="color:#8A8177;font-weight:500">из 5</span></span>
+            <span style="font:600 11px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8C6239">{{ stepName }}</span>
+          </div>
+          <div aria-hidden="true" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:clamp(28px,3.4vw,44px)">
+            <sc-for list="{{ bar }}" as="b" hint-placeholder-count="5">
+              <span style="height:3px;border-radius:999px;background:#E2DCD3;overflow:hidden"><span style="display:block;height:100%;background:#B98D5E;transform-origin:left;transform:scaleX({{ b }});transition:transform .8s cubic-bezier(.2,.8,.2,1)"></span></span>
+            </sc-for>
+          </div>
+
+          <div data-qstep="" style="flex:1">
+            <h2 ref="{{ titleRef }}" tabindex="-1" style="margin:0 0 10px;font:300 clamp(1.8rem,3vw,2.6rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.02em;outline:none;text-wrap:balance">{{ q.title }}</h2>
+            <p style="margin:0 0 28px;max-width:60ch;color:#6B635A;font:400 15.5px/1.6 Manrope, sans-serif">{{ q.hint }}</p>
+
+            <sc-if value="{{ q.hasOpts }}" hint-placeholder-val="{{ true }}">
+              <div role="{{ q.groupRole }}" aria-label="{{ q.title }}" style="display:grid;grid-template-columns:{{ optCols }};gap:10px">
+                <sc-for list="{{ q.opts }}" as="o" hint-placeholder-count="6">
+                  <button type="button" role="{{ o.role }}" aria-checked="{{ o.on }}" onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:14px;min-height:60px;padding:14px 18px;border-radius:16px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:#1A1714;text-align:left;font:500 15px/1.35 Manrope, sans-serif;cursor:pointer;box-shadow:{{ o.sh }};transition:border-color .25s, background-color .25s, box-shadow .25s, transform .25s" style-hover="border-color:#1A1714;background:#fff">
+                    <span aria-hidden="true" style="flex:none;width:22px;height:22px;border-radius:{{ o.radius }};border:1.5px solid {{ o.mbd }};background:{{ o.mbg }};display:grid;place-items:center;transition:all .25s">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#FBFAF7" stroke-width="1.8" style="opacity:{{ o.chk }};transform:scale({{ o.chk }});transition:all .2s"><path d="{{ o.icon }}"></path></svg>
+                    </span>
+                    {{ o.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ showItemsOther }}" hint-placeholder-val="{{ false }}">
+              <input ref="{{ itemsOtherRef }}" type="text" maxlength="200" aria-label="Что именно вам нужно" placeholder="Напишите, какая мебель вам нужна" autocomplete="off" value="{{ itemsOther }}" onInput="{{ onItemsOther }}" style="margin-top:12px;width:100%;box-sizing:border-box;height:54px;padding:0 18px;border:1px solid #DCD5CA;border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></input>
+            </sc-if>
+            <sc-if value="{{ showStageOther }}" hint-placeholder-val="{{ false }}">
+              <input ref="{{ stageOtherRef }}" type="text" maxlength="70" aria-label="Ваш вариант" placeholder="Опишите, на каком этапе ремонт" autocomplete="off" value="{{ stageOther }}" onInput="{{ onStageOther }}" style="margin-top:12px;width:100%;box-sizing:border-box;height:54px;padding:0 18px;border:1px solid #DCD5CA;border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></input>
+            </sc-if>
+
+            <sc-if value="{{ isFiles }}" hint-placeholder-val="{{ false }}">
+              <label onDragEnter="{{ dragOn }}" onDragOver="{{ dragOn }}" onDragLeave="{{ dragOff }}" onDrop="{{ onDrop }}" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:clamp(32px,5vw,56px) 20px;border:1.5px dashed {{ dropBd }};border-radius:20px;background:{{ dropBg }};cursor:pointer;transition:all .25s" style-hover="border-color:#1A1714;background:#fff">
+                <input type="file" multiple="" accept="image/*,application/pdf,.pdf,.heic,.heif" onChange="{{ onPick }}" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden"></input>
+                <span aria-hidden="true" style="width:56px;height:56px;border-radius:999px;background:#EFE6DA;display:grid;place-items:center;color:#8C6239;margin-bottom:6px">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"></path></svg>
+                </span>
+                <span style="font:600 15.5px Manrope, sans-serif">Выберите файлы или перетащите их сюда</span>
+                <span style="color:#8A8177;font:400 14px Manrope, sans-serif">Фото и PDF, до 8 файлов, каждый до 10 МБ</span>
+              </label>
+              <ul aria-live="polite" style="list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ files }}" as="f">
+                  <li style="display:grid;grid-template-columns:56px minmax(0,1fr) 40px;gap:14px;align-items:center;padding:8px;border:1px solid #E2DCD3;border-radius:14px;background:#fff">
+                    <span style="width:56px;height:56px;border-radius:10px;background:#ECE6DD;display:grid;place-items:center;overflow:hidden;font:700 11px Manrope, sans-serif;color:#6B635A">
+                      <sc-if value="{{ f.url }}" hint-placeholder-val="{{ false }}"><img src="{{ f.url }}" alt="" style="width:100%;height:100%;object-fit:cover"></img></sc-if>
+                      <sc-if value="{{ f.noUrl }}" hint-placeholder-val="{{ false }}">{{ f.kind }}</sc-if>
+                    </span>
+                    <span style="min-width:0;display:flex;flex-direction:column"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 14.5px Manrope, sans-serif">{{ f.name }}</span><small style="color:#8A8177;font:400 13px Manrope, sans-serif">{{ f.size }}</small></span>
+                    <button type="button" onClick="{{ f.remove }}" aria-label="{{ f.aria }}" style="width:40px;height:40px;border-radius:999px;border:1px solid #E2DCD3;background:transparent;cursor:pointer;display:grid;place-items:center;color:#1A1714;transition:all .2s" style-hover="background:#1A1714;color:#FBFAF7;border-color:#1A1714">
+                      <svg width="10" height="10" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.6"><path d="M1 1l10 10M11 1L1 11"></path></svg>
+                    </button>
+                  </li>
+                </sc-for>
+              </ul>
+            </sc-if>
+
+            <sc-if value="{{ isContacts }}" hint-placeholder-val="{{ false }}">
+              <sc-if value="{{ sendErr }}" hint-placeholder-val="{{ false }}">
+                <div role="alert" style="margin-bottom:20px;padding:12px 16px;border-radius:12px;background:#F8E9E4;color:#8A2B1C;font:500 14px/1.5 Manrope, sans-serif">{{ sendErr }}</div>
+              </sc-if>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:18px 20px">
+                <label style="display:flex;flex-direction:column;gap:8px">
+                  <span style="font:600 14px Manrope, sans-serif">Ваше имя</span>
+                  <input ref="{{ nameRef }}" type="text" maxlength="60" autocomplete="name" placeholder="Как к вам обращаться" value="{{ name }}" onInput="{{ onName }}" style="height:54px;padding:0 18px;border:1px solid {{ nameBd }};border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></input>
+                  <sc-if value="{{ eName }}" hint-placeholder-val="{{ false }}"><span style="color:#A33A28;font:500 13px Manrope, sans-serif">Напишите имя, чтобы мы знали, как к вам обращаться.</span></sc-if>
+                </label>
+                <label style="display:flex;flex-direction:column;gap:8px">
+                  <span style="font:600 14px Manrope, sans-serif">Номер телефона</span>
+                  <input ref="{{ phoneRef }}" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="+7 (900) 000-00-00" value="{{ phone }}" onInput="{{ onPhone }}" style="height:54px;padding:0 18px;border:1px solid {{ phoneBd }};border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none;font-variant-numeric:tabular-nums" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></input>
+                  <sc-if value="{{ ePhone }}" hint-placeholder-val="{{ false }}"><span style="color:#A33A28;font:500 13px Manrope, sans-serif">Проверьте номер: нужно 11 цифр, например +7 900 000-00-00.</span></sc-if>
+                </label>
+              </div>
+              <label style="display:flex;flex-direction:column;gap:8px;margin-top:18px">
+                <span style="font:600 14px Manrope, sans-serif">Комментарий <span style="font-weight:400;color:#8A8177">(необязательно)</span></span>
+                <textarea maxlength="1500" placeholder="Пожелания, сроки, бюджет, удобное время для звонка" value="{{ comment }}" onInput="{{ onComment }}" style="min-height:110px;padding:16px 18px;border:1px solid #DCD5CA;border-radius:14px;background:#fff;font:400 16px/1.6 Manrope, sans-serif;color:#1A1714;resize:vertical;outline:none" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></textarea>
+              </label>
+              <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><label>Сайт<input type="text" tabindex="-1" autocomplete="off" value="{{ site }}" onInput="{{ onSite }}"></input></label></div>
+              <button type="button" role="checkbox" aria-checked="{{ consentStr }}" onClick="{{ toggleConsent }}" style="margin-top:20px;display:flex;align-items:flex-start;gap:12px;padding:0;border:0;background:transparent;text-align:left;cursor:pointer;color:#6B635A;font:400 14px/1.55 Manrope, sans-serif">
+                <span aria-hidden="true" style="flex:none;margin-top:1px;width:22px;height:22px;border-radius:6px;border:1.5px solid {{ consentBd }};background:{{ consentBg }};display:grid;place-items:center;box-shadow:{{ consentSh }};transition:all .2s">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#FBFAF7" stroke-width="1.8" style="opacity:{{ consentChk }};transition:opacity .2s"><path d="M2 6.2l2.6 2.6L10 3.4"></path></svg>
+                </span>
+                <span>Согласен на обработку персональных данных: имени и телефона, чтобы со мной связались по заявке.</span>
+              </button>
+              <sc-if value="{{ eConsent }}" hint-placeholder-val="{{ false }}"><span style="display:block;margin-top:8px;color:#A33A28;font:500 13px Manrope, sans-serif">Поставьте галочку, чтобы мы могли с вами связаться.</span></sc-if>
+            </sc-if>
+
+            <sc-if value="{{ stepErr }}" hint-placeholder-val="{{ false }}">
+              <p role="alert" style="margin:16px 0 0;color:#A33A28;font:500 14px Manrope, sans-serif">{{ stepErr }}</p>
+            </sc-if>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap-reverse;gap:12px;margin-top:clamp(28px,3.4vw,40px);padding-top:24px;border-top:1px solid #E2DCD3;justify-content:space-between">
+            <sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ back }}" disabled="{{ sending }}" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;min-width:140px;padding:0 24px;border-radius:999px;border:1px solid rgba(26,23,20,.25);background:transparent;color:#1A1714;font:600 15px Manrope, sans-serif;cursor:pointer;transition:border-color .3s" style-hover="border-color:#1A1714">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12H4M10 6l-6 6 6 6"></path></svg>Назад
+              </button>
+            </sc-if>
+            <button type="submit" disabled="{{ sending }}" style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:12px;height:56px;min-width:180px;padding:0 28px;border-radius:999px;border:0;background:{{ nextBg }};color:{{ nextFg }};font:600 15px Manrope, sans-serif;cursor:pointer;transition:background-color .3s, gap .4s cubic-bezier(.2,.8,.2,1)" style-hover="gap:18px">{{ nextLabel }}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+            </button>
+          </div>
+        </form>
+      </sc-if>
+
+      <sc-if value="{{ showDone }}" hint-placeholder-val="{{ false }}">
+        <div ref="{{ doneRef }}" tabindex="-1" aria-live="polite" style="background:#FBFAF7;border:1px solid #E2DCD3;border-radius:28px;padding:clamp(32px,5vw,64px);display:flex;flex-direction:column;align-items:flex-start;gap:16px;outline:none;box-shadow:0 30px 60px -40px rgba(26,23,20,.25)">
+          <div style="width:72px;height:72px;border-radius:999px;background:#EFE6DA;display:grid;place-items:center;color:#8C6239;margin-bottom:8px">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path data-check="" pathLength="1" stroke-dasharray="1" d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          </div>
+          <h2 style="margin:0;font:300 clamp(2rem,3.6vw,3.2rem)/1.06 'Noto Serif Display', serif;letter-spacing:-.02em;text-wrap:balance">{{ doneTitle }}</h2>
+          <p style="margin:0;max-width:52ch;color:#6B635A;font:400 16px/1.7 Manrope, sans-serif">{{ doneP1 }}<strong style="color:#1A1714">{{ donePhone }}</strong>{{ doneP1b }}</p>
+          <p style="margin:0;max-width:52ch;color:#6B635A;font:400 16px/1.7 Manrope, sans-serif">{{ doneP2 }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px">
+            <a href="Works.dc.html" style="display:inline-flex;align-items:center;gap:12px;height:54px;padding:0 26px;border-radius:999px;background:#1A1714;color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1)" style-hover="gap:18px;color:#FBFAF7">Смотреть работы
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+            </a>
+            <a href="Home.dc.html" style="display:inline-flex;align-items:center;height:54px;padding:0 24px;border-radius:999px;border:1px solid rgba(26,23,20,.25);color:#1A1714;text-decoration:none;font:600 15px Manrope, sans-serif;transition:border-color .3s" style-hover="border-color:#1A1714">На главную</a>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showSide }}" hint-placeholder-val="{{ true }}">
+        <aside aria-label="О проекте" style="position:{{ sidePos }};top:100px;padding:clamp(24px,3vw,36px);border-radius:24px;background:#1D1A16;color:#FBFAF7">
+          <h3 style="margin:0 0 22px;font:300 28px/1.1 'Noto Serif Display', serif;letter-spacing:-.01em">Как это <em style="font-style:italic;color:#E2C7A2">работает</em></h3>
+          <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+            <li style="display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">01</span><span style="color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif"><b style="color:#FBFAF7;font-weight:600">Вы отвечаете на вопросы.</b> Так мы сразу понимаем, что вам нужно.</span></li>
+            <li style="display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">02</span><span style="color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif"><b style="color:#FBFAF7;font-weight:600">Дизайнер связывается с вами</b> по телефону и уточняет детали.</span></li>
+            <li style="display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14);border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">03</span><span style="color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif"><b style="color:#FBFAF7;font-weight:600">Готовим проект мебели</b> под размеры и стиль вашего дома.</span></li>
+          </ol>
+          <p style="margin:20px 0 0;color:#A79E93;font:400 14px Manrope, sans-serif">Заявка ни к чему вас не обязывает.</p>
+        </aside>
+      </sc-if>
+    </div>
+  </div>
+</main>
+
+<dc-import name="SiteFooter" hint-size="100%,560px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  ITEMS = ['Комплексную меблировку квартиры', 'Кухню', 'Шкаф или гардеробную', 'Мебель в прихожую', 'Мебель в гостиную', 'Мебель в спальню', 'Детскую', 'Мебель для ванной', 'Рабочую зону или домашний кабинет', 'Другое'];
+  STAGES = ['Планируем ремонт', 'Идёт черновой ремонт', 'Сейчас делаем электрику и сантехнику', 'Идёт чистовая отделка', 'Ремонт почти завершён', 'Квартира с ремонтом', 'Свой вариант'];
+  PLANS = ['Да, есть дизайн-проект', 'Есть план с размерами', 'Есть только планировка от застройщика', 'Пока ничего нет'];
+  TITLES = ['', 'Мебель', 'Ремонт', 'План', 'Файлы', 'Контакты'];
+  LAST = 5; OTHER_ITEM = 9; OTHER_STAGE = 6;
+  state = { ready: false, w: 1280, step: 1, items: [], itemsOther: '', stage: -1, stageOther: '', plan: -1, name: '', phone: '', comment: '', consent: false, site: '',
+    files: [], stepErr: '', errs: {}, sendErr: '', sending: false, sendLabel: '', over: false, result: null };
+  formRef = React.createRef(); titleRef = React.createRef(); nameRef = React.createRef(); phoneRef = React.createRef(); doneRef = React.createRef();
+  itemsOtherRef = React.createRef(); stageOtherRef = React.createRef();
+  reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  boot() {
+    return window.__asdBoot || (window.__asdBoot = ['js/config.js', 'js/works-data.js', 'js/api.js'].reduce((p, src) => p.then(() => new Promise((res) => {
+      const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = res; document.head.appendChild(s);
+    })), Promise.resolve()));
+  }
+  componentDidMount() {
+    try { const saved = JSON.parse(sessionStorage.getItem('kv_quiz') || '{}'); const k = ['items', 'itemsOther', 'stage', 'stageOther', 'plan', 'name', 'phone', 'comment']; const o = {}; k.forEach((x) => { if (saved[x] !== undefined) o[x] = saved[x]; }); this.setState(o); } catch (e) {}
+    this.onR = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onR); this.onR();
+    this.onUnload = (e) => { if (!this.state.result && this.state.files.length) { e.preventDefault(); e.returnValue = ''; } };
+    window.addEventListener('beforeunload', this.onUnload);
+    if (!this.reduce) document.querySelectorAll('[data-in]').forEach((el) => el.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 1100, delay: 100, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' }));
+    this.boot().then(() => {
+      this.setState({ ready: true });
+      const A = window.Api; if (!A) return;
+      if (A.leadSentQuick()) this.already(); else A.myLeadStatus().then((r) => { if (r === 'sent') this.already(); });
+    });
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); window.removeEventListener('beforeunload', this.onUnload); }
+  save() { const s = this.state; try { sessionStorage.setItem('kv_quiz', JSON.stringify({ items: s.items, itemsOther: s.itemsOther, stage: s.stage, stageOther: s.stageOther, plan: s.plan, name: s.name, phone: s.phone, comment: s.comment })); } catch (e) {} }
+  set(o, cb) { this.setState(o, () => { this.save(); cb && cb(); }); }
+
+  fmtPhone(v) {
+    let d = v.replace(/\D/g, ''); if (!d) return '';
+    if (d[0] === '8') d = '7' + d.slice(1);
+    if (d[0] !== '7' && v.trim()[0] !== '+') d = '7' + d;
+    if (v.trim()[0] === '+' && d[0] !== '7') return '+' + d.slice(0, 15);
+    d = d.slice(0, 11);
+    let o = '+7';
+    if (d.length > 1) o += ' (' + d.slice(1, 4); if (d.length >= 4) o += ')'; if (d.length > 4) o += ' ' + d.slice(4, 7);
+    if (d.length > 7) o += '-' + d.slice(7, 9); if (d.length > 9) o += '-' + d.slice(9, 11);
+    return o;
+  }
+  phoneOk(v) { const d = v.replace(/\D/g, ''); return (d.length === 11 && d[0] === '7') || (v.trim()[0] === '+' && d.length >= 10 && d.length <= 15); }
+  onPhone(e) {
+    const el = e.target, it = e.nativeEvent && e.nativeEvent.inputType;
+    if (it && it.startsWith('delete') && el.selectionStart !== el.value.length) { this.set({ phone: el.value }); return; }
+    if (it && it.startsWith('delete') && el.value.replace(/\D/g, '').length <= 1) { this.set({ phone: '' }); return; }
+    this.set({ phone: this.fmtPhone(el.value), errs: Object.assign({}, this.state.errs, { phone: false }) });
+  }
+
+  okType(f) { return /^image\//.test(f.type) || f.type === 'application/pdf' || /\.(pdf|heic|heif|jpe?g|png|webp)$/i.test(f.name); }
+  addFiles(list) {
+    const err = [], files = this.state.files.slice(), MAX = (window.Api && window.Api.MAX_FILES) || 8;
+    [...list].forEach((f) => {
+      if (!this.okType(f)) { err.push('«' + f.name + '»: подходят только фото и PDF.'); return; }
+      if (files.some((x) => x.name === f.name && x.size === f.size)) return;
+      if (files.length >= MAX) { err.push('Можно прикрепить не больше ' + MAX + ' файлов.'); return; }
+      if (f.size > 40 * 1024 * 1024) { err.push('«' + f.name + '» слишком большой.'); return; }
+      if (/^image\/(jpeg|png|webp|gif)/.test(f.type)) f._url = URL.createObjectURL(f);
+      files.push(f);
+    });
+    this.setState({ files, stepErr: [...new Set(err)].join(' ') });
+  }
+
+  validate(n) {
+    const s = this.state;
+    if (n === 1) {
+      if (!s.items.length) return this.err('Выберите хотя бы один вариант.');
+      if (s.items.includes(this.OTHER_ITEM) && !s.itemsOther.trim()) { this.itemsOtherRef.current && this.itemsOtherRef.current.focus(); return this.err('Напишите, какая мебель вам нужна, или уберите «Другое».'); }
+    }
+    if (n === 2) {
+      if (s.stage < 0) return this.err('Выберите, на каком этапе ремонт.');
+      if (s.stage === this.OTHER_STAGE && !s.stageOther.trim()) { this.stageOtherRef.current && this.stageOtherRef.current.focus(); return this.err('Опишите свой вариант.'); }
+    }
+    if (n === 3 && s.plan < 0) return this.err('Выберите один из вариантов.');
+    if (n === 5) {
+      const errs = { name: s.name.trim().length < 2, phone: !this.phoneOk(s.phone), consent: !s.consent };
+      this.setState({ errs });
+      if (errs.name) { this.nameRef.current && this.nameRef.current.focus(); return false; }
+      if (errs.phone) { this.phoneRef.current && this.phoneRef.current.focus(); return false; }
+      if (errs.consent) return false;
+    }
+    return true;
+  }
+  err(m) { this.setState({ stepErr: m }); return false; }
+  go(n) {
+    this.setState({ step: n, stepErr: '' }, () => {
+      const h = this.titleRef.current; if (h) h.focus({ preventScroll: true });
+      const step = document.querySelector('[data-qstep]');
+      if (step && !this.reduce) step.animate([{ opacity: 0, transform: 'translateX(18px)' }, { opacity: 1, transform: 'none' }], { duration: 550, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      const f = this.formRef.current;
+      if (f) { const top = f.getBoundingClientRect().top + window.scrollY - 96; if (Math.abs(window.scrollY - top) > 40) window.scrollTo({ top: Math.max(0, top), behavior: this.reduce ? 'auto' : 'smooth' }); }
+    });
+  }
+  async submit(e) {
+    e.preventDefault();
+    if (!this.validate(this.state.step)) return;
+    if (this.state.step < this.LAST) { this.go(this.state.step + 1); return; }
+    await this.send();
+  }
+  async send() {
+    const s = this.state;
+    if (s.site) { this.finish(); return; }
+    this.setState({ sending: true, sendErr: '', sendLabel: 'Отправляем…' });
+    try {
+      await window.Api.submitLead({
+        items: s.items.map((i) => this.ITEMS[i]), itemsOther: s.items.includes(this.OTHER_ITEM) ? s.itemsOther.trim() : '',
+        stage: s.stage === this.OTHER_STAGE ? 'Свой вариант: ' + s.stageOther.trim() : this.STAGES[s.stage],
+        plan: this.PLANS[s.plan], name: s.name, phone: s.phone, comment: s.comment, files: s.files,
+      }, (d, t) => this.setState({ sendLabel: 'Загружаем файлы ' + d + ' из ' + t + '…' }));
+      this.finish();
+    } catch (er) {
+      if (er && er.code === 'duplicate') { this.already(); return; }
+      this.setState({ sending: false, sendLabel: '', sendErr: ((er && er.message) || 'Не получилось отправить.') + ' Данные сохранены, нажмите «Отправить заявку» ещё раз.' });
+    }
+  }
+  showResult(result) {
+    try { sessionStorage.removeItem('kv_quiz'); } catch (e) {}
+    this.setState({ result, sending: false }, () => {
+      window.scrollTo({ top: 0, behavior: this.reduce ? 'auto' : 'smooth' });
+      if (this.doneRef.current) this.doneRef.current.focus({ preventScroll: true });
+      const p = document.querySelector('[data-check]');
+      if (p && !this.reduce) p.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 900, delay: 250, easing: 'cubic-bezier(.55,.1,.25,1)', fill: 'both' });
+    });
+  }
+  finish() { this.showResult('sent'); }
+  already() { this.showResult('already'); }
+
+  renderVals() {
+    const s = this.state, step = s.step;
+    const sizeStr = (b) => (b > 1048576 ? (b / 1048576).toFixed(1).replace('.', ',') + ' МБ' : Math.max(1, Math.round(b / 1024)) + ' КБ');
+    const opt = (label, on, multi, pick) => ({
+      label, on: String(on), role: multi ? 'checkbox' : 'radio', pick, radius: multi ? '6px' : '999px',
+      bd: on ? '#1A1714' : '#E2DCD3', bg: on ? '#fff' : '#F7F4EF', sh: on ? 'inset 3px 0 0 #B98D5E, 0 10px 24px -16px rgba(26,23,20,.4)' : 'none',
+      mbd: on ? '#1A1714' : '#B5ACA1', mbg: on ? '#1A1714' : '#fff', chk: on ? 1 : 0, icon: multi ? 'M2 6.2l2.6 2.6L10 3.4' : 'M3.5 6a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0',
+    });
+    let q = { title: '', hint: '', hasOpts: false, opts: [], groupRole: 'group' };
+    if (step === 1) q = { title: 'Что вам необходимо из мебели для уюта вашего дома?', hint: 'Можно выбрать несколько вариантов.', hasOpts: true, groupRole: 'group',
+      opts: this.ITEMS.map((t, i) => opt(t, s.items.includes(i), true, () => {
+        const items = s.items.includes(i) ? s.items.filter((x) => x !== i) : s.items.concat(i);
+        this.set({ items, stepErr: '' }, () => { if (i === this.OTHER_ITEM && items.includes(i)) setTimeout(() => this.itemsOtherRef.current && this.itemsOtherRef.current.focus({ preventScroll: true }), 30); });
+      })) };
+    if (step === 2) q = { title: 'Стадия ремонта', hint: 'На каком этапе сейчас ремонт?', hasOpts: true, groupRole: 'radiogroup',
+      opts: this.STAGES.map((t, i) => opt(t, s.stage === i, false, () => this.set({ stage: i, stepErr: '' }, () => { if (i === this.OTHER_STAGE) setTimeout(() => this.stageOtherRef.current && this.stageOtherRef.current.focus({ preventScroll: true }), 30); }))) };
+    if (step === 3) q = { title: 'Есть ли уже план помещения или дизайн-проект?', hint: 'Выберите один вариант.', hasOpts: true, groupRole: 'radiogroup',
+      opts: this.PLANS.map((t, i) => opt(t, s.plan === i, false, () => this.set({ plan: i, stepErr: '' }))) };
+    if (step === 4) q = { title: 'Прикрепите план, чертёж или фотографии', hint: 'Фотографии плана помещения, размеры, снимки комнат и референсы: в каком стиле вам хочется мебель. Этот шаг можно пропустить.', hasOpts: false, opts: [], groupRole: 'group' };
+    if (step === 5) q = { title: 'Как с вами связаться?', hint: 'Дизайнер позвонит вам, уточнит детали и расскажет, что можно сделать.', hasOpts: false, opts: [], groupRole: 'group' };
+
+    const last = step === this.LAST;
+    const first = (s.name.trim().split(/\s+/)[0] || '');
+    const sent = s.result === 'sent';
+    const configured = window.Api ? window.Api.configured : true;
+    return {
+      demo: s.ready && !configured, cols: s.w > 1000 ? 'minmax(0,1fr) 340px' : 'minmax(0,1fr)', sidePos: s.w > 1000 ? 'sticky' : 'static',
+      showQuiz: !s.result, showDone: !!s.result, showSide: !s.result,
+      formRef: this.formRef, titleRef: this.titleRef, nameRef: this.nameRef, phoneRef: this.phoneRef, doneRef: this.doneRef, itemsOtherRef: this.itemsOtherRef, stageOtherRef: this.stageOtherRef,
+      step, stepName: this.TITLES[step], bar: [1, 2, 3, 4, 5].map((i) => (i <= step ? 1 : 0)), q, optCols: step === 1 && s.w > 640 ? 'repeat(2, minmax(0,1fr))' : 'minmax(0,1fr)',
+      showItemsOther: step === 1 && s.items.includes(this.OTHER_ITEM), itemsOther: s.itemsOther, onItemsOther: (e) => this.set({ itemsOther: e.target.value }),
+      showStageOther: step === 2 && s.stage === this.OTHER_STAGE, stageOther: s.stageOther, onStageOther: (e) => this.set({ stageOther: e.target.value }),
+      isFiles: step === 4, isContacts: step === 5,
+      dropBd: s.over ? '#1A1714' : '#B5ACA1', dropBg: s.over ? '#fff' : '#F7F4EF',
+      dragOn: (e) => { e.preventDefault(); if (!s.over) this.setState({ over: true }); }, dragOff: (e) => { e.preventDefault(); this.setState({ over: false }); },
+      onDrop: (e) => { e.preventDefault(); this.setState({ over: false }); if (e.dataTransfer && e.dataTransfer.files) this.addFiles(e.dataTransfer.files); },
+      onPick: (e) => { this.addFiles(e.target.files); e.target.value = ''; },
+      files: s.files.map((f, i) => ({ name: f.name, size: sizeStr(f.size), url: f._url || false, noUrl: !f._url, kind: /pdf/i.test(f.type + f.name) ? 'PDF' : 'IMG', aria: 'Убрать файл ' + f.name,
+        remove: () => this.setState({ files: s.files.filter((_, j) => j !== i), stepErr: '' }) })),
+      sendErr: s.sendErr,
+      name: s.name, onName: (e) => this.set({ name: e.target.value, errs: Object.assign({}, s.errs, { name: false }) }), eName: !!s.errs.name, nameBd: s.errs.name ? '#A33A28' : '#DCD5CA',
+      phone: s.phone, onPhone: (e) => this.onPhone(e), ePhone: !!s.errs.phone, phoneBd: s.errs.phone ? '#A33A28' : '#DCD5CA',
+      comment: s.comment, onComment: (e) => this.set({ comment: e.target.value }), site: s.site, onSite: (e) => this.setState({ site: e.target.value }),
+      consentStr: String(s.consent), toggleConsent: () => this.setState({ consent: !s.consent, errs: Object.assign({}, s.errs, { consent: false }) }),
+      consentBd: s.consent ? '#1A1714' : (s.errs.consent ? '#A33A28' : '#8A8177'), consentBg: s.consent ? '#1A1714' : '#fff', consentChk: s.consent ? 1 : 0,
+      consentSh: s.errs.consent ? '0 0 0 4px rgba(163,58,40,.15)' : 'none', eConsent: !!s.errs.consent,
+      stepErr: s.stepErr, canBack: step > 1, back: () => this.go(step - 1), sending: s.sending,
+      submit: (e) => this.submit(e),
+      nextLabel: s.sending ? s.sendLabel : (last ? 'Отправить заявку' : (step === 4 && !s.files.length ? 'Пропустить' : 'Далее')),
+      nextBg: last ? '#B98D5E' : '#1A1714', nextFg: last ? '#14120F' : '#FBFAF7',
+      doneTitle: sent ? 'Спасибо' + (first ? ', ' + first : '') + '! Заявка отправлена' : 'Заявка с этого устройства уже отправлена',
+      doneP1: sent ? 'Дизайнер свяжется с вами по номеру ' : 'Повторно пройти опрос нельзя: дизайнер уже получил ваши ответы и свяжется с вами по указанному номеру.',
+      donePhone: sent ? s.phone : '', doneP1b: sent ? ' и уточнит детали проекта.' : '',
+      doneP2: sent ? 'Пока ждёте, посмотрите наши работы: может быть, найдёте то, что хочется видеть у себя дома.' : 'Нужно что-то добавить или изменить? Нажмите «Поддержка сайта» внизу страницы или позвоните нам.',
+    };
+  }
+}
+</script>
+</body>
+</html>

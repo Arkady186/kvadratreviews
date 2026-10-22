@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<footer style="position:relative;overflow:hidden;isolation:isolate;background:#14120F;color:#FBFAF7;padding:clamp(72px,9vw,128px) 0 32px">
+  <div aria-hidden="true" style="position:absolute;left:50%;bottom:-0.24em;transform:translateX(-50%);z-index:-1;font:300 clamp(10rem,36vw,34rem)/1 'Noto Serif Display', serif;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px rgba(201,160,116,.16);white-space:nowrap;user-select:none;pointer-events:none">ASD</div>
+  <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:48px clamp(32px,5vw,80px);padding-bottom:clamp(120px,18vw,260px)">
+      <div style="display:flex;flex-direction:column;gap:22px;max-width:380px">
+        <a href="Home.dc.html" aria-label="ASD — на главную" style="line-height:0"><img src="{{ logoSrc }}" alt="ASD" width="130" height="48" style="height:44px;width:auto"></img></a>
+        <p style="margin:0;color:#A79E93;font:400 15px/1.7 Manrope, sans-serif;text-wrap:pretty">Мебель на заказ. Смотрите наши работы и читайте отзывы тех, кто уже живёт с нашей мебелью.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#C9A074">Разделы</div>
+        <a href="Works.dc.html" style="color:#E9E3DA;text-decoration:none;font:300 22px/1.2 'Noto Serif Display', serif;transition:color .3s" style-hover="color:#C9A074">Наши работы</a>
+        <a href="Reviews.dc.html" style="color:#E9E3DA;text-decoration:none;font:300 22px/1.2 'Noto Serif Display', serif;transition:color .3s" style-hover="color:#C9A074">Отзывы</a>
+        <a href="Quiz.dc.html" style="color:#E9E3DA;text-decoration:none;font:300 22px/1.2 'Noto Serif Display', serif;transition:color .3s" style-hover="color:#C9A074">Дизайн-проект мебели</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#C9A074">Связаться</div>
+        <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="1">
+          <a href="{{ c.href }}" target="{{ c.target }}" rel="noopener" style="color:#E9E3DA;text-decoration:none;font:400 16px/1.4 Manrope, sans-serif;transition:color .3s" style-hover="color:#C9A074">{{ c.label }}</a>
+        </sc-for>
+        <span style="color:#A79E93;font:400 16px/1.4 Manrope, sans-serif">{{ city }}</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);color:#8A8177;font:400 13.5px Manrope, sans-serif">
+      <span>© {{ year }} ASD · Мебель на заказ</span>
+      <button type="button" onClick="{{ openSup }}" style="display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,.18);color:#D9D2C7;font:500 13.5px Manrope, sans-serif;cursor:pointer;transition:border-color .3s, color .3s, background-color .3s" style-hover="border-color:#C9A074;color:#FBFAF7;background:rgba(201,160,116,.1)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#C9A074" stroke-width="1.7" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" stroke-linejoin="round"></path><path d="M12 9v3M12 14.2v.1" stroke-linecap="round"></path></svg>
+        Поддержка сайта
+      </button>
+    </div>
+  </div>
+  <sc-if value="{{ supOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;color:#1A1714">
+      <div onClick="{{ closeSup }}" style="position:absolute;inset:0;background:rgba(20,18,15,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)"></div>
+      <div role="dialog" aria-modal="true" aria-labelledby="sup-t" style="position:relative;width:min(540px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:#FBFAF7;border-radius:20px;padding:clamp(28px,4vw,40px);box-shadow:0 50px 100px -30px rgba(0,0,0,.55)">
+        <button type="button" onClick="{{ closeSup }}" aria-label="Закрыть" style="position:absolute;right:14px;top:14px;width:40px;height:40px;border-radius:999px;border:1px solid #E2DCD3;background:transparent;cursor:pointer;display:grid;place-items:center;color:#1A1714;transition:background-color .3s" style-hover="background:#F0ECE5">
+          <svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5"><path d="M1 1l10 10M11 1L1 11"></path></svg>
+        </button>
+        <sc-if value="{{ supForm }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ sendSup }}" novalidate="" style="display:flex;flex-direction:column;gap:18px">
+            <div>
+              <h2 id="sup-t" style="margin:0;font:300 32px/1.1 'Noto Serif Display', serif;letter-spacing:-.01em">Поддержка сайта</h2>
+              <p style="margin:10px 0 0;color:#6B635A;font:400 15px/1.6 Manrope, sans-serif">Что-то не работает или выглядит неправильно? Опишите, мы исправим.</p>
+            </div>
+            <div role="radiogroup" aria-label="Тип сообщения" style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ kinds }}" as="k" hint-placeholder-count="4">
+                <button type="button" role="radio" aria-checked="{{ k.on }}" onClick="{{ k.pick }}" style="height:40px;padding:0 16px;border-radius:999px;border:1px solid {{ k.bd }};background:{{ k.bg }};color:{{ k.fg }};font:500 13.5px Manrope, sans-serif;cursor:pointer;transition:all .25s">{{ k.label }}</button>
+              </sc-for>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:8px">
+              <span style="font:600 13.5px Manrope, sans-serif">Что случилось</span>
+              <textarea ref="{{ msgRef }}" rows="5" maxlength="2000" value="{{ msg }}" onInput="{{ onMsg }}" placeholder="Например: на странице «Отзывы» не открывается форма, кнопка ничего не делает." style="width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid #DCD5CA;border-radius:12px;background:#fff;font:400 15px/1.55 Manrope, sans-serif;color:#1A1714;resize:vertical;outline:none;transition:border-color .2s, box-shadow .2s" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></textarea>
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px">
+              <span style="font:600 13.5px Manrope, sans-serif">Как с вами связаться <span style="font-weight:400;color:#6B635A">(необязательно)</span></span>
+              <input type="text" maxlength="120" autocomplete="off" value="{{ contact }}" onInput="{{ onContact }}" placeholder="Телефон или Telegram, если нужен ответ" style="width:100%;box-sizing:border-box;height:50px;padding:0 16px;border:1px solid #DCD5CA;border-radius:12px;background:#fff;font:400 15px Manrope, sans-serif;color:#1A1714;outline:none;transition:border-color .2s, box-shadow .2s" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></input>
+            </label>
+            <input type="text" tabindex="-1" autocomplete="off" aria-hidden="true" value="{{ trap }}" onInput="{{ onTrap }}" style="position:absolute;left:-9999px;opacity:0;height:0;width:0"></input>
+            <p style="margin:0;font:400 13px/1.5 Manrope, sans-serif;color:#6B635A">Мы автоматически прикладываем страницу, тип устройства и размер экрана, чтобы быстрее найти причину.</p>
+            <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="padding:12px 16px;border-radius:12px;background:#F8E9E4;color:#8A2B1C;font:500 14px/1.5 Manrope, sans-serif">{{ err }}</div>
+            </sc-if>
+            <button type="submit" disabled="{{ sending }}" style="height:54px;border-radius:999px;border:0;background:#1A1714;color:#FBFAF7;font:600 15px Manrope, sans-serif;cursor:pointer;transition:background-color .3s" style-hover="background:#3A332C">{{ sendLabel }}</button>
+          </form>
+        </sc-if>
+        <sc-if value="{{ supOk }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:18px 0 4px;display:flex;flex-direction:column;align-items:center;gap:12px">
+            <div style="width:64px;height:64px;border-radius:999px;background:#EFE6DA;display:grid;place-items:center;color:#8C6239">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+            </div>
+            <h2 style="margin:0;font:300 32px/1.1 'Noto Serif Display', serif">Спасибо!</h2>
+            <p style="margin:0 0 10px;color:#6B635A;font:400 15px/1.6 Manrope, sans-serif">Сообщение получено. Мы посмотрим и исправим.</p>
+            <button type="button" onClick="{{ closeSup }}" style="height:48px;padding:0 26px;border-radius:999px;border:1px solid #1A1714;background:transparent;color:#1A1714;font:600 14.5px Manrope, sans-serif;cursor:pointer">Закрыть</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1280px&quot;,&quot;height&quot;:&quot;640px&quot;}}">
+class Component extends DCLogic {
+  state = { site: {}, open: false, ok: false, kind: 'bug', msg: '', contact: '', trap: '', err: '', sending: false };
+  msgRef = React.createRef();
+  boot() {
+    return window.__asdBoot || (window.__asdBoot = ['js/config.js', 'js/works-data.js', 'js/api.js'].reduce((p, src) => p.then(() => new Promise((res) => {
+      const s = document.createElement('script'); s.src = (window.__resources && window.__resources[src]) || src; s.onload = res; s.onerror = res; document.head.appendChild(s);
+    })), Promise.resolve()));
+  }
+  componentDidMount() {
+    this.lastErr = '';
+    this.onErr = (e) => { this.lastErr = (e.message || 'error') + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : ''); };
+    this.onKey = (e) => { if (e.key === 'Escape' && this.state.open) this.close(); };
+    window.addEventListener('error', this.onErr);
+    document.addEventListener('keydown', this.onKey);
+    this.boot().then(() => this.setState({ site: window.SITE || {} }));
+  }
+  componentWillUnmount() { window.removeEventListener('error', this.onErr); document.removeEventListener('keydown', this.onKey); }
+  open() {
+    this.ret = document.activeElement;
+    this.setState({ open: true, ok: false, kind: 'bug', msg: '', contact: '', trap: '', err: '' }, () => {
+      document.documentElement.style.overflow = 'hidden';
+      setTimeout(() => this.msgRef.current && this.msgRef.current.focus({ preventScroll: true }), 40);
+    });
+  }
+  close() {
+    this.setState({ open: false });
+    document.documentElement.style.overflow = '';
+    if (this.ret && this.ret.focus) this.ret.focus({ preventScroll: true });
+  }
+  async send(e) {
+    e.preventDefault();
+    const msg = this.state.msg.trim();
+    if (msg.length < 5) { this.setState({ err: 'Опишите проблему хотя бы парой слов.' }); this.msgRef.current && this.msgRef.current.focus(); return; }
+    if (this.state.trap) { this.setState({ ok: true }); return; }
+    this.setState({ sending: true, err: '' });
+    try {
+      await window.Api.submitBug({
+        kind: this.state.kind, message: msg, contact: this.state.contact,
+        page: location.pathname.replace(/^.*\//, '') + location.search, ua: navigator.userAgent,
+        viewport: innerWidth + 'x' + innerHeight + '@' + (window.devicePixelRatio || 1), err: this.lastErr,
+      });
+      this.setState({ ok: true, sending: false });
+    } catch (er) { this.setState({ err: (er && er.message) || 'Не получилось отправить. Попробуйте ещё раз.', sending: false }); }
+  }
+  renderVals() {
+    const S = this.state.site;
+    const contacts = [];
+    if (S.phone) contacts.push({ href: 'tel:' + S.phone.replace(/[^+\d]/g, ''), label: S.phone, target: '_self' });
+    if (S.whatsapp) contacts.push({ href: S.whatsapp, label: 'WhatsApp', target: '_blank' });
+    if (S.telegram) contacts.push({ href: S.telegram, label: 'Telegram', target: '_blank' });
+    const KINDS = [['bug', 'Ошибка на сайте'], ['ui', 'Неудобно или криво'], ['idea', 'Предложение'], ['other', 'Другое']];
+    return {
+      logoSrc: (window.__resources && window.__resources['img/logo-light.svg']) || 'img/logo-light.svg', contacts, city: S.city || (contacts.length ? '' : 'Ростов-на-Дону'), year: new Date().getFullYear(),
+      openSup: () => this.open(), closeSup: () => this.close(), sendSup: (e) => this.send(e),
+      supOpen: this.state.open, supForm: !this.state.ok, supOk: this.state.ok,
+      kinds: KINDS.map(([v, t]) => {
+        const on = this.state.kind === v;
+        return { label: t, on: String(on), pick: () => this.setState({ kind: v }), bg: on ? '#1A1714' : 'transparent', fg: on ? '#FBFAF7' : '#1A1714', bd: on ? '#1A1714' : '#DCD5CA' };
+      }),
+      msg: this.state.msg, contact: this.state.contact, trap: this.state.trap, msgRef: this.msgRef,
+      onMsg: (e) => this.setState({ msg: e.target.value, err: '' }), onContact: (e) => this.setState({ contact: e.target.value }), onTrap: (e) => this.setState({ trap: e.target.value }),
+      err: this.state.err, sending: this.state.sending, sendLabel: this.state.sending ? 'Отправляем…' : 'Отправить',
+    };
+  }
+}
+</script>
+</body>
+</html>

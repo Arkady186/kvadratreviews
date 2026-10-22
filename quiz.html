@@ -1,347 +1,224 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Дизайн-проект мебели для вашего дома — ASD</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дизайн-проект мебели для вашего дома — ASD</title>
   <meta name="description" content="Ответьте на пять коротких вопросов, и дизайнер подготовит проект мебели для вашего дома.">
-  <meta name="theme-color" content="#F4F3F0">
+  <meta name="theme-color" content="#F4F1EC">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: #F4F1EC; color: #1A1714; font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+    a { color: inherit; } a:hover { color: #8C6239; }
+    ::selection { background: #C9A074; color: #14120F; }
+    :focus-visible { outline: 2px solid #B98D5E; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+<link rel="stylesheet" href="css/dc.css">
 </head>
 <body>
-  <div id="site-header"></div>
+<div data-dc="Quiz" style="display:contents"></div>
+<noscript><p style="padding:40px;font:16px sans-serif">Для работы сайта нужен включённый JavaScript.</p></noscript>
+<script src="js/dc.js"></script>
+<script src="js/dc-site.js"></script>
+<script>
+DC.define("Quiz",(function(){
+class Component extends DCLogic {
+  ITEMS = ['Комплексную меблировку квартиры', 'Кухню', 'Шкаф или гардеробную', 'Мебель в прихожую', 'Мебель в гостиную', 'Мебель в спальню', 'Детскую', 'Мебель для ванной', 'Рабочую зону или домашний кабинет', 'Другое'];
+  STAGES = ['Планируем ремонт', 'Идёт черновой ремонт', 'Сейчас делаем электрику и сантехнику', 'Идёт чистовая отделка', 'Ремонт почти завершён', 'Квартира с ремонтом', 'Свой вариант'];
+  PLANS = ['Да, есть дизайн-проект', 'Есть план с размерами', 'Есть только планировка от застройщика', 'Пока ничего нет'];
+  TITLES = ['', 'Мебель', 'Ремонт', 'План', 'Файлы', 'Контакты'];
+  LAST = 5; OTHER_ITEM = 9; OTHER_STAGE = 6;
+  state = { ready: false, w: 1280, step: 1, items: [], itemsOther: '', stage: -1, stageOther: '', plan: -1, name: '', phone: '', comment: '', consent: false, site: '',
+    files: [], stepErr: '', errs: {}, sendErr: '', sending: false, sendLabel: '', over: false, result: null };
+  formRef = React.createRef(); titleRef = React.createRef(); nameRef = React.createRef(); phoneRef = React.createRef(); doneRef = React.createRef();
+  itemsOtherRef = React.createRef(); stageOtherRef = React.createRef();
+  reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  <main>
-    <section class="page-hero">
-      <div class="wrap">
-        <h1>Дизайн-проект мебели для вашего дома</h1>
-        <p class="lead">Ответьте на несколько вопросов, и дизайнер подготовит проект мебели под вашу квартиру. Это займёт около двух минут, а фотографии и планы можно приложить сразу.</p>
-      </div>
-    </section>
-
-    <div class="wrap" id="demo-note" hidden>
-      <p class="demo-note"><strong>Демо-режим.</strong> Хранилище заявок ещё не подключено, поэтому заявка сохранится только в этом браузере и администратор её не увидит.</p>
-    </div>
-
-    <section class="section section--tight">
-      <div class="wrap">
-        <div class="quiz">
-          <form class="form-card quiz__card" id="quiz" novalidate>
-            <div class="quiz__top">
-              <span class="quiz__count" id="q-count" aria-live="polite">Шаг 1 из 5</span>
-              <span class="quiz__name" id="q-name"></span>
-            </div>
-            <div class="quiz__bar" id="q-bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-
-            <!-- Шаг 1 -->
-            <section class="qstep" data-step="1" aria-labelledby="t1">
-              <h2 id="t1" tabindex="-1">Что вам необходимо из мебели для уюта вашего дома?</h2>
-              <p class="qhint">Можно выбрать несколько вариантов.</p>
-              <div class="opts opts--2" id="o-items" role="group" aria-labelledby="t1"></div>
-              <div class="other" id="items-other-wrap" hidden>
-                <label class="sr" for="items-other">Что именно вам нужно</label>
-                <input class="input" id="items-other" type="text" maxlength="200" placeholder="Напишите, какая мебель вам нужна" autocomplete="off">
-              </div>
-              <p class="err" id="e1" role="alert"></p>
-            </section>
-
-            <!-- Шаг 2 -->
-            <section class="qstep" data-step="2" aria-labelledby="t2" hidden>
-              <h2 id="t2" tabindex="-1">Стадия ремонта</h2>
-              <p class="qhint">На каком этапе сейчас ремонт?</p>
-              <div class="opts" id="o-stage" role="radiogroup" aria-labelledby="t2"></div>
-              <div class="other" id="stage-other-wrap" hidden>
-                <label class="sr" for="stage-other">Ваш вариант</label>
-                <input class="input" id="stage-other" type="text" maxlength="70" placeholder="Опишите, на каком этапе ремонт" autocomplete="off">
-              </div>
-              <p class="err" id="e2" role="alert"></p>
-            </section>
-
-            <!-- Шаг 3 -->
-            <section class="qstep" data-step="3" aria-labelledby="t3" hidden>
-              <h2 id="t3" tabindex="-1">Есть ли уже план помещения или дизайн-проект?</h2>
-              <p class="qhint">Выберите один вариант.</p>
-              <div class="opts" id="o-plan" role="radiogroup" aria-labelledby="t3"></div>
-              <p class="err" id="e3" role="alert"></p>
-            </section>
-
-            <!-- Шаг 4 -->
-            <section class="qstep" data-step="4" aria-labelledby="t4" hidden>
-              <h2 id="t4" tabindex="-1">Прикрепите план, чертёж или фотографии</h2>
-              <p class="qhint">Фотографии плана помещения, размеры, снимки комнат и референсы: в каком стиле вам хочется мебель. Этот шаг можно пропустить.</p>
-              <label class="drop" id="drop" for="files">
-                <input class="sr" id="files" type="file" multiple accept="image/*,application/pdf,.pdf,.heic,.heif">
-                <span class="drop__icon" aria-hidden="true"></span>
-                <span class="drop__t">Выберите файлы или перетащите их сюда</span>
-                <span class="drop__s">Фото и PDF, до 8 файлов, каждый до 10 МБ</span>
-              </label>
-              <ul class="files" id="files-list" aria-live="polite"></ul>
-              <p class="err" id="e4" role="alert"></p>
-            </section>
-
-            <!-- Шаг 5 -->
-            <section class="qstep" data-step="5" aria-labelledby="t5" hidden>
-              <h2 id="t5" tabindex="-1">Как с вами связаться?</h2>
-              <p class="qhint">Дизайнер позвонит вам, уточнит детали и расскажет, что можно сделать.</p>
-              <div class="form-error" id="send-err" role="alert"></div>
-              <div class="qgrid">
-                <div class="field" id="f-name">
-                  <label for="name">Ваше имя</label>
-                  <input class="input" id="name" type="text" maxlength="60" autocomplete="name" placeholder="Как к вам обращаться">
-                  <span class="err">Напишите имя, чтобы мы знали, как к вам обращаться.</span>
-                </div>
-                <div class="field" id="f-phone">
-                  <label for="phone">Номер телефона</label>
-                  <input class="input" id="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" placeholder="+7 (900) 000-00-00">
-                  <span class="err">Проверьте номер: нужно 11 цифр, например +7 900 000-00-00.</span>
-                </div>
-              </div>
-              <div class="field">
-                <label for="comment">Комментарий <span class="muted" style="font-weight:400">(необязательно)</span></label>
-                <textarea class="textarea" id="comment" maxlength="1500" style="min-height:110px" placeholder="Пожелания, сроки, бюджет, удобное время для звонка"></textarea>
-              </div>
-              <div class="hp" aria-hidden="true"><label>Сайт<input type="text" id="site" tabindex="-1" autocomplete="off"></label></div>
-              <div class="field consent" id="f-consent">
-                <label class="chk"><input type="checkbox" id="consent"><span class="chk__box" aria-hidden="true"></span><span>Согласен на обработку персональных данных: имени и телефона, чтобы со мной связались по заявке.</span></label>
-                <span class="err">Поставьте галочку, чтобы мы могли с вами связаться.</span>
-              </div>
-            </section>
-
-            <div class="quiz__nav">
-              <button class="btn" type="button" id="q-back" hidden>Назад</button>
-              <button class="btn btn--ink" type="submit" id="q-next">Далее</button>
-            </div>
-          </form>
-
-          <div class="form-card done" id="done" hidden tabindex="-1" aria-live="polite"></div>
-
-          <aside class="quiz__side" aria-label="О проекте">
-            <h3>Как это работает</h3>
-            <ol>
-              <li><b>Вы отвечаете на вопросы.</b> Так мы сразу понимаем, что вам нужно.</li>
-              <li><b>Дизайнер связывается с вами</b> по телефону и уточняет детали.</li>
-              <li><b>Готовим проект мебели</b> под размеры и стиль вашего дома.</li>
-            </ol>
-            <p class="muted">Заявка ни к чему вас не обязывает.</p>
-          </aside>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="site-footer"></div>
-
-  <script src="js/config.js"></script>
-  <script src="js/works-data.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/common.js"></script>
-  <script>
-    Chrome.init('quiz');
-    const { esc, ICONS } = Chrome;
-    const $ = (id) => document.getElementById(id);
-    if (!Api.configured) $('demo-note').hidden = false;
-
-    const ITEMS = ['Комплексную меблировку квартиры', 'Кухню', 'Шкаф или гардеробную', 'Мебель в прихожую', 'Мебель в гостиную',
-      'Мебель в спальню', 'Детскую', 'Мебель для ванной', 'Рабочую зону или домашний кабинет', 'Другое'];
-    const STAGES = ['Планируем ремонт', 'Идёт черновой ремонт', 'Сейчас делаем электрику и сантехнику', 'Идёт чистовая отделка',
-      'Ремонт почти завершён', 'Квартира с ремонтом', 'Свой вариант'];
-    const PLANS = ['Да, есть дизайн-проект', 'Есть план с размерами', 'Есть только планировка от застройщика', 'Пока ничего нет'];
-    const TITLES = ['', 'Мебель', 'Ремонт', 'План', 'Файлы', 'Контакты'];
-    const LAST = 5, OTHER_ITEM = ITEMS.length - 1, OTHER_STAGE = STAGES.length - 1;
-
-    const S = { step: 1, items: [], itemsOther: '', stage: -1, stageOther: '', plan: -1, name: '', phone: '', comment: '', consent: false };
-    let files = [];
-    try { Object.assign(S, JSON.parse(sessionStorage.getItem('kv_quiz') || '{}'), { step: 1, consent: false }); } catch (e) { /* ignore */ }
-    const save = () => { try { sessionStorage.setItem('kv_quiz', JSON.stringify(S)); } catch (e) { /* ignore */ } };
-
-    /* ----- варианты ответов ----- */
-    function opts(el, list, type, name, isOn) {
-      el.innerHTML = list.map((t, i) => `
-        <label class="opt"><input type="${type}" name="${name}" value="${i}" ${isOn(i) ? 'checked' : ''}>
-          <span class="opt__mark" aria-hidden="true"></span><span class="opt__t">${esc(t)}</span></label>`).join('');
-    }
-    opts($('o-items'), ITEMS, 'checkbox', 'items', (i) => S.items.includes(i));
-    opts($('o-stage'), STAGES, 'radio', 'stage', (i) => S.stage === i);
-    opts($('o-plan'), PLANS, 'radio', 'plan', (i) => S.plan === i);
-    $('items-other').value = S.itemsOther; $('stage-other').value = S.stageOther;
-    $('name').value = S.name; $('phone').value = S.phone; $('comment').value = S.comment;
-
-    function syncOther() {
-      $('items-other-wrap').hidden = !S.items.includes(OTHER_ITEM);
-      $('stage-other-wrap').hidden = S.stage !== OTHER_STAGE;
-    }
-    syncOther();
-
-    $('o-items').addEventListener('change', () => {
-      S.items = [...$('o-items').querySelectorAll('input:checked')].map((i) => +i.value); syncOther(); save(); clearErr(1);
-      if (S.items.includes(OTHER_ITEM)) $('items-other').focus({ preventScroll: true });
+  boot() {
+    return window.__asdBoot || (window.__asdBoot = ['js/config.js', 'js/works-data.js', 'js/api.js'].reduce((p, src) => p.then(() => new Promise((res) => {
+      const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = res; document.head.appendChild(s);
+    })), Promise.resolve()));
+  }
+  componentDidMount() {
+    try { const saved = JSON.parse(sessionStorage.getItem('kv_quiz') || '{}'); const k = ['items', 'itemsOther', 'stage', 'stageOther', 'plan', 'name', 'phone', 'comment']; const o = {}; k.forEach((x) => { if (saved[x] !== undefined) o[x] = saved[x]; }); this.setState(o); } catch (e) {}
+    this.onR = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onR); this.onR();
+    this.onUnload = (e) => { if (!this.state.result && this.state.files.length) { e.preventDefault(); e.returnValue = ''; } };
+    window.addEventListener('beforeunload', this.onUnload);
+    if (!this.reduce) document.querySelectorAll('[data-in]').forEach((el) => el.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 1100, delay: 100, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' }));
+    this.boot().then(() => {
+      this.setState({ ready: true });
+      const A = window.Api; if (!A) return;
+      if (A.leadSentQuick()) this.already(); else A.myLeadStatus().then((r) => { if (r === 'sent') this.already(); });
     });
-    $('o-stage').addEventListener('change', (e) => { S.stage = +e.target.value; syncOther(); save(); clearErr(2); if (S.stage === OTHER_STAGE) $('stage-other').focus({ preventScroll: true }); });
-    $('o-plan').addEventListener('change', (e) => { S.plan = +e.target.value; save(); clearErr(3); });
-    ['items-other', 'stage-other', 'name', 'comment'].forEach((id) => $(id).addEventListener('input', () => {
-      S[{ 'items-other': 'itemsOther', 'stage-other': 'stageOther', name: 'name', comment: 'comment' }[id]] = $(id).value; save();
-      if (id === 'name') $('f-name').classList.remove('has-error');
-    }));
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); window.removeEventListener('beforeunload', this.onUnload); }
+  save() { const s = this.state; try { sessionStorage.setItem('kv_quiz', JSON.stringify({ items: s.items, itemsOther: s.itemsOther, stage: s.stage, stageOther: s.stageOther, plan: s.plan, name: s.name, phone: s.phone, comment: s.comment })); } catch (e) {} }
+  set(o, cb) { this.setState(o, () => { this.save(); cb && cb(); }); }
 
-    /* ----- телефон: +7 (900) 000-00-00 ----- */
-    function fmtPhone(v) {
-      let d = v.replace(/\D/g, '');
-      if (!d) return '';
-      if (d[0] === '8') d = '7' + d.slice(1);
-      if (d[0] !== '7' && v.trim()[0] !== '+') d = '7' + d;
-      if (v.trim()[0] === '+' && d[0] !== '7') return '+' + d.slice(0, 15);   // иностранный номер — не форматируем
-      d = d.slice(0, 11);
-      let o = '+7';
-      if (d.length > 1) o += ' (' + d.slice(1, 4);
-      if (d.length >= 4) o += ')';
-      if (d.length > 4) o += ' ' + d.slice(4, 7);
-      if (d.length > 7) o += '-' + d.slice(7, 9);
-      if (d.length > 9) o += '-' + d.slice(9, 11);
-      return o;
-    }
-    const phoneOk = (v) => { const d = v.replace(/\D/g, ''); return d.length === 11 && d[0] === '7' || (v.trim()[0] === '+' && d.length >= 10 && d.length <= 15); };
-    $('phone').addEventListener('input', (e) => {
-      const el = e.target; if (e.inputType && e.inputType.startsWith('delete') && el.selectionStart !== el.value.length) { S.phone = el.value; return; }
-      if (e.inputType && e.inputType.startsWith('delete') && el.value.replace(/\D/g, '').length <= 1) { el.value = ''; S.phone = ''; return; }
-      el.value = fmtPhone(el.value); S.phone = el.value; save(); $('f-phone').classList.remove('has-error');
+  fmtPhone(v) {
+    let d = v.replace(/\D/g, ''); if (!d) return '';
+    if (d[0] === '8') d = '7' + d.slice(1);
+    if (d[0] !== '7' && v.trim()[0] !== '+') d = '7' + d;
+    if (v.trim()[0] === '+' && d[0] !== '7') return '+' + d.slice(0, 15);
+    d = d.slice(0, 11);
+    let o = '+7';
+    if (d.length > 1) o += ' (' + d.slice(1, 4); if (d.length >= 4) o += ')'; if (d.length > 4) o += ' ' + d.slice(4, 7);
+    if (d.length > 7) o += '-' + d.slice(7, 9); if (d.length > 9) o += '-' + d.slice(9, 11);
+    return o;
+  }
+  phoneOk(v) { const d = v.replace(/\D/g, ''); return (d.length === 11 && d[0] === '7') || (v.trim()[0] === '+' && d.length >= 10 && d.length <= 15); }
+  onPhone(e) {
+    const el = e.target, it = e.nativeEvent && e.nativeEvent.inputType;
+    if (it && it.startsWith('delete') && el.selectionStart !== el.value.length) { this.set({ phone: el.value }); return; }
+    if (it && it.startsWith('delete') && el.value.replace(/\D/g, '').length <= 1) { this.set({ phone: '' }); return; }
+    this.set({ phone: this.fmtPhone(el.value), errs: Object.assign({}, this.state.errs, { phone: false }) });
+  }
+
+  okType(f) { return /^image\//.test(f.type) || f.type === 'application/pdf' || /\.(pdf|heic|heif|jpe?g|png|webp)$/i.test(f.name); }
+  addFiles(list) {
+    const err = [], files = this.state.files.slice(), MAX = (window.Api && window.Api.MAX_FILES) || 8;
+    [...list].forEach((f) => {
+      if (!this.okType(f)) { err.push('«' + f.name + '»: подходят только фото и PDF.'); return; }
+      if (files.some((x) => x.name === f.name && x.size === f.size)) return;
+      if (files.length >= MAX) { err.push('Можно прикрепить не больше ' + MAX + ' файлов.'); return; }
+      if (f.size > 40 * 1024 * 1024) { err.push('«' + f.name + '» слишком большой.'); return; }
+      if (/^image\/(jpeg|png|webp|gif)/.test(f.type)) f._url = URL.createObjectURL(f);
+      files.push(f);
     });
-    $('consent').addEventListener('change', () => $('f-consent').classList.remove('has-error'));
+    this.setState({ files, stepErr: [...new Set(err)].join(' ') });
+  }
 
-    /* ----- файлы ----- */
-    const drop = $('drop'), fInput = $('files');
-    const sz = (b) => b > 1048576 ? (b / 1048576).toFixed(1).replace('.', ',') + ' МБ' : Math.max(1, Math.round(b / 1024)) + ' КБ';
-    const okType = (f) => /^image\//.test(f.type) || f.type === 'application/pdf' || /\.(pdf|heic|heif|jpe?g|png|webp)$/i.test(f.name);
-    function addFiles(list) {
-      const err = [];
-      [...list].forEach((f) => {
-        if (!okType(f)) { err.push('«' + f.name + '»: подходят только фото и PDF.'); return; }
-        if (files.some((x) => x.name === f.name && x.size === f.size)) return;
-        if (files.length >= Api.MAX_FILES) { err.push('Можно прикрепить не больше ' + Api.MAX_FILES + ' файлов.'); return; }
-        if (f.size > 40 * 1024 * 1024) { err.push('«' + f.name + '» слишком большой.'); return; }
-        files.push(f);
-      });
-      showErr(4, [...new Set(err)].join(' '));
-      renderFiles();
+  validate(n) {
+    const s = this.state;
+    if (n === 1) {
+      if (!s.items.length) return this.err('Выберите хотя бы один вариант.');
+      if (s.items.includes(this.OTHER_ITEM) && !s.itemsOther.trim()) { this.itemsOtherRef.current && this.itemsOtherRef.current.focus(); return this.err('Напишите, какая мебель вам нужна, или уберите «Другое».'); }
     }
-    function renderFiles() {
-      files.forEach((f) => { if (!f._url && /^image\/(jpeg|png|webp|gif)/.test(f.type)) f._url = URL.createObjectURL(f); });
-      $('files-list').innerHTML = files.map((f, i) => `
-        <li class="file">
-          <span class="file__th">${f._url ? `<img src="${f._url}" alt="">` : `<b>${/pdf/i.test(f.type + f.name) ? 'PDF' : 'IMG'}</b>`}</span>
-          <span class="file__n"><span>${esc(f.name)}</span><small>${sz(f.size)}</small></span>
-          <button class="file__x" type="button" data-i="${i}" aria-label="Убрать файл ${esc(f.name)}">×</button>
-        </li>`).join('');
-      refreshNext();
+    if (n === 2) {
+      if (s.stage < 0) return this.err('Выберите, на каком этапе ремонт.');
+      if (s.stage === this.OTHER_STAGE && !s.stageOther.trim()) { this.stageOtherRef.current && this.stageOtherRef.current.focus(); return this.err('Опишите свой вариант.'); }
     }
-    $('files-list').addEventListener('click', (e) => { const b = e.target.closest('[data-i]'); if (!b) return; files.splice(+b.dataset.i, 1); renderFiles(); showErr(4, ''); });
-    fInput.addEventListener('change', () => { addFiles(fInput.files); fInput.value = ''; });
-    ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('is-over'); }));
-    ['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('is-over'); }));
-    drop.addEventListener('drop', (e) => { if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files); });
-
-    /* ----- ошибки и шаги ----- */
-    function showErr(n, msg) { const e = $('e' + n); e.textContent = msg || ''; e.classList.toggle('is-on', !!msg); }
-    function clearErr(n) { showErr(n, ''); }
-
-    function validate(n) {
-      if (n === 1) {
-        if (!S.items.length) { showErr(1, 'Выберите хотя бы один вариант.'); return false; }
-        if (S.items.includes(OTHER_ITEM) && !S.itemsOther.trim()) { showErr(1, 'Напишите, какая мебель вам нужна, или уберите «Другое».'); $('items-other').focus(); return false; }
-      }
-      if (n === 2) {
-        if (S.stage < 0) { showErr(2, 'Выберите, на каком этапе ремонт.'); return false; }
-        if (S.stage === OTHER_STAGE && !S.stageOther.trim()) { showErr(2, 'Опишите свой вариант.'); $('stage-other').focus(); return false; }
-      }
-      if (n === 3 && S.plan < 0) { showErr(3, 'Выберите один из вариантов.'); return false; }
-      if (n === 5) {
-        let ok = true, first = null;
-        const bad = (id, cond) => { $(id).classList.toggle('has-error', cond); if (cond) { ok = false; first = first || $(id); } };
-        bad('f-name', S.name.trim().length < 2);
-        bad('f-phone', !phoneOk(S.phone));
-        bad('f-consent', !$('consent').checked);
-        if (first) (first.querySelector('input') || first).focus();
-        return ok;
-      }
-      return true;
+    if (n === 3 && s.plan < 0) return this.err('Выберите один из вариантов.');
+    if (n === 5) {
+      const errs = { name: s.name.trim().length < 2, phone: !this.phoneOk(s.phone), consent: !s.consent };
+      this.setState({ errs });
+      if (errs.name) { this.nameRef.current && this.nameRef.current.focus(); return false; }
+      if (errs.phone) { this.phoneRef.current && this.phoneRef.current.focus(); return false; }
+      if (errs.consent) return false;
     }
-
-    function refreshNext() {
-      const b = $('q-next');
-      b.textContent = S.step === LAST ? 'Отправить заявку' : (S.step === 4 && !files.length ? 'Пропустить' : 'Далее');
-      b.classList.toggle('btn--brass', S.step === LAST); b.classList.toggle('btn--ink', S.step !== LAST);
-    }
-    function go(n, focus) {
-      S.step = n;
-      document.querySelectorAll('.qstep').forEach((s) => { s.hidden = +s.dataset.step !== n; });
-      $('q-count').textContent = 'Шаг ' + n + ' из ' + LAST;
-      $('q-name').textContent = TITLES[n];
-      [...$('q-bar').children].forEach((b, i) => b.classList.toggle('on', i < n));
-      $('q-back').hidden = n === 1;
-      refreshNext();
-      if (focus !== false) {
-        const h = $('t' + n); h.focus({ preventScroll: true });
-        const top = $('quiz').getBoundingClientRect().top + scrollY - 96;
-        if (Math.abs(scrollY - top) > 40) scrollTo({ top: Math.max(0, top), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-      }
-    }
-    $('q-back').onclick = () => go(S.step - 1);
-    $('quiz').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!validate(S.step)) return;
-      if (S.step < LAST) { go(S.step + 1); return; }
-      await send();
+    return true;
+  }
+  err(m) { this.setState({ stepErr: m }); return false; }
+  go(n) {
+    this.setState({ step: n, stepErr: '' }, () => {
+      const h = this.titleRef.current; if (h) h.focus({ preventScroll: true });
+      const step = document.querySelector('[data-qstep]');
+      if (step && !this.reduce) step.animate([{ opacity: 0, transform: 'translateX(18px)' }, { opacity: 1, transform: 'none' }], { duration: 550, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      const f = this.formRef.current;
+      if (f) { const top = f.getBoundingClientRect().top + window.scrollY - 96; if (Math.abs(window.scrollY - top) > 40) window.scrollTo({ top: Math.max(0, top), behavior: this.reduce ? 'auto' : 'smooth' }); }
     });
+  }
+  async submit(e) {
+    e.preventDefault();
+    if (!this.validate(this.state.step)) return;
+    if (this.state.step < this.LAST) { this.go(this.state.step + 1); return; }
+    await this.send();
+  }
+  async send() {
+    const s = this.state;
+    if (s.site) { this.finish(); return; }
+    this.setState({ sending: true, sendErr: '', sendLabel: 'Отправляем…' });
+    try {
+      await window.Api.submitLead({
+        items: s.items.map((i) => this.ITEMS[i]), itemsOther: s.items.includes(this.OTHER_ITEM) ? s.itemsOther.trim() : '',
+        stage: s.stage === this.OTHER_STAGE ? 'Свой вариант: ' + s.stageOther.trim() : this.STAGES[s.stage],
+        plan: this.PLANS[s.plan], name: s.name, phone: s.phone, comment: s.comment, files: s.files,
+      }, (d, t) => this.setState({ sendLabel: 'Загружаем файлы ' + d + ' из ' + t + '…' }));
+      this.finish();
+    } catch (er) {
+      if (er && er.code === 'duplicate') { this.already(); return; }
+      this.setState({ sending: false, sendLabel: '', sendErr: ((er && er.message) || 'Не получилось отправить.') + ' Данные сохранены, нажмите «Отправить заявку» ещё раз.' });
+    }
+  }
+  showResult(result) {
+    try { sessionStorage.removeItem('kv_quiz'); } catch (e) {}
+    this.setState({ result, sending: false }, () => {
+      window.scrollTo({ top: 0, behavior: this.reduce ? 'auto' : 'smooth' });
+      if (this.doneRef.current) this.doneRef.current.focus({ preventScroll: true });
+      const p = document.querySelector('[data-check]');
+      if (p && !this.reduce) p.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 900, delay: 250, easing: 'cubic-bezier(.55,.1,.25,1)', fill: 'both' });
+    });
+  }
+  finish() { this.showResult('sent'); }
+  already() { this.showResult('already'); }
 
-    /* ----- отправка ----- */
-    async function send() {
-      if ($('site').value) { finish(); return; }                         // «ловушка» для роботов
-      const btn = $('q-next'), err = $('send-err'); err.classList.remove('is-on');
-      btn.disabled = true; $('q-back').disabled = true; const old = btn.textContent; btn.textContent = 'Отправляем…';
-      try {
-        await Api.submitLead({
-          items: S.items.map((i) => ITEMS[i]), itemsOther: S.items.includes(OTHER_ITEM) ? S.itemsOther.trim() : '',
-          stage: S.stage === OTHER_STAGE ? 'Свой вариант: ' + S.stageOther.trim() : STAGES[S.stage],
-          plan: PLANS[S.plan], name: S.name, phone: S.phone, comment: S.comment, files,
-        }, (d, t) => { btn.textContent = 'Загружаем файлы ' + d + ' из ' + t + '…'; });
-        finish();
-      } catch (er) {
-        if (er.code === 'duplicate') { showAlready(); return; }
-        err.textContent = (er.message || 'Не получилось отправить.') + ' Данные сохранены, нажмите «Отправить заявку» ещё раз.';
-        err.classList.add('is-on'); err.scrollIntoView({ block: 'center', behavior: 'smooth' });
-        btn.disabled = false; $('q-back').disabled = false; btn.textContent = old;
-      }
-    }
-    /* одна заявка с одного устройства */
-    function showAlready() {
-      try { sessionStorage.removeItem('kv_quiz'); } catch (e) { /* ignore */ }
-      $('quiz').hidden = true; const side = document.querySelector('.quiz__side'); if (side) side.hidden = true;
-      const d = $('done'); d.hidden = false;
-      d.innerHTML = `<div class="done__mark">${ICONS.check}</div>
-        <h2>Заявка с этого устройства уже отправлена</h2>
-        <p>Повторно пройти опрос нельзя: дизайнер уже получил ваши ответы и свяжется с вами по указанному номеру.</p>
-        <p>Нужно что-то добавить или изменить? Нажмите «Поддержка сайта» внизу страницы или позвоните нам.</p>
-        <div class="done__act"><a class="btn btn--brass" href="works.html">Смотреть работы</a><a class="btn" href="index.html">На главную</a></div>`;
-    }
-    function finish() {
-      try { sessionStorage.removeItem('kv_quiz'); } catch (e) { /* ignore */ }
-      $('quiz').hidden = true; document.querySelector('.quiz__side').hidden = true;
-      const d = $('done'), first = (S.name.trim().split(/\s+/)[0] || '');
-      d.hidden = false;
-      d.innerHTML = `<div class="done__mark">${ICONS.check}</div>
-        <h2>Спасибо${first ? ', ' + esc(first) : ''}! Заявка отправлена</h2>
-        <p>Дизайнер свяжется с вами по номеру <strong>${esc(S.phone)}</strong> и уточнит детали проекта.</p>
-        <p>Пока ждёте, посмотрите наши работы: может быть, найдёте то, что хочется видеть у себя дома.</p>
-        <div class="done__act"><a class="btn btn--brass" href="works.html">Смотреть работы</a><a class="btn" href="index.html">На главную</a></div>`;
-      d.focus({ preventScroll: true }); scrollTo({ top: 0, behavior: 'smooth' }); Chrome.confetti();
-    }
+  renderVals() {
+    const s = this.state, step = s.step;
+    const sizeStr = (b) => (b > 1048576 ? (b / 1048576).toFixed(1).replace('.', ',') + ' МБ' : Math.max(1, Math.round(b / 1024)) + ' КБ');
+    const opt = (label, on, multi, pick) => ({
+      label, on: String(on), role: multi ? 'checkbox' : 'radio', pick, radius: multi ? '6px' : '999px',
+      bd: on ? '#1A1714' : '#E2DCD3', bg: on ? '#fff' : '#F7F4EF', sh: on ? 'inset 3px 0 0 #B98D5E, 0 10px 24px -16px rgba(26,23,20,.4)' : 'none',
+      mbd: on ? '#1A1714' : '#B5ACA1', mbg: on ? '#1A1714' : '#fff', chk: on ? 1 : 0, icon: multi ? 'M2 6.2l2.6 2.6L10 3.4' : 'M3.5 6a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0',
+    });
+    let q = { title: '', hint: '', hasOpts: false, opts: [], groupRole: 'group' };
+    if (step === 1) q = { title: 'Что вам необходимо из мебели для уюта вашего дома?', hint: 'Можно выбрать несколько вариантов.', hasOpts: true, groupRole: 'group',
+      opts: this.ITEMS.map((t, i) => opt(t, s.items.includes(i), true, () => {
+        const items = s.items.includes(i) ? s.items.filter((x) => x !== i) : s.items.concat(i);
+        this.set({ items, stepErr: '' }, () => { if (i === this.OTHER_ITEM && items.includes(i)) setTimeout(() => this.itemsOtherRef.current && this.itemsOtherRef.current.focus({ preventScroll: true }), 30); });
+      })) };
+    if (step === 2) q = { title: 'Стадия ремонта', hint: 'На каком этапе сейчас ремонт?', hasOpts: true, groupRole: 'radiogroup',
+      opts: this.STAGES.map((t, i) => opt(t, s.stage === i, false, () => this.set({ stage: i, stepErr: '' }, () => { if (i === this.OTHER_STAGE) setTimeout(() => this.stageOtherRef.current && this.stageOtherRef.current.focus({ preventScroll: true }), 30); }))) };
+    if (step === 3) q = { title: 'Есть ли уже план помещения или дизайн-проект?', hint: 'Выберите один вариант.', hasOpts: true, groupRole: 'radiogroup',
+      opts: this.PLANS.map((t, i) => opt(t, s.plan === i, false, () => this.set({ plan: i, stepErr: '' }))) };
+    if (step === 4) q = { title: 'Прикрепите план, чертёж или фотографии', hint: 'Фотографии плана помещения, размеры, снимки комнат и референсы: в каком стиле вам хочется мебель. Этот шаг можно пропустить.', hasOpts: false, opts: [], groupRole: 'group' };
+    if (step === 5) q = { title: 'Как с вами связаться?', hint: 'Дизайнер позвонит вам, уточнит детали и расскажет, что можно сделать.', hasOpts: false, opts: [], groupRole: 'group' };
 
-    go(1, false);
-    if (Api.leadSentQuick()) showAlready(); else Api.myLeadStatus().then((r) => { if (r === 'sent') showAlready(); });
-    window.addEventListener('beforeunload', (e) => { if (!$('quiz').hidden && files.length) { e.preventDefault(); e.returnValue = ''; } });
-  </script>
+    const last = step === this.LAST;
+    const first = (s.name.trim().split(/\s+/)[0] || '');
+    const sent = s.result === 'sent';
+    const configured = window.Api ? window.Api.configured : true;
+    return {
+      demo: s.ready && !configured, cols: s.w > 1000 ? 'minmax(0,1fr) 340px' : 'minmax(0,1fr)', sidePos: s.w > 1000 ? 'sticky' : 'static',
+      showQuiz: !s.result, showDone: !!s.result, showSide: !s.result,
+      formRef: this.formRef, titleRef: this.titleRef, nameRef: this.nameRef, phoneRef: this.phoneRef, doneRef: this.doneRef, itemsOtherRef: this.itemsOtherRef, stageOtherRef: this.stageOtherRef,
+      step, stepName: this.TITLES[step], bar: [1, 2, 3, 4, 5].map((i) => (i <= step ? 1 : 0)), q, optCols: step === 1 && s.w > 640 ? 'repeat(2, minmax(0,1fr))' : 'minmax(0,1fr)',
+      showItemsOther: step === 1 && s.items.includes(this.OTHER_ITEM), itemsOther: s.itemsOther, onItemsOther: (e) => this.set({ itemsOther: e.target.value }),
+      showStageOther: step === 2 && s.stage === this.OTHER_STAGE, stageOther: s.stageOther, onStageOther: (e) => this.set({ stageOther: e.target.value }),
+      isFiles: step === 4, isContacts: step === 5,
+      dropBd: s.over ? '#1A1714' : '#B5ACA1', dropBg: s.over ? '#fff' : '#F7F4EF',
+      dragOn: (e) => { e.preventDefault(); if (!s.over) this.setState({ over: true }); }, dragOff: (e) => { e.preventDefault(); this.setState({ over: false }); },
+      onDrop: (e) => { e.preventDefault(); this.setState({ over: false }); if (e.dataTransfer && e.dataTransfer.files) this.addFiles(e.dataTransfer.files); },
+      onPick: (e) => { this.addFiles(e.target.files); e.target.value = ''; },
+      files: s.files.map((f, i) => ({ name: f.name, size: sizeStr(f.size), url: f._url || false, noUrl: !f._url, kind: /pdf/i.test(f.type + f.name) ? 'PDF' : 'IMG', aria: 'Убрать файл ' + f.name,
+        remove: () => this.setState({ files: s.files.filter((_, j) => j !== i), stepErr: '' }) })),
+      sendErr: s.sendErr,
+      name: s.name, onName: (e) => this.set({ name: e.target.value, errs: Object.assign({}, s.errs, { name: false }) }), eName: !!s.errs.name, nameBd: s.errs.name ? '#A33A28' : '#DCD5CA',
+      phone: s.phone, onPhone: (e) => this.onPhone(e), ePhone: !!s.errs.phone, phoneBd: s.errs.phone ? '#A33A28' : '#DCD5CA',
+      comment: s.comment, onComment: (e) => this.set({ comment: e.target.value }), site: s.site, onSite: (e) => this.setState({ site: e.target.value }),
+      consentStr: String(s.consent), toggleConsent: () => this.setState({ consent: !s.consent, errs: Object.assign({}, s.errs, { consent: false }) }),
+      consentBd: s.consent ? '#1A1714' : (s.errs.consent ? '#A33A28' : '#8A8177'), consentBg: s.consent ? '#1A1714' : '#fff', consentChk: s.consent ? 1 : 0,
+      consentSh: s.errs.consent ? '0 0 0 4px rgba(163,58,40,.15)' : 'none', eConsent: !!s.errs.consent,
+      stepErr: s.stepErr, canBack: step > 1, back: () => this.go(step - 1), sending: s.sending,
+      submit: (e) => this.submit(e),
+      nextLabel: s.sending ? s.sendLabel : (last ? 'Отправить заявку' : (step === 4 && !s.files.length ? 'Пропустить' : 'Далее')),
+      nextBg: last ? '#B98D5E' : '#1A1714', nextFg: last ? '#14120F' : '#FBFAF7',
+      doneTitle: sent ? 'Спасибо' + (first ? ', ' + first : '') + '! Заявка отправлена' : 'Заявка с этого устройства уже отправлена',
+      doneP1: sent ? 'Дизайнер свяжется с вами по номеру ' : 'Повторно пройти опрос нельзя: дизайнер уже получил ваши ответы и свяжется с вами по указанному номеру.',
+      donePhone: sent ? s.phone : '', doneP1b: sent ? ' и уточнит детали проекта.' : '',
+      doneP2: sent ? 'Пока ждёте, посмотрите наши работы: может быть, найдёте то, что хочется видеть у себя дома.' : 'Нужно что-то добавить или изменить? Нажмите «Поддержка сайта» внизу страницы или позвоните нам.',
+    };
+  }
+}
+
+return Component;})(),(function(v,__H,__E){let __o="";__o+="<div data-dc=\"SiteHeader\" data-p-active=\"quiz\" data-p-tone=\"light\" style=\"display:contents\"></div>";__o+="<main";__o+=">";__o+="<section";__o+=" style=\"padding:calc(84px + clamp(48px,7vw,104px)) 0 clamp(32px,4vw,56px)\"";__o+=">";__o+="<div";__o+=" data-in=\"0\"";__o+=" style=\"max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px\"";__o+=">";__o+="<span";__o+=" style=\"width:36px;height:1px;background:currentColor\"";__o+=">";__o+="</span>";__o+="Дизайн-проект";__o+="</div>";__o+="<h1";__o+=" style=\"margin:0;max-width:16ch;font:300 clamp(2.8rem,6.2vw,6rem)/1 'Noto Serif Display', serif;letter-spacing:-.035em;text-wrap:balance\"";__o+=">";__o+="Дизайн-проект мебели для ";__o+="<em";__o+=" style=\"font-style:italic;color:#8C6239\"";__o+=">";__o+="вашего дома";__o+="</em>";__o+="</h1>";__o+="<p";__o+=" style=\"margin:24px 0 0;max-width:56ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty\"";__o+=">";__o+="Ответьте на несколько вопросов, и дизайнер подготовит проект мебели под вашу квартиру. Это займёт около двух минут, а фотографии и планы можно приложить сразу.";__o+="</p>";__o+="</div>";__o+="</section>";__o+="<div";__o+=" style=\"max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px) clamp(80px,10vw,140px)\"";__o+=">";if(v.demo){__o+="<p";__o+=" style=\"margin:0 0 28px;padding:16px 22px;border-radius:14px;background:#FBFAF7;border:1px solid #E2DCD3;color:#6B635A;font:400 14.5px/1.6 Manrope, sans-serif\"";__o+=">";__o+="<strong";__o+=" style=\"color:#1A1714\"";__o+=">";__o+="Демо-режим.";__o+="</strong>";__o+=" Хранилище заявок ещё не подключено, поэтому заявка сохранится только в этом браузере и администратор её не увидит.";__o+="</p>";}__o+="<div";__o+=" style=\""+"display:grid;grid-template-columns:"+__E(v.cols)+";gap:clamp(28px,4vw,64px);align-items:start"+"\"";__o+=">";if(v.showQuiz){__o+="<form";__o+=" data-ref=\""+__H(v.formRef)+"\"";__o+=" data-on-submit=\""+__H(v.submit)+"\"";__o+=" novalidate=\"\"";__o+=" style=\"background:#FBFAF7;border:1px solid #E2DCD3;border-radius:28px;padding:clamp(24px,3.6vw,48px);min-height:480px;display:flex;flex-direction:column;box-shadow:0 30px 60px -40px rgba(26,23,20,.25);scroll-margin-top:96px\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px\"";__o+=">";__o+="<span";__o+=" aria-live=\"polite\"";__o+=" style=\"font:600 13.5px Manrope, sans-serif;font-variant-numeric:tabular-nums\"";__o+=">";__o+="Шаг ";__o+=__E(v.step);__o+=" ";__o+="<span";__o+=" style=\"color:#8A8177;font-weight:500\"";__o+=">";__o+="из 5";__o+="</span>";__o+="</span>";__o+="<span";__o+=" style=\"font:600 11px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8C6239\"";__o+=">";__o+=__E(v.stepName);__o+="</span>";__o+="</div>";__o+="<div";__o+=" aria-hidden=\"true\"";__o+=" style=\"display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:clamp(28px,3.4vw,44px)\"";__o+=">";for(const b of (v.bar||[])){__o+="<span";__o+=" style=\"height:3px;border-radius:999px;background:#E2DCD3;overflow:hidden\"";__o+=">";__o+="<span";__o+=" style=\""+"display:block;height:100%;background:#B98D5E;transform-origin:left;transform:scaleX("+__E(b)+");transition:transform .8s cubic-bezier(.2,.8,.2,1)"+"\"";__o+=">";__o+="</span>";__o+="</span>";}__o+="</div>";__o+="<div";__o+=" data-qstep=\"\"";__o+=" style=\"flex:1\"";__o+=">";__o+="<h2";__o+=" data-ref=\""+__H(v.titleRef)+"\"";__o+=" tabindex=\"-1\"";__o+=" style=\"margin:0 0 10px;font:300 clamp(1.8rem,3vw,2.6rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.02em;outline:none;text-wrap:balance\"";__o+=">";__o+=__E(v.q?.title);__o+="</h2>";__o+="<p";__o+=" style=\"margin:0 0 28px;max-width:60ch;color:#6B635A;font:400 15.5px/1.6 Manrope, sans-serif\"";__o+=">";__o+=__E(v.q?.hint);__o+="</p>";if(v.q?.hasOpts){__o+="<div";{const __v=v.q?.groupRole;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" role=\""+(__v===true?"":__E(__v))+"\"";}}{const __v=v.q?.title;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" style=\""+"display:grid;grid-template-columns:"+__E(v.optCols)+";gap:10px"+"\"";__o+=">";for(const o of (v.q?.opts||[])){__o+="<button";__o+=" type=\"button\"";{const __v=o?.role;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" role=\""+(__v===true?"":__E(__v))+"\"";}}{const __v=o?.on;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-checked=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-checked=\"false\"";}}__o+=" data-on-click=\""+__H(o?.pick)+"\"";__o+=" style=\""+"display:flex;align-items:center;gap:14px;min-height:60px;padding:14px 18px;border-radius:16px;border:1px solid "+__E(o?.bd)+";background:"+__E(o?.bg)+";color:#1A1714;text-align:left;font:500 15px/1.35 Manrope, sans-serif;cursor:pointer;box-shadow:"+__E(o?.sh)+";transition:border-color .25s, background-color .25s, box-shadow .25s, transform .25s"+"\"";__o+=" class=\"dc39\"";__o+=">";__o+="<span";__o+=" aria-hidden=\"true\"";__o+=" style=\""+"flex:none;width:22px;height:22px;border-radius:"+__E(o?.radius)+";border:1.5px solid "+__E(o?.mbd)+";background:"+__E(o?.mbg)+";display:grid;place-items:center;transition:all .25s"+"\"";__o+=">";__o+="<svg";__o+=" width=\"12\"";__o+=" height=\"12\"";__o+=" viewBox=\"0 0 12 12\"";__o+=" fill=\"none\"";__o+=" stroke=\"#FBFAF7\"";__o+=" stroke-width=\"1.8\"";__o+=" style=\""+"opacity:"+__E(o?.chk)+";transform:scale("+__E(o?.chk)+");transition:all .2s"+"\"";__o+=">";__o+="<path";{const __v=o?.icon;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" d=\""+(__v===true?"":__E(__v))+"\"";}}__o+=">";__o+="</path>";__o+="</svg>";__o+="</span>";__o+=__E(o?.label);__o+="</button>";}__o+="</div>";}if(v.showItemsOther){__o+="<input";__o+=" data-ref=\""+__H(v.itemsOtherRef)+"\"";__o+=" type=\"text\"";__o+=" maxlength=\"200\"";__o+=" aria-label=\"Что именно вам нужно\"";__o+=" placeholder=\"Напишите, какая мебель вам нужна\"";__o+=" autocomplete=\"off\"";{const __v=v.itemsOther;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" value=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" data-on-input=\""+__H(v.onItemsOther)+"\"";__o+=" style=\"margin-top:12px;width:100%;box-sizing:border-box;height:54px;padding:0 18px;border:1px solid #DCD5CA;border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none\"";__o+=" class=\"dc40\"";__o+=">";}if(v.showStageOther){__o+="<input";__o+=" data-ref=\""+__H(v.stageOtherRef)+"\"";__o+=" type=\"text\"";__o+=" maxlength=\"70\"";__o+=" aria-label=\"Ваш вариант\"";__o+=" placeholder=\"Опишите, на каком этапе ремонт\"";__o+=" autocomplete=\"off\"";{const __v=v.stageOther;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" value=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" data-on-input=\""+__H(v.onStageOther)+"\"";__o+=" style=\"margin-top:12px;width:100%;box-sizing:border-box;height:54px;padding:0 18px;border:1px solid #DCD5CA;border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none\"";__o+=" class=\"dc41\"";__o+=">";}if(v.isFiles){__o+="<label";__o+=" data-on-dragenter=\""+__H(v.dragOn)+"\"";__o+=" data-on-dragover=\""+__H(v.dragOn)+"\"";__o+=" data-on-dragleave=\""+__H(v.dragOff)+"\"";__o+=" data-on-drop=\""+__H(v.onDrop)+"\"";__o+=" style=\""+"display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:clamp(32px,5vw,56px) 20px;border:1.5px dashed "+__E(v.dropBd)+";border-radius:20px;background:"+__E(v.dropBg)+";cursor:pointer;transition:all .25s"+"\"";__o+=" class=\"dc42\"";__o+=">";__o+="<input";__o+=" type=\"file\"";__o+=" multiple=\"\"";__o+=" accept=\"image/*,application/pdf,.pdf,.heic,.heif\"";__o+=" data-on-change=\""+__H(v.onPick)+"\"";__o+=" style=\"position:absolute;width:1px;height:1px;opacity:0;overflow:hidden\"";__o+=">";__o+="<span";__o+=" aria-hidden=\"true\"";__o+=" style=\"width:56px;height:56px;border-radius:999px;background:#EFE6DA;display:grid;place-items:center;color:#8C6239;margin-bottom:6px\"";__o+=">";__o+="<svg";__o+=" width=\"22\"";__o+=" height=\"22\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M12 16V4M6 10l6-6 6 6M4 20h16\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</span>";__o+="<span";__o+=" style=\"font:600 15.5px Manrope, sans-serif\"";__o+=">";__o+="Выберите файлы или перетащите их сюда";__o+="</span>";__o+="<span";__o+=" style=\"color:#8A8177;font:400 14px Manrope, sans-serif\"";__o+=">";__o+="Фото и PDF, до 8 файлов, каждый до 10 МБ";__o+="</span>";__o+="</label>";__o+="<ul";__o+=" aria-live=\"polite\"";__o+=" style=\"list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px\"";__o+=">";for(const f of (v.files||[])){__o+="<li";__o+=" style=\"display:grid;grid-template-columns:56px minmax(0,1fr) 40px;gap:14px;align-items:center;padding:8px;border:1px solid #E2DCD3;border-radius:14px;background:#fff\"";__o+=">";__o+="<span";__o+=" style=\"width:56px;height:56px;border-radius:10px;background:#ECE6DD;display:grid;place-items:center;overflow:hidden;font:700 11px Manrope, sans-serif;color:#6B635A\"";__o+=">";if(f?.url){__o+="<img";{const __v=f?.url;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" src=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" alt=\"\"";__o+=" style=\"width:100%;height:100%;object-fit:cover\"";__o+=">";}if(f?.noUrl){__o+=__E(f?.kind);}__o+="</span>";__o+="<span";__o+=" style=\"min-width:0;display:flex;flex-direction:column\"";__o+=">";__o+="<span";__o+=" style=\"overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 14.5px Manrope, sans-serif\"";__o+=">";__o+=__E(f?.name);__o+="</span>";__o+="<small";__o+=" style=\"color:#8A8177;font:400 13px Manrope, sans-serif\"";__o+=">";__o+=__E(f?.size);__o+="</small>";__o+="</span>";__o+="<button";__o+=" type=\"button\"";__o+=" data-on-click=\""+__H(f?.remove)+"\"";{const __v=f?.aria;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" style=\"width:40px;height:40px;border-radius:999px;border:1px solid #E2DCD3;background:transparent;cursor:pointer;display:grid;place-items:center;color:#1A1714;transition:all .2s\"";__o+=" class=\"dc43\"";__o+=">";__o+="<svg";__o+=" width=\"10\"";__o+=" height=\"10\"";__o+=" viewBox=\"0 0 12 12\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M1 1l10 10M11 1L1 11\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</button>";__o+="</li>";}__o+="</ul>";}if(v.isContacts){if(v.sendErr){__o+="<div";__o+=" role=\"alert\"";__o+=" style=\"margin-bottom:20px;padding:12px 16px;border-radius:12px;background:#F8E9E4;color:#8A2B1C;font:500 14px/1.5 Manrope, sans-serif\"";__o+=">";__o+=__E(v.sendErr);__o+="</div>";}__o+="<div";__o+=" style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:18px 20px\"";__o+=">";__o+="<label";__o+=" style=\"display:flex;flex-direction:column;gap:8px\"";__o+=">";__o+="<span";__o+=" style=\"font:600 14px Manrope, sans-serif\"";__o+=">";__o+="Ваше имя";__o+="</span>";__o+="<input";__o+=" data-ref=\""+__H(v.nameRef)+"\"";__o+=" type=\"text\"";__o+=" maxlength=\"60\"";__o+=" autocomplete=\"name\"";__o+=" placeholder=\"Как к вам обращаться\"";{const __v=v.name;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" value=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" data-on-input=\""+__H(v.onName)+"\"";__o+=" style=\""+"height:54px;padding:0 18px;border:1px solid "+__E(v.nameBd)+";border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none"+"\"";__o+=" class=\"dc44\"";__o+=">";if(v.eName){__o+="<span";__o+=" style=\"color:#A33A28;font:500 13px Manrope, sans-serif\"";__o+=">";__o+="Напишите имя, чтобы мы знали, как к вам обращаться.";__o+="</span>";}__o+="</label>";__o+="<label";__o+=" style=\"display:flex;flex-direction:column;gap:8px\"";__o+=">";__o+="<span";__o+=" style=\"font:600 14px Manrope, sans-serif\"";__o+=">";__o+="Номер телефона";__o+="</span>";__o+="<input";__o+=" data-ref=\""+__H(v.phoneRef)+"\"";__o+=" type=\"tel\"";__o+=" inputmode=\"tel\"";__o+=" autocomplete=\"tel\"";__o+=" maxlength=\"24\"";__o+=" placeholder=\"+7 (900) 000-00-00\"";{const __v=v.phone;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" value=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" data-on-input=\""+__H(v.onPhone)+"\"";__o+=" style=\""+"height:54px;padding:0 18px;border:1px solid "+__E(v.phoneBd)+";border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none;font-variant-numeric:tabular-nums"+"\"";__o+=" class=\"dc45\"";__o+=">";if(v.ePhone){__o+="<span";__o+=" style=\"color:#A33A28;font:500 13px Manrope, sans-serif\"";__o+=">";__o+="Проверьте номер: нужно 11 цифр, например +7 900 000-00-00.";__o+="</span>";}__o+="</label>";__o+="</div>";__o+="<label";__o+=" style=\"display:flex;flex-direction:column;gap:8px;margin-top:18px\"";__o+=">";__o+="<span";__o+=" style=\"font:600 14px Manrope, sans-serif\"";__o+=">";__o+="Комментарий ";__o+="<span";__o+=" style=\"font-weight:400;color:#8A8177\"";__o+=">";__o+="(необязательно)";__o+="</span>";__o+="</span>";__o+="<textarea";__o+=" maxlength=\"1500\"";__o+=" placeholder=\"Пожелания, сроки, бюджет, удобное время для звонка\"";{const __v=v.comment;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" value=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" data-on-input=\""+__H(v.onComment)+"\"";__o+=" style=\"min-height:110px;padding:16px 18px;border:1px solid #DCD5CA;border-radius:14px;background:#fff;font:400 16px/1.6 Manrope, sans-serif;color:#1A1714;resize:vertical;outline:none\"";__o+=" class=\"dc46\"";__o+=">";__o+="</textarea>";__o+="</label>";__o+="<div";__o+=" aria-hidden=\"true\"";__o+=" style=\"position:absolute;left:-9999px;width:1px;height:1px;opacity:0\"";__o+=">";__o+="<label";__o+=">";__o+="Сайт";__o+="<input";__o+=" type=\"text\"";__o+=" tabindex=\"-1\"";__o+=" autocomplete=\"off\"";{const __v=v.site;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" value=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" data-on-input=\""+__H(v.onSite)+"\"";__o+=">";__o+="</label>";__o+="</div>";__o+="<button";__o+=" type=\"button\"";__o+=" role=\"checkbox\"";{const __v=v.consentStr;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-checked=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-checked=\"false\"";}}__o+=" data-on-click=\""+__H(v.toggleConsent)+"\"";__o+=" style=\"margin-top:20px;display:flex;align-items:flex-start;gap:12px;padding:0;border:0;background:transparent;text-align:left;cursor:pointer;color:#6B635A;font:400 14px/1.55 Manrope, sans-serif\"";__o+=">";__o+="<span";__o+=" aria-hidden=\"true\"";__o+=" style=\""+"flex:none;margin-top:1px;width:22px;height:22px;border-radius:6px;border:1.5px solid "+__E(v.consentBd)+";background:"+__E(v.consentBg)+";display:grid;place-items:center;box-shadow:"+__E(v.consentSh)+";transition:all .2s"+"\"";__o+=">";__o+="<svg";__o+=" width=\"12\"";__o+=" height=\"12\"";__o+=" viewBox=\"0 0 12 12\"";__o+=" fill=\"none\"";__o+=" stroke=\"#FBFAF7\"";__o+=" stroke-width=\"1.8\"";__o+=" style=\""+"opacity:"+__E(v.consentChk)+";transition:opacity .2s"+"\"";__o+=">";__o+="<path";__o+=" d=\"M2 6.2l2.6 2.6L10 3.4\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</span>";__o+="<span";__o+=">";__o+="Согласен на обработку персональных данных: имени и телефона, чтобы со мной связались по заявке.";__o+="</span>";__o+="</button>";if(v.eConsent){__o+="<span";__o+=" style=\"display:block;margin-top:8px;color:#A33A28;font:500 13px Manrope, sans-serif\"";__o+=">";__o+="Поставьте галочку, чтобы мы могли с вами связаться.";__o+="</span>";}}if(v.stepErr){__o+="<p";__o+=" role=\"alert\"";__o+=" style=\"margin:16px 0 0;color:#A33A28;font:500 14px Manrope, sans-serif\"";__o+=">";__o+=__E(v.stepErr);__o+="</p>";}__o+="</div>";__o+="<div";__o+=" style=\"display:flex;flex-wrap:wrap-reverse;gap:12px;margin-top:clamp(28px,3.4vw,40px);padding-top:24px;border-top:1px solid #E2DCD3;justify-content:space-between\"";__o+=">";if(v.canBack){__o+="<button";__o+=" type=\"button\"";__o+=" data-on-click=\""+__H(v.back)+"\"";{const __v=v.sending;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" disabled=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" style=\"display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;min-width:140px;padding:0 24px;border-radius:999px;border:1px solid rgba(26,23,20,.25);background:transparent;color:#1A1714;font:600 15px Manrope, sans-serif;cursor:pointer;transition:border-color .3s\"";__o+=" class=\"dc47\"";__o+=">";__o+="<svg";__o+=" width=\"16\"";__o+=" height=\"16\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M20 12H4M10 6l-6 6 6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="Назад";__o+="</button>";}__o+="<button";__o+=" type=\"submit\"";{const __v=v.sending;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" disabled=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" style=\""+"margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:12px;height:56px;min-width:180px;padding:0 28px;border-radius:999px;border:0;background:"+__E(v.nextBg)+";color:"+__E(v.nextFg)+";font:600 15px Manrope, sans-serif;cursor:pointer;transition:background-color .3s, gap .4s cubic-bezier(.2,.8,.2,1)"+"\"";__o+=" class=\"dc48\"";__o+=">";__o+=__E(v.nextLabel);__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</button>";__o+="</div>";__o+="</form>";}if(v.showDone){__o+="<div";__o+=" data-ref=\""+__H(v.doneRef)+"\"";__o+=" tabindex=\"-1\"";__o+=" aria-live=\"polite\"";__o+=" style=\"background:#FBFAF7;border:1px solid #E2DCD3;border-radius:28px;padding:clamp(32px,5vw,64px);display:flex;flex-direction:column;align-items:flex-start;gap:16px;outline:none;box-shadow:0 30px 60px -40px rgba(26,23,20,.25)\"";__o+=">";__o+="<div";__o+=" style=\"width:72px;height:72px;border-radius:999px;background:#EFE6DA;display:grid;place-items:center;color:#8C6239;margin-bottom:8px\"";__o+=">";__o+="<svg";__o+=" width=\"30\"";__o+=" height=\"30\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" data-check=\"\"";__o+=" pathLength=\"1\"";__o+=" stroke-dasharray=\"1\"";__o+=" d=\"M5 12.5l4.5 4.5L19 7.5\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</div>";__o+="<h2";__o+=" style=\"margin:0;font:300 clamp(2rem,3.6vw,3.2rem)/1.06 'Noto Serif Display', serif;letter-spacing:-.02em;text-wrap:balance\"";__o+=">";__o+=__E(v.doneTitle);__o+="</h2>";__o+="<p";__o+=" style=\"margin:0;max-width:52ch;color:#6B635A;font:400 16px/1.7 Manrope, sans-serif\"";__o+=">";__o+=__E(v.doneP1);__o+="<strong";__o+=" style=\"color:#1A1714\"";__o+=">";__o+=__E(v.donePhone);__o+="</strong>";__o+=__E(v.doneP1b);__o+="</p>";__o+="<p";__o+=" style=\"margin:0;max-width:52ch;color:#6B635A;font:400 16px/1.7 Manrope, sans-serif\"";__o+=">";__o+=__E(v.doneP2);__o+="</p>";__o+="<div";__o+=" style=\"display:flex;flex-wrap:wrap;gap:12px;margin-top:12px\"";__o+=">";__o+="<a";__o+=" href=\"works.html\"";__o+=" style=\"display:inline-flex;align-items:center;gap:12px;height:54px;padding:0 26px;border-radius:999px;background:#1A1714;color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1)\"";__o+=" class=\"dc49\"";__o+=">";__o+="Смотреть работы";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</a>";__o+="<a";__o+=" href=\"index.html\"";__o+=" style=\"display:inline-flex;align-items:center;height:54px;padding:0 24px;border-radius:999px;border:1px solid rgba(26,23,20,.25);color:#1A1714;text-decoration:none;font:600 15px Manrope, sans-serif;transition:border-color .3s\"";__o+=" class=\"dc50\"";__o+=">";__o+="На главную";__o+="</a>";__o+="</div>";__o+="</div>";}if(v.showSide){__o+="<aside";__o+=" aria-label=\"О проекте\"";__o+=" style=\""+"position:"+__E(v.sidePos)+";top:100px;padding:clamp(24px,3vw,36px);border-radius:24px;background:#1D1A16;color:#FBFAF7"+"\"";__o+=">";__o+="<h3";__o+=" style=\"margin:0 0 22px;font:300 28px/1.1 'Noto Serif Display', serif;letter-spacing:-.01em\"";__o+=">";__o+="Как это ";__o+="<em";__o+=" style=\"font-style:italic;color:#E2C7A2\"";__o+=">";__o+="работает";__o+="</em>";__o+="</h3>";__o+="<ol";__o+=" style=\"list-style:none;margin:0;padding:0;display:flex;flex-direction:column\"";__o+=">";__o+="<li";__o+=" style=\"display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+="01";__o+="</span>";__o+="<span";__o+=" style=\"color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif\"";__o+=">";__o+="<b";__o+=" style=\"color:#FBFAF7;font-weight:600\"";__o+=">";__o+="Вы отвечаете на вопросы.";__o+="</b>";__o+=" Так мы сразу понимаем, что вам нужно.";__o+="</span>";__o+="</li>";__o+="<li";__o+=" style=\"display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+="02";__o+="</span>";__o+="<span";__o+=" style=\"color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif\"";__o+=">";__o+="<b";__o+=" style=\"color:#FBFAF7;font-weight:600\"";__o+=">";__o+="Дизайнер связывается с вами";__o+="</b>";__o+=" по телефону и уточняет детали.";__o+="</span>";__o+="</li>";__o+="<li";__o+=" style=\"display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14);border-bottom:1px solid rgba(251,250,247,.14)\"";__o+=">";__o+="<span";__o+=" style=\"font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074\"";__o+=">";__o+="03";__o+="</span>";__o+="<span";__o+=" style=\"color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif\"";__o+=">";__o+="<b";__o+=" style=\"color:#FBFAF7;font-weight:600\"";__o+=">";__o+="Готовим проект мебели";__o+="</b>";__o+=" под размеры и стиль вашего дома.";__o+="</span>";__o+="</li>";__o+="</ol>";__o+="<p";__o+=" style=\"margin:20px 0 0;color:#A79E93;font:400 14px Manrope, sans-serif\"";__o+=">";__o+="Заявка ни к чему вас не обязывает.";__o+="</p>";__o+="</aside>";}__o+="</div>";__o+="</div>";__o+="</main>";__o+="<div data-dc=\"SiteFooter\" style=\"display:contents\"></div>";return __o;}));
+
+DC.start();
+</script>
 </body>
 </html>

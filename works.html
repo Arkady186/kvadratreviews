@@ -1,124 +1,156 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Наши работы — ASD</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Наши работы — ASD</title>
   <meta name="description" content="Фото наших работ: кухни, шкафы, санузлы, ТВ-зоны и офисная мебель на заказ.">
-  <meta name="theme-color" content="#F4F3F0">
+  <meta name="theme-color" content="#F4F1EC">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: #F4F1EC; color: #1A1714; font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+    a { color: inherit; } a:hover { color: #8C6239; }
+    ::selection { background: #C9A074; color: #14120F; }
+    :focus-visible { outline: 2px solid #B98D5E; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+<link rel="stylesheet" href="css/dc.css">
 </head>
 <body>
-  <div id="site-header"></div>
+<div data-dc="Works" style="display:contents"></div>
+<noscript><p style="padding:40px;font:16px sans-serif">Для работы сайта нужен включённый JavaScript.</p></noscript>
+<script src="js/dc.js"></script>
+<script src="js/dc-site.js"></script>
+<script>
+DC.define("Works",(function(){
+class Component extends DCLogic {
+  state = { ready: false, w: 1280, cat: 'all', sub: 'all', lb: -1, toastOn: false };
+  gridRef = React.createRef(); lbImgRef = React.createRef(); lbCloseRef = React.createRef();
+  reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Превью-проект содержит только часть фотографий. На сайте уберите этот фильтр — будут показаны все работы из works-data.js.
+  PREVIEW_FILES = ['kuhni-121', 'kuhni-144', 'kuhni-125', 'kuhni-001', 'kuhni-002', 'kuhni-003', 'kuhni-010', 'kuhni-020', 'kuhni-050', 'kuhni-080',
+    'shkafy-017', 'shkafy-031', 'shkafy-005', 'shkafy-010', 'shkafy-040', 'shkafy-060', 'sanuzly-014', 'sanuzly-001', 'sanuzly-003', 'sanuzly-008', 'sanuzly-020',
+    'tv-zony-004', 'tv-zony-001', 'tv-zony-002', 'tv-zony-003', 'tv-zony-006', 'ofis-001', 'ofis-005', 'ofis-010', 'ofis-020', 'ofis-030'];
 
-  <main>
-    <section class="page-hero">
-      <div class="wrap page-hero__row">
-        <div>
-          <h1>Наши работы</h1>
-          <p class="lead" id="cat-text">Фотографии готовых проектов. Выберите раздел.</p>
-        </div>
-        <button class="btn btn--sm" type="button" id="share" data-copy="works.html">Скопировать ссылку на раздел</button>
-      </div>
-    </section>
-
-    <section class="section section--tight">
-      <div class="wrap">
-        <div class="filters" id="cats" role="group" aria-label="Разделы"></div>
-        <div class="filters" id="subs" role="group" aria-label="Подразделы" hidden></div>
-        <p class="works-count" id="count"></p>
-        <div class="works-grid" id="grid"></div>
-        <div id="empty" hidden></div>
-      </div>
-    </section>
-  </main>
-
-  <div id="site-footer"></div>
-
-  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Просмотр фото">
-    <button class="lb__btn lb__close" id="lb-close" aria-label="Закрыть">✕</button>
-    <button class="lb__btn lb__prev" id="lb-prev" aria-label="Предыдущее фото">‹</button>
-    <img class="lb__img" id="lb-img" alt="">
-    <button class="lb__btn lb__next" id="lb-next" aria-label="Следующее фото">›</button>
-    <div class="lb__count" id="lb-count"></div>
-  </div>
-
-  <script src="js/config.js"></script>
-  <script src="js/works-data.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/common.js"></script>
-  <script>
-    Chrome.init('works');
-    const { esc, ICONS } = Chrome;
-    const W = window.WORKS, $ = (id) => document.getElementById(id);
-    const counts = Chrome.counts();
-    const params = new URLSearchParams(location.search);
-    let cat = W.categories.some((c) => c.id === params.get('c')) ? params.get('c') : 'all';
-    let sub = 'all', view = [], idx = 0;
-
-    function setUrl() {
-      const u = new URL(location.href); if (cat === 'all') u.searchParams.delete('c'); else u.searchParams.set('c', cat);
-      history.replaceState(null, '', u);
-      $('share').setAttribute('data-copy', cat === 'all' ? 'works.html' : 'works.html?c=' + cat);
-    }
-
-    function renderCats() {
-      const chips = [['all', 'Все работы', W.items.length]].concat(W.categories.map((c) => [c.id, c.title, counts[c.id] || 0]));
-      $('cats').innerHTML = chips.map(([id, t, n]) => `<button class="chip" type="button" data-c="${id}" aria-pressed="${id === cat}">${esc(t)}<small>${n}</small></button>`).join('');
-    }
-    function renderSubs() {
-      const subs = [...new Set(W.items.filter((i) => (cat === 'all' || i.cat === cat) && i.sub).map((i) => i.sub))];
-      $('subs').hidden = !subs.length || cat === 'all';
-      if (sub !== 'all' && !subs.includes(sub)) sub = 'all';
-      $('subs').innerHTML = subs.length ? [['all', 'Все']].concat(subs.map((s) => [s, s])).map(([id, t]) => `<button class="chip" type="button" data-s="${esc(id)}" aria-pressed="${id === sub}">${esc(t)}</button>`).join('') : '';
-    }
-    function renderGrid() {
-      const c = W.categories.find((x) => x.id === cat);
-      $('cat-text').textContent = c ? c.text : 'Фотографии готовых проектов. Выберите раздел.';
-      view = W.items.filter((i) => (cat === 'all' || i.cat === cat) && (sub === 'all' || i.sub === sub));
-      $('count').textContent = view.length ? Chrome.photosWord(view.length) : '';
-      $('empty').hidden = !!view.length;
-      if (!view.length) {
-        $('empty').innerHTML = `<div class="empty">${ICONS[cat === 'all' ? 'camera' : cat]}<h3>Фото появятся здесь</h3><p>Мы готовим подборку этого раздела. Загляните чуть позже — или посмотрите другие работы.</p></div>`;
-      }
-      $('grid').innerHTML = view.map((it, i) => `
-        <button class="work" type="button" data-i="${i}" aria-label="Открыть фото ${i + 1}">
-          <img src="${esc(it.thumb)}" alt="${esc((W.categories.find((x) => x.id === it.cat) || {}).title || 'Работа')}" width="${it.tw || 600}" height="${it.th || 600}" loading="lazy" decoding="async">
-        </button>`).join('');
-    }
-    function renderAll() { setUrl(); renderCats(); renderSubs(); renderGrid(); }
-
-    $('cats').addEventListener('click', (e) => { const b = e.target.closest('[data-c]'); if (b) { cat = b.dataset.c; sub = 'all'; renderAll(); } });
-    $('subs').addEventListener('click', (e) => { const b = e.target.closest('[data-s]'); if (b) { sub = b.dataset.s; renderSubs(); renderGrid(); } });
-    $('grid').addEventListener('click', (e) => { const b = e.target.closest('[data-i]'); if (b) open(Number(b.dataset.i), b); });
-
-    /* ----- Просмотр фото ----- */
-    let lastFocus = null;
-    function show() {
-      const it = view[idx]; if (!it) return;
-      $('lb-img').src = it.full; $('lb-img').alt = '';
-      $('lb-count').textContent = (idx + 1) + ' из ' + view.length;
-      [view[idx + 1], view[idx - 1]].forEach((n) => { if (n) new Image().src = n.full; });
-      $('lb-prev').style.visibility = $('lb-next').style.visibility = view.length > 1 ? 'visible' : 'hidden';
-    }
-    function open(i, from) { idx = i; lastFocus = from; $('lb').classList.add('is-open'); document.body.style.overflow = 'hidden'; show(); $('lb-close').focus(); }
-    function close() { $('lb').classList.remove('is-open'); document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); }
-    const step = (d) => { idx = (idx + d + view.length) % view.length; show(); };
-    $('lb-close').onclick = close; $('lb-prev').onclick = () => step(-1); $('lb-next').onclick = () => step(1);
-    $('lb').addEventListener('click', (e) => { if (e.target === $('lb')) close(); });
-    document.addEventListener('keydown', (e) => {
-      if (!$('lb').classList.contains('is-open')) return;
-      if (e.key === 'Escape') close(); else if (e.key === 'ArrowLeft') step(-1); else if (e.key === 'ArrowRight') step(1);
+  boot() {
+    return window.__asdBoot || (window.__asdBoot = ['js/config.js', 'js/works-data.js', 'js/api.js'].reduce((p, src) => p.then(() => new Promise((res) => {
+      const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = res; document.head.appendChild(s);
+    })), Promise.resolve()));
+  }
+  all() {
+    const W = window.WORKS || { items: [] };
+    const set = null;
+    return (W.items || []).filter((i) => !set || set.some((f) => i.full.indexOf('/' + f + '-') !== -1));
+  }
+  componentDidMount() {
+    this.onR = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onR); this.onR();
+    this.onKey = (e) => {
+      if (this.state.lb < 0) return;
+      if (e.key === 'Escape') this.close(); else if (e.key === 'ArrowLeft') this.step(-1); else if (e.key === 'ArrowRight') this.step(1);
+    };
+    document.addEventListener('keydown', this.onKey);
+    if (!this.reduce) document.querySelectorAll('[data-in]').forEach((el) => el.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 1100, delay: 100 + (+el.dataset.in) * 120, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' }));
+    this.boot().then(() => {
+      const W = window.WORKS || { categories: [] };
+      const c = new URLSearchParams(location.search).get('c');
+      this.setState({ ready: true, cat: (W.categories || []).some((x) => x.id === c) ? c : 'all' }, () => this.animateGrid());
     });
-    let sx = null;
-    $('lb').addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
-    $('lb').addEventListener('touchend', (e) => { if (sx == null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1); sx = null; });
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); document.removeEventListener('keydown', this.onKey); document.documentElement.style.overflow = ''; }
 
-    renderAll();
-  </script>
+  animateGrid() {
+    if (this.reduce) return;
+    requestAnimationFrame(() => {
+      const tiles = document.querySelectorAll('[data-tile]');
+      let k = 0;
+      tiles.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top > window.innerHeight + 200) return;
+        el.animate([{ opacity: 0, transform: 'translateY(28px) scale(.985)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: Math.min(k++, 12) * 60, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      });
+    });
+  }
+  setCat(cat) {
+    this.setState({ cat, sub: 'all' }, () => {
+      const u = new URL(location.href); if (cat === 'all') u.searchParams.delete('c'); else u.searchParams.set('c', cat);
+      try { history.replaceState(null, '', u); } catch (e) {}
+      this.animateGrid();
+    });
+  }
+  view() {
+    const { cat, sub } = this.state;
+    return this.all().filter((i) => (cat === 'all' || i.cat === cat) && (sub === 'all' || i.sub === sub));
+  }
+  open(i) {
+    this.lastFocus = document.activeElement; document.documentElement.style.overflow = 'hidden';
+    this.setState({ lb: i }, () => { this.lbCloseRef.current && this.lbCloseRef.current.focus({ preventScroll: true }); this.fadeImg(); this.preload(); });
+  }
+  close() { this.setState({ lb: -1 }); document.documentElement.style.overflow = ''; if (this.lastFocus) this.lastFocus.focus({ preventScroll: true }); }
+  step(d) { const n = this.view().length; if (!n) return; this.setState((s) => ({ lb: (s.lb + d + n) % n }), () => { this.fadeImg(d); this.preload(); }); }
+  fadeImg(d) {
+    const img = this.lbImgRef.current; if (!img || this.reduce) return;
+    img.animate([{ opacity: 0, transform: 'translateX(' + ((d || 0) * 24) + 'px) scale(' + (d ? 1 : 0.97) + ')' }, { opacity: 1, transform: 'none' }], { duration: 600, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  }
+  preload() { const v = this.view(), i = this.state.lb; [v[i + 1], v[i - 1]].forEach((n) => { if (n) new Image().src = n.full; }); }
+  share() {
+    const page = this.state.cat === 'all' ? 'works.html' : 'works.html?c=' + this.state.cat;
+    const url = new URL(page, location.href).href;
+    const done = () => { this.setState({ toastOn: true }); clearTimeout(this.tT); this.tT = setTimeout(() => this.setState({ toastOn: false }), 2200); };
+    if (navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent)) { navigator.share({ url, title: 'ASD' }).catch(() => {}); return; }
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(done).catch(() => {
+      const ta = document.createElement('textarea'); ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {} ta.remove(); done();
+    });
+  }
+
+  renderVals() {
+    const W = window.WORKS || { categories: [], items: [] };
+    const all = this.all();
+    const counts = {}; all.forEach((i) => { counts[i.cat] = (counts[i.cat] || 0) + 1; });
+    const { cat, sub, lb, w } = this.state;
+    const c = (W.categories || []).find((x) => x.id === cat);
+    const chipsSrc = [['all', 'Все работы', all.length]].concat((W.categories || []).map((x) => [x.id, x.title, counts[x.id] || 0]));
+    const chips = chipsSrc.map(([id, t, n]) => {
+      const on = id === cat;
+      return { label: t, n, on: String(on), pick: () => this.setCat(id), bg: on ? '#1A1714' : 'transparent', fg: on ? '#FBFAF7' : '#1A1714', bd: on ? '#1A1714' : 'rgba(26,23,20,.18)' };
+    });
+    const subList = cat === 'all' ? [] : [...new Set(all.filter((i) => i.cat === cat && i.sub).map((i) => i.sub))];
+    const subs = subList.length ? [['all', 'Все']].concat(subList.map((s) => [s, s])).map(([id, t]) => {
+      const on = id === sub;
+      return { label: t, on: String(on), pick: () => this.setState({ sub: id }, () => this.animateGrid()), fg: on ? '#1A1714' : '#6B635A', bd: on ? '#B98D5E' : 'transparent' };
+    }) : [];
+    const view = this.view();
+    const catName = (id) => ((W.categories || []).find((x) => x.id === id) || {}).title || 'Работа';
+    const items = view.map((it, i) => ({
+      i, src: it.full, alt: catName(it.cat), aria: 'Открыть фото ' + (i + 1), ar: (it.w || 4) + ' / ' + (it.h || 3), open: () => this.open(i),
+    }));
+    const cur = view[lb];
+    const narrow = w < 640;
+    return {
+      catTitle: c ? c.title : false, catText: c ? c.text : 'Фотографии готовых проектов. Выберите раздел.',
+      share: () => this.share(), chips, subs, hasSubs: subs.length > 0,
+      countLabel: this.state.ready ? (view.length ? view.length + ' фото' : '') : '',
+      hasItems: !this.state.ready || view.length > 0, empty: this.state.ready && !view.length,
+      items, gridRef: this.gridRef, cols: w > 1100 ? 3 : w > 560 ? 2 : 2,
+      lbOpen: lb >= 0 && !!cur, lbSrc: cur ? cur.full : '', lbAlt: cur ? catName(cur.cat) : '', lbCat: cur ? catName(cur.cat) : '',
+      lbCount: cur ? (lb + 1) + ' из ' + view.length : '', lbMulti: view.length > 1, lbImgRef: this.lbImgRef, lbCloseRef: this.lbCloseRef,
+      navTop: narrow ? 'auto' : '0', navBottom: narrow ? '20px' : '0',
+      lbClose: () => this.close(), lbPrev: (e) => { e.stopPropagation(); this.step(-1); }, lbNext: (e) => { e.stopPropagation(); this.step(1); },
+      lbBackdrop: (e) => { if (e.target === e.currentTarget) this.close(); },
+      tStart: (e) => { this.sx = e.touches[0].clientX; }, tEnd: (e) => { if (this.sx == null) return; const dx = e.changedTouches[0].clientX - this.sx; if (Math.abs(dx) > 50) this.step(dx < 0 ? 1 : -1); this.sx = null; },
+      toastOp: this.state.toastOn ? 1 : 0, toastY: this.state.toastOn ? '0px' : '20px',
+    };
+  }
+}
+
+return Component;})(),(function(v,__H,__E){let __o="";__o+="<div data-dc=\"SiteHeader\" data-p-active=\"works\" data-p-tone=\"light\" style=\"display:contents\"></div>";__o+="<main";__o+=">";__o+="<section";__o+=" style=\"padding:calc(84px + clamp(48px,7vw,104px)) 0 clamp(28px,3vw,44px)\"";__o+=">";__o+="<div";__o+=" style=\"max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px 48px\"";__o+=">";__o+="<div";__o+=" data-in=\"0\"";__o+=" style=\"max-width:820px\"";__o+=">";__o+="<div";__o+=" style=\"display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px\"";__o+=">";__o+="<span";__o+=" style=\"width:36px;height:1px;background:currentColor\"";__o+=">";__o+="</span>";__o+="Портфолио";__o+="</div>";__o+="<h1";__o+=" style=\"margin:0;font:300 clamp(3rem,7vw,6.6rem)/.98 'Noto Serif Display', serif;letter-spacing:-.035em\"";__o+=">";__o+="Наши работы";if(v.catTitle){__o+="<span";__o+=" style=\"color:#B5ACA1\"";__o+=">";__o+=" · ";__o+="</span>";__o+="<em";__o+=" style=\"font-style:italic;color:#8C6239\"";__o+=">";__o+=__E(v.catTitle);__o+="</em>";}__o+="</h1>";__o+="<p";__o+=" style=\"margin:24px 0 0;max-width:48ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty\"";__o+=">";__o+=__E(v.catText);__o+="</p>";__o+="</div>";__o+="<button";__o+=" data-in=\"1\"";__o+=" type=\"button\"";__o+=" data-on-click=\""+__H(v.share)+"\"";__o+=" style=\"display:inline-flex;align-items:center;gap:10px;height:50px;padding:0 22px;border-radius:999px;border:1px solid rgba(26,23,20,.25);background:transparent;color:#1A1714;font:600 14px Manrope, sans-serif;cursor:pointer;transition:border-color .3s, background-color .3s\"";__o+=" class=\"dc26\"";__o+=">";__o+="<svg";__o+=" width=\"16\"";__o+=" height=\"16\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="Скопировать ссылку на раздел";__o+="</button>";__o+="</div>";__o+="</section>";__o+="<section";__o+=" style=\"padding:0 0 clamp(80px,10vw,140px)\"";__o+=">";__o+="<div";__o+=" style=\"max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)\"";__o+=">";__o+="<div";__o+=" style=\"position:sticky;top:68px;z-index:20;margin:0 calc(-1 * clamp(20px,4vw,56px));padding:14px clamp(20px,4vw,56px);background:rgba(244,241,236,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #E2DCD3\"";__o+=">";__o+="<div";__o+=" role=\"group\"";__o+=" aria-label=\"Разделы\"";__o+=" style=\"display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px\"";__o+=">";for(const c of (v.chips||[])){__o+="<button";__o+=" type=\"button\"";{const __v=c?.on;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-pressed=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-pressed=\"false\"";}}__o+=" data-on-click=\""+__H(c?.pick)+"\"";__o+=" style=\""+"flex:none;display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px;border-radius:999px;border:1px solid "+__E(c?.bd)+";background:"+__E(c?.bg)+";color:"+__E(c?.fg)+";font:600 14px Manrope, sans-serif;cursor:pointer;transition:background-color .3s, color .3s, border-color .3s"+"\"";__o+=" class=\"dc27\"";__o+=">";__o+=__E(c?.label);__o+="<span";__o+=" style=\"font:500 12px Manrope, sans-serif;opacity:.6;font-variant-numeric:tabular-nums\"";__o+=">";__o+=__E(c?.n);__o+="</span>";__o+="</button>";}__o+="</div>";if(v.hasSubs){__o+="<div";__o+=" role=\"group\"";__o+=" aria-label=\"Подразделы\"";__o+=" style=\"display:flex;gap:22px;overflow-x:auto;padding:12px 2px 0\"";__o+=">";for(const s of (v.subs||[])){__o+="<button";__o+=" type=\"button\"";{const __v=s?.on;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-pressed=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-pressed=\"false\"";}}__o+=" data-on-click=\""+__H(s?.pick)+"\"";__o+=" style=\""+"flex:none;height:32px;padding:0;border:0;border-bottom:1px solid "+__E(s?.bd)+";background:transparent;color:"+__E(s?.fg)+";font:500 14px Manrope, sans-serif;cursor:pointer"+"\"";__o+=">";__o+=__E(s?.label);__o+="</button>";}__o+="</div>";}__o+="</div>";__o+="<p";__o+=" aria-live=\"polite\"";__o+=" style=\"margin:28px 0 22px;color:#6B635A;font:500 13px Manrope, sans-serif;letter-spacing:.14em;text-transform:uppercase\"";__o+=">";__o+=__E(v.countLabel);__o+="</p>";if(v.hasItems){__o+="<div";__o+=" data-ref=\""+__H(v.gridRef)+"\"";__o+=" style=\""+"column-count:"+__E(v.cols)+";column-gap:clamp(10px,1.2vw,18px)"+"\"";__o+=">";for(const it of (v.items||[])){__o+="<button";__o+=" type=\"button\"";{const __v=it?.i;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" data-tile=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" data-tile=\"false\"";}}__o+=" data-on-click=\""+__H(it?.open)+"\"";{const __v=it?.aria;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" aria-label=\""+(__v===true?"true":__E(__v))+"\"";}else if(__v===false){__o+=" aria-label=\"false\"";}}__o+=" style=\""+"display:block;width:100%;margin:0 0 clamp(10px,1.2vw,18px);padding:0;border:0;border-radius:6px;overflow:hidden;background:#E2DCD3;cursor:zoom-in;break-inside:avoid;position:relative;aspect-ratio:"+__E(it?.ar)+"\"";__o+=">";__o+="<img";{const __v=it?.src;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" src=\""+(__v===true?"":__E(__v))+"\"";}}{const __v=it?.alt;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" alt=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" loading=\"lazy\"";__o+=" decoding=\"async\"";__o+=" style=\"display:block;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.8,.2,1), filter .6s\"";__o+=" class=\"dc28\"";__o+=">";__o+="</button>";}__o+="</div>";}if(v.empty){__o+="<div";__o+=" style=\"display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:clamp(56px,9vw,120px) 20px;border:1px solid #E2DCD3;border-radius:20px;background:#FBFAF7\"";__o+=">";__o+="<div";__o+=" style=\"width:64px;height:64px;border-radius:999px;background:#EFE6DA;display:grid;place-items:center;color:#8C6239\"";__o+=">";__o+="<svg";__o+=" width=\"28\"";__o+=" height=\"28\"";__o+=" viewBox=\"0 0 64 64\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"2\"";__o+=">";__o+="<rect";__o+=" x=\"6\"";__o+=" y=\"16\"";__o+=" width=\"52\"";__o+=" height=\"38\"";__o+=">";__o+="</rect>";__o+="<circle";__o+=" cx=\"32\"";__o+=" cy=\"35\"";__o+=" r=\"10\"";__o+=">";__o+="</circle>";__o+="<path";__o+=" d=\"M22 16l4-8h12l4 8\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</div>";__o+="<h3";__o+=" style=\"margin:0;font:300 32px/1.1 'Noto Serif Display', serif\"";__o+=">";__o+="Фото появятся здесь";__o+="</h3>";__o+="<p";__o+=" style=\"margin:0;max-width:42ch;color:#6B635A;font:400 15.5px/1.6 Manrope, sans-serif\"";__o+=">";__o+="Мы готовим подборку этого раздела. Загляните чуть позже — или посмотрите другие работы.";__o+="</p>";__o+="</div>";}__o+="</div>";__o+="</section>";__o+="</main>";__o+="<div data-dc=\"SiteFooter\" style=\"display:contents\"></div>";if(v.lbOpen){__o+="<div";__o+=" role=\"dialog\"";__o+=" aria-modal=\"true\"";__o+=" aria-label=\"Просмотр фото\"";__o+=" data-on-click=\""+__H(v.lbBackdrop)+"\"";__o+=" data-on-touchstart=\""+__H(v.tStart)+"\"";__o+=" data-on-touchend=\""+__H(v.tEnd)+"\"";__o+=" style=\"position:fixed;inset:0;z-index:300;background:rgba(14,12,10,.96);display:flex;align-items:center;justify-content:center;color:#FBFAF7\"";__o+=">";__o+="<div";__o+=" style=\"position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(16px,3vw,32px);pointer-events:none\"";__o+=">";__o+="<span";__o+=" style=\"font:600 11px Manrope, sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#C9A074\"";__o+=">";__o+=__E(v.lbCat);__o+="</span>";__o+="<span";__o+=" style=\"font:500 13px Manrope, sans-serif;color:#B5ACA1;font-variant-numeric:tabular-nums\"";__o+=">";__o+=__E(v.lbCount);__o+="</span>";__o+="</div>";__o+="<img";__o+=" data-ref=\""+__H(v.lbImgRef)+"\"";__o+=" data-lb=\"\"";{const __v=v.lbSrc;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" src=\""+(__v===true?"":__E(__v))+"\"";}}{const __v=v.lbAlt;if(__v!==undefined&&__v!==null&&__v!==false){__o+=" alt=\""+(__v===true?"":__E(__v))+"\"";}}__o+=" style=\"max-width:min(92vw,1500px);max-height:84vh;object-fit:contain;user-select:none;border-radius:4px;box-shadow:0 40px 100px -30px rgba(0,0,0,.8)\"";__o+=">";__o+="<button";__o+=" type=\"button\"";__o+=" data-ref=\""+__H(v.lbCloseRef)+"\"";__o+=" data-lbbtn=\"\"";__o+=" data-on-click=\""+__H(v.lbClose)+"\"";__o+=" aria-label=\"Закрыть\"";__o+=" style=\"position:absolute;top:56px;right:clamp(16px,3vw,32px);width:52px;height:52px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:rgba(20,18,15,.4);color:#FBFAF7;cursor:pointer;display:grid;place-items:center;transition:background-color .3s, color .3s\"";__o+=" class=\"dc29\"";__o+=">";__o+="<svg";__o+=" width=\"14\"";__o+=" height=\"14\"";__o+=" viewBox=\"0 0 12 12\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.4\"";__o+=">";__o+="<path";__o+=" d=\"M1 1l10 10M11 1L1 11\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</button>";if(v.lbMulti){__o+="<button";__o+=" type=\"button\"";__o+=" data-lbbtn=\"\"";__o+=" data-on-click=\""+__H(v.lbPrev)+"\"";__o+=" aria-label=\"Предыдущее фото\"";__o+=" style=\""+"position:absolute;left:clamp(12px,3vw,32px);top:"+__E(v.navTop)+";bottom:"+__E(v.navBottom)+";margin:auto 0;width:56px;height:56px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:rgba(20,18,15,.4);color:#FBFAF7;cursor:pointer;display:grid;place-items:center;transition:background-color .3s, color .3s"+"\"";__o+=" class=\"dc30\"";__o+=">";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M20 12H4M10 6l-6 6 6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</button>";__o+="<button";__o+=" type=\"button\"";__o+=" data-lbbtn=\"\"";__o+=" data-on-click=\""+__H(v.lbNext)+"\"";__o+=" aria-label=\"Следующее фото\"";__o+=" style=\""+"position:absolute;right:clamp(12px,3vw,32px);top:"+__E(v.navTop)+";bottom:"+__E(v.navBottom)+";margin:auto 0;width:56px;height:56px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:rgba(20,18,15,.4);color:#FBFAF7;cursor:pointer;display:grid;place-items:center;transition:background-color .3s, color .3s"+"\"";__o+=" class=\"dc31\"";__o+=">";__o+="<svg";__o+=" width=\"18\"";__o+=" height=\"18\"";__o+=" viewBox=\"0 0 24 24\"";__o+=" fill=\"none\"";__o+=" stroke=\"currentColor\"";__o+=" stroke-width=\"1.6\"";__o+=">";__o+="<path";__o+=" d=\"M4 12h16M14 6l6 6-6 6\"";__o+=">";__o+="</path>";__o+="</svg>";__o+="</button>";}__o+="</div>";}__o+="<div";__o+=" role=\"status\"";__o+=" aria-live=\"polite\"";__o+=" style=\""+"position:fixed;left:50%;bottom:28px;z-index:350;transform:translateX(-50%) translateY("+__E(v.toastY)+");opacity:"+__E(v.toastOp)+";transition:opacity .35s, transform .5s cubic-bezier(.2,.8,.2,1);background:#1A1714;color:#FBFAF7;padding:14px 22px;border-radius:999px;font:500 14px Manrope, sans-serif;box-shadow:0 20px 40px -16px rgba(0,0,0,.5);pointer-events:none;display:flex;align-items:center;gap:10px"+"\"";__o+=">";__o+="<span";__o+=" style=\"width:6px;height:6px;border-radius:999px;background:#C9A074\"";__o+=">";__o+="</span>";__o+="Ссылка скопирована";__o+="</div>";return __o;}));
+
+DC.start();
+</script>
 </body>
 </html>

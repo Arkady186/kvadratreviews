@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>ASD — мебель на заказ: наши работы и отзывы</title>
+  <meta name="description" content="Кухни, шкафы, санузлы, ТВ-зоны и офисная мебель на заказ. Смотрите наши работы и читайте отзывы клиентов."></meta>
+  <meta name="theme-color" content="#14120F"></meta>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml"></link>
+  <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""></link>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"></link>
+  <style>
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: #F4F1EC; color: #1A1714; font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+    a { color: inherit; } a:hover { color: #8C6239; }
+    ::selection { background: #C9A074; color: #14120F; }
+    :focus-visible { outline: 2px solid #B98D5E; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+</helmet>
+
+<dc-import name="SiteHeader" active="home" tone="dark" hint-size="100%,0px"></dc-import>
+
+<main>
+  <section data-screen-label="01 Hero" style="position:relative;min-height:max(680px,100svh);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;background:#14120F;color:#FBFAF7">
+    <div aria-hidden="true" style="position:absolute;inset:0;z-index:-2">
+      <sc-for list="{{ slides }}" as="s" hint-placeholder-count="0">
+        <div style="position:absolute;inset:0;opacity:{{ s.op }};transition:opacity 1.8s ease">
+          <img data-kb="" src="{{ s.src }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;transform-origin:60% 40%"></img>
+        </div>
+      </sc-for>
+    </div>
+    <div aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg, rgba(20,18,15,.62) 0%, rgba(20,18,15,.18) 32%, rgba(20,18,15,.35) 58%, rgba(20,18,15,.92) 100%), linear-gradient(90deg, rgba(20,18,15,.55) 0%, rgba(20,18,15,0) 60%)"></div>
+
+    <div style="width:100%;max-width:1440px;margin:0 auto;padding:140px clamp(20px,4vw,56px) 0;box-sizing:border-box">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:40px clamp(32px,5vw,96px);align-items:end">
+        <div>
+          <div data-hero-fade="0" style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#E2C7A2;margin-bottom:clamp(22px,3vh,34px)">
+            <span style="width:36px;height:1px;background:currentColor"></span>Мебель на заказ · Ростов-на-Дону
+          </div>
+          <h1 style="margin:0;font:300 clamp(3.4rem,8.2vw,8.6rem)/.94 'Noto Serif Display', serif;letter-spacing:-.035em">
+            <span style="display:block;overflow:hidden;padding:.02em 0 .1em;margin-bottom:-.1em"><span data-line="0" style="display:block">Мебель,</span></span>
+            <span style="display:block;overflow:hidden;padding:.02em 0 .1em;margin-bottom:-.1em"><span data-line="1" style="display:block">сделанная</span></span>
+            <span style="display:block;overflow:hidden;padding:.02em 0 .1em"><span data-line="2" style="display:block">под ваш <em style="font-style:italic;color:#E2C7A2">дом</em></span></span>
+          </h1>
+        </div>
+        <div style="justify-self:end;max-width:440px;display:flex;flex-direction:column;gap:30px;padding-bottom:8px">
+          <p data-hero-fade="1" style="margin:0;font:400 clamp(16px,1.25vw,18px)/1.7 Manrope, sans-serif;color:#E4DED5;text-wrap:pretty">Кухни, шкафы, санузлы и ТВ-зоны на заказ. Посмотрите наши работы и прочитайте, что говорят те, кто уже живёт с нашей мебелью.</p>
+          <div data-hero-fade="2" style="display:flex;flex-wrap:wrap;gap:12px">
+            <a href="Works.dc.html" style="display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 28px;border-radius:999px;background:#FBFAF7;color:#14120F;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .35s" style-hover="gap:20px;background:#E2C7A2;color:#14120F">Смотреть работы
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+            </a>
+            <a href="Reviews.dc.html" style="display:inline-flex;align-items:center;height:56px;padding:0 28px;border-radius:999px;border:1px solid rgba(251,250,247,.45);color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background-color .35s, border-color .35s" style-hover="background:rgba(251,250,247,.12);border-color:#FBFAF7;color:#FBFAF7">Читать отзывы</a>
+          </div>
+          <sc-if value="{{ proof }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:14px;font:400 14.5px Manrope, sans-serif;color:#E4DED5">
+              <span role="img" aria-label="{{ proof.aria }}" style="display:flex;gap:2px;font-size:15px;letter-spacing:0">
+                <sc-for list="{{ proof.stars }}" as="st"><span aria-hidden="true" style="color:{{ st }}">★</span></sc-for>
+              </span>
+              <span><strong style="color:#FBFAF7;font-weight:700">{{ proof.avg }}</strong> {{ proof.label }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <div data-hero-fade="3" style="margin-top:clamp(48px,8vh,96px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));border-top:1px solid rgba(251,250,247,.2)">
+        <div style="padding:26px 24px 30px 0;border-right:1px solid rgba(251,250,247,.12)">
+          <div style="font:300 clamp(2.2rem,3.4vw,3.2rem)/1 'Noto Serif Display', serif;letter-spacing:-.02em;font-variant-numeric:tabular-nums">{{ cntStr }}</div>
+          <div style="margin-top:10px;font:600 11px/1.4 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#B5ACA1">фото готовых работ</div>
+        </div>
+        <div style="padding:26px 24px 30px;border-right:1px solid rgba(251,250,247,.12)">
+          <div style="font:300 clamp(2.2rem,3.4vw,3.2rem)/1 'Noto Serif Display', serif;letter-spacing:-.02em">5</div>
+          <div style="margin-top:10px;font:600 11px/1.4 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#B5ACA1">направлений мебели</div>
+        </div>
+        <div style="padding:26px 24px 30px;border-right:1px solid rgba(251,250,247,.12)">
+          <div style="font:300 clamp(2.2rem,3.4vw,3.2rem)/1 'Noto Serif Display', serif;letter-spacing:-.02em">100<span style="font-size:.5em;color:#E2C7A2;vertical-align:super;margin-left:2px">%</span></div>
+          <div style="margin-top:10px;font:600 11px/1.4 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#B5ACA1">по вашим размерам</div>
+        </div>
+        <div style="padding:26px 0 30px 24px;display:flex;flex-direction:column;justify-content:space-between;gap:14px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;font:500 13px Manrope, sans-serif;color:#E4DED5">
+            <span style="font-variant-numeric:tabular-nums;letter-spacing:.08em">{{ slideNo }}</span>
+            <span style="font:italic 300 20px 'Noto Serif Display', serif">{{ slideLabel }}</span>
+          </div>
+          <div style="display:flex;gap:6px">
+            <sc-for list="{{ slides }}" as="s" hint-placeholder-count="3">
+              <button type="button" aria-label="{{ s.aria }}" onClick="{{ s.go }}" style="flex:1;height:22px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center">
+                <span style="display:block;width:100%;height:2px;background:rgba(251,250,247,.22);position:relative;overflow:hidden">
+                  <span style="position:absolute;inset:0;background:#E2C7A2;transform-origin:left;transform:scaleX({{ s.fill }});transition:{{ s.tr }}"></span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div aria-hidden="true" onMouseEnter="{{ marqPause }}" onMouseLeave="{{ marqPlay }}" style="overflow:hidden;background:#F4F1EC;border-bottom:1px solid #E2DCD3;padding:26px 0">
+    <div ref="{{ marqRef }}" style="display:flex;width:max-content">
+      <sc-for list="{{ marqGroups }}" as="g" hint-placeholder-count="2">
+        <div style="display:flex;align-items:center;flex:none">
+          <sc-for list="{{ marqWords }}" as="mw" hint-placeholder-count="7">
+            <span style="font:italic 300 clamp(1.6rem,2.8vw,2.5rem)/1 'Noto Serif Display', serif;color:#1A1714;padding:0 clamp(20px,2.6vw,40px);white-space:nowrap">{{ mw }}</span>
+            <span style="width:7px;height:7px;background:#B98D5E;transform:rotate(45deg);flex:none"></span>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <section id="works" data-screen-label="02 Works" style="padding:clamp(88px,11vw,168px) 0;background:#F4F1EC">
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px 64px;margin-bottom:clamp(40px,5vw,72px)">
+        <div data-reveal="0" style="max-width:640px">
+          <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Портфолио</div>
+          <h2 style="margin:0;font:300 clamp(2.8rem,5.6vw,5.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.03em">Наши <em style="font-style:italic;color:#8C6239">работы</em></h2>
+          <p style="margin:24px 0 0;max-width:44ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty">Фотографии готовых кухонь, шкафов, санузлов и ТВ-зон из квартир наших клиентов.</p>
+        </div>
+        <div data-reveal="1" style="display:flex;align-items:flex-end;gap:18px">
+          <span style="font:300 clamp(5rem,10vw,9rem)/.78 'Noto Serif Display', serif;letter-spacing:-.05em;font-variant-numeric:tabular-nums">{{ cntStr }}</span>
+          <span style="max-width:13ch;padding-bottom:4px;font:600 11px/1.5 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#6B635A">готовых работ в портфолио</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:{{ mosaicCols }};grid-auto-rows:{{ mosaicRows }};gap:clamp(10px,1.2vw,18px)">
+        <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="0">
+          <a href="{{ t.href }}" data-reveal="{{ t.ri }}" aria-label="{{ t.aria }}" style="position:relative;display:block;overflow:hidden;border-radius:6px;background:#E2DCD3;grid-column:{{ t.col }};grid-row:{{ t.row }};aspect-ratio:{{ t.ar }};color:#FBFAF7;text-decoration:none;isolation:isolate">
+            <img src="{{ t.src }}" alt="{{ t.alt }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.8,.2,1), filter 1s;z-index:-2" style-hover="transform:scale(1.06)"></img>
+            <span aria-hidden="true" style="position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg, rgba(20,18,15,0) 45%, rgba(20,18,15,.78) 100%)"></span>
+            <span style="position:absolute;left:clamp(16px,1.8vw,26px);right:clamp(16px,1.8vw,26px);bottom:clamp(16px,1.8vw,24px);display:flex;align-items:flex-end;justify-content:space-between;gap:12px;pointer-events:none">
+              <span>
+                <span style="display:block;font:600 10.5px/1 Manrope, sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#E2C7A2">{{ t.n }}</span>
+                <span style="display:block;margin-top:8px;font:300 clamp(1.4rem,2.1vw,2rem)/1.05 'Noto Serif Display', serif;letter-spacing:-.01em">{{ t.title }}</span>
+              </span>
+              <span style="flex:none;width:44px;height:44px;border-radius:999px;border:1px solid rgba(251,250,247,.55);display:grid;place-items:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="transform:rotate(-45deg)"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+              </span>
+            </span>
+          </a>
+        </sc-for>
+      </div>
+
+      <div data-reveal="0" style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px;margin-top:clamp(32px,4vw,52px)">
+        <a href="Works.dc.html" style="display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 28px;border-radius:999px;background:#1A1714;color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .35s" style-hover="gap:20px;background:#3A332C;color:#FBFAF7">Все работы
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+        </a>
+        <button type="button" onClick="{{ copyWorks }}" style="display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 26px;border-radius:999px;border:1px solid rgba(26,23,20,.25);background:transparent;color:#1A1714;font:600 15px Manrope, sans-serif;cursor:pointer;transition:border-color .3s, background-color .3s" style-hover="border-color:#1A1714;background:#FBFAF7">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg>
+          Скопировать ссылку
+        </button>
+        <p style="margin:0 0 0 auto;max-width:46ch;color:#6B635A;font:400 14.5px/1.6 Manrope, sans-serif">Можно отправить клиенту ссылку сразу на нужный раздел — откройте раздел и скопируйте адрес.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="03 Categories" style="position:relative;padding:clamp(88px,11vw,168px) 0;background:#14120F;color:#FBFAF7">
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px 64px;margin-bottom:clamp(40px,5vw,72px)">
+        <div data-reveal="0">
+          <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#C9A074;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Что мы делаем</div>
+          <h2 style="margin:0;font:300 clamp(2.8rem,5.6vw,5.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.03em">Пять направлений <em style="font-style:italic;color:#C9A074">мебели</em></h2>
+        </div>
+        <p data-reveal="1" style="margin:0;max-width:36ch;color:#A79E93;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty">Выберите раздел, чтобы посмотреть работы. В каждом — фотографии изделий, которые мы сделали для клиентов.</p>
+      </div>
+
+      <div onMouseMove="{{ onCatMove }}" onMouseLeave="{{ onCatLeave }}" style="border-top:1px solid rgba(251,250,247,.14)">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="0">
+          <a href="{{ c.href }}" data-reveal="{{ c.ri }}" onMouseEnter="{{ c.enter }}" onFocus="{{ c.enter }}" style="display:grid;grid-template-columns:{{ catCols }};align-items:center;gap:clamp(14px,3vw,48px);padding:clamp(22px,3vw,40px) 0;border-bottom:1px solid rgba(251,250,247,.14);color:#FBFAF7;text-decoration:none;opacity:{{ c.op }};transition:opacity .5s ease, padding-left .6s cubic-bezier(.2,.8,.2,1)" style-hover="padding-left:clamp(0px,1.6vw,24px);color:#FBFAF7">
+            <span style="font:italic 300 clamp(1rem,1.4vw,1.25rem)/1 'Noto Serif Display', serif;color:#C9A074">{{ c.idx }}</span>
+            <span style="min-width:0">
+              <span style="display:block;font:300 clamp(2rem,4.6vw,4.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.025em">{{ c.title }}</span>
+              <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+                <span style="display:block;margin-top:8px;color:#A79E93;font:400 13.5px/1.5 Manrope, sans-serif">{{ c.n }}</span>
+              </sc-if>
+            </span>
+            <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+              <span style="color:#A79E93;font:400 15px/1.6 Manrope, sans-serif;max-width:30ch">{{ c.text }}</span>
+            </sc-if>
+            <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+              <span style="font:600 11px/1 Manrope, sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#A79E93;white-space:nowrap">{{ c.n }}</span>
+            </sc-if>
+            <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+              <img src="{{ c.img }}" alt="" loading="lazy" style="width:64px;height:80px;object-fit:cover;border-radius:4px"></img>
+            </sc-if>
+            <span style="width:52px;height:52px;border-radius:999px;border:1px solid {{ c.arrowBd }};background:{{ c.arrowBg }};color:{{ c.arrowFg }};display:grid;place-items:center;transition:background-color .4s, color .4s, border-color .4s, transform .6s cubic-bezier(.2,.8,.2,1);transform:{{ c.arrowTf }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+            </span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ wide }}" hint-placeholder-val="{{ false }}">
+      <div ref="{{ prevRef }}" aria-hidden="true" style="position:fixed;left:0;top:0;width:300px;height:380px;pointer-events:none;z-index:30;will-change:transform">
+        <div style="position:absolute;inset:0;border-radius:8px;overflow:hidden;opacity:{{ prevOp }};transform:scale({{ prevScale }}) rotate({{ prevRot }});transition:opacity .45s ease, transform .7s cubic-bezier(.2,.8,.2,1);box-shadow:0 40px 80px -30px rgba(0,0,0,.7)">
+          <sc-for list="{{ cats }}" as="c" hint-placeholder-count="0">
+            <img src="{{ c.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ c.pop }};transform:scale({{ c.pscale }});transition:opacity .5s ease, transform 1.2s cubic-bezier(.2,.8,.2,1)"></img>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </section>
+
+  <section data-screen-label="04 Process" style="padding:clamp(88px,11vw,168px) 0;background:#F4F1EC">
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px 64px;margin-bottom:clamp(48px,6vw,88px)">
+        <div data-reveal="0">
+          <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Процесс</div>
+          <h2 style="margin:0;font:300 clamp(2.8rem,5.6vw,5.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.03em">Как мы <em style="font-style:italic;color:#8C6239">работаем</em></h2>
+        </div>
+        <p data-reveal="1" style="margin:0;max-width:36ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty">От первого разговора до готовой мебели в вашем доме — четыре понятных шага.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:56px clamp(24px,3vw,48px)">
+        <article data-reveal="0" style="position:relative;padding-top:36px">
+          <span data-grow="0" style="position:absolute;left:0;right:0;top:0;height:1px;background:#1A1714;transform-origin:left"></span>
+          <span style="position:absolute;left:0;top:-4px;width:9px;height:9px;background:#B98D5E;transform:rotate(45deg)"></span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <span style="font:300 clamp(3.6rem,5vw,5rem)/.85 'Noto Serif Display', serif;color:#B98D5E;letter-spacing:-.03em">01</span>
+            <svg width="56" height="56" viewBox="0 0 60 60" fill="none" aria-hidden="true"><path data-draw="0" pathLength="1" stroke-dasharray="1" d="M10 22 30 8l20 14v4H10zM14 26v22M46 26v22M8 54h44M8 48v12M52 48v12" stroke="#1A1714" stroke-width="1.3"></path></svg>
+          </div>
+          <h3 style="margin:36px 0 0;font:300 clamp(1.7rem,2.2vw,2.1rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.01em">Замер и задача</h3>
+          <p style="margin:14px 0 0;color:#6B635A;font:400 15.5px/1.7 Manrope, sans-serif;max-width:30ch">Обсуждаем, что и как вам нужно, снимаем точные размеры помещения.</p>
+        </article>
+        <article data-reveal="1" style="position:relative;padding-top:36px">
+          <span data-grow="1" style="position:absolute;left:0;right:0;top:0;height:1px;background:#1A1714;transform-origin:left"></span>
+          <span style="position:absolute;left:0;top:-4px;width:9px;height:9px;background:#B98D5E;transform:rotate(45deg)"></span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <span style="font:300 clamp(3.6rem,5vw,5rem)/.85 'Noto Serif Display', serif;color:#B98D5E;letter-spacing:-.03em">02</span>
+            <svg width="56" height="56" viewBox="0 0 60 60" fill="none" aria-hidden="true"><path data-draw="1" pathLength="1" stroke-dasharray="1" d="M12 6h28l8 8v40H12zM40 6v8h8M20 26h20M20 34h20M20 42h12" stroke="#1A1714" stroke-width="1.3"></path></svg>
+          </div>
+          <h3 style="margin:36px 0 0;font:300 clamp(1.7rem,2.2vw,2.1rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.01em">Дизайн-проект</h3>
+          <p style="margin:14px 0 0;color:#6B635A;font:400 15.5px/1.7 Manrope, sans-serif;max-width:30ch">Готовим чертёж с размерами и подбираем материалы ещё до производства.</p>
+        </article>
+        <article data-reveal="2" style="position:relative;padding-top:36px">
+          <span data-grow="2" style="position:absolute;left:0;right:0;top:0;height:1px;background:#1A1714;transform-origin:left"></span>
+          <span style="position:absolute;left:0;top:-4px;width:9px;height:9px;background:#B98D5E;transform:rotate(45deg)"></span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <span style="font:300 clamp(3.6rem,5vw,5rem)/.85 'Noto Serif Display', serif;color:#B98D5E;letter-spacing:-.03em">03</span>
+            <svg width="56" height="56" viewBox="0 0 60 60" fill="none" aria-hidden="true"><path data-draw="2" pathLength="1" stroke-dasharray="1" d="M30 6l22 12v24L30 54 8 42V18zM8 18l22 12 22-12M30 30v24" stroke="#1A1714" stroke-width="1.3"></path></svg>
+          </div>
+          <h3 style="margin:36px 0 0;font:300 clamp(1.7rem,2.2vw,2.1rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.01em">Изготовление</h3>
+          <p style="margin:14px 0 0;color:#6B635A;font:400 15.5px/1.7 Manrope, sans-serif;max-width:30ch">Делаем мебель точно под ваши размеры и утверждённый проект.</p>
+        </article>
+        <article data-reveal="3" style="position:relative;padding-top:36px">
+          <span data-grow="3" style="position:absolute;left:0;right:0;top:0;height:1px;background:#1A1714;transform-origin:left"></span>
+          <span style="position:absolute;left:0;top:-4px;width:9px;height:9px;background:#B98D5E;transform:rotate(45deg)"></span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <span style="font:300 clamp(3.6rem,5vw,5rem)/.85 'Noto Serif Display', serif;color:#B98D5E;letter-spacing:-.03em">04</span>
+            <svg width="56" height="56" viewBox="0 0 60 60" fill="none" aria-hidden="true"><path data-draw="3" pathLength="1" stroke-dasharray="1" d="M10 6h40v46H10zM30 6v46M24 26v8M36 26v8M10 52v5M50 52v5" stroke="#1A1714" stroke-width="1.3"></path></svg>
+          </div>
+          <h3 style="margin:36px 0 0;font:300 clamp(1.7rem,2.2vw,2.1rem)/1.1 'Noto Serif Display', serif;letter-spacing:-.01em">Доставка и монтаж</h3>
+          <p style="margin:14px 0 0;color:#6B635A;font:400 15.5px/1.7 Manrope, sans-serif;max-width:30ch">Привозим, собираем и аккуратно устанавливаем — мебель готова к жизни.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ hasReviews }}" hint-placeholder-val="{{ false }}">
+    <section id="latest" data-screen-label="05 Reviews" style="position:relative;overflow:hidden;padding:clamp(88px,11vw,168px) 0;background:#1D1A16;color:#FBFAF7">
+      <div aria-hidden="true" style="position:absolute;left:-2vw;top:-12vw;font:300 clamp(22rem,46vw,46rem)/1 'Noto Serif Display', serif;color:rgba(201,160,116,.07);pointer-events:none;user-select:none">“</div>
+      <div style="position:relative;max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px clamp(40px,7vw,120px);align-items:center">
+        <div data-reveal="0">
+          <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#C9A074;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Отзывы</div>
+          <h2 style="margin:0;font:300 clamp(2.8rem,5.6vw,5.4rem)/1 'Noto Serif Display', serif;letter-spacing:-.03em">Что говорят <em style="font-style:italic;color:#C9A074">клиенты</em></h2>
+          <div style="display:flex;align-items:center;gap:22px;margin-top:36px;padding-top:30px;border-top:1px solid rgba(251,250,247,.14)">
+            <span style="font:300 clamp(3.8rem,6vw,5.4rem)/.9 'Noto Serif Display', serif;color:#E2C7A2;letter-spacing:-.03em">{{ score.avg }}</span>
+            <div>
+              <span role="img" aria-label="{{ score.aria }}" style="display:flex;gap:3px;font-size:17px"><sc-for list="{{ score.stars }}" as="st"><span aria-hidden="true" style="color:{{ st }}">★</span></sc-for></span>
+              <span style="display:block;margin-top:8px;color:#A79E93;font:400 14px Manrope, sans-serif">{{ score.label }}</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:36px">
+            <a href="Reviews.dc.html" style="display:inline-flex;align-items:center;gap:12px;height:54px;padding:0 26px;border-radius:999px;background:#E2C7A2;color:#14120F;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .35s" style-hover="gap:20px;background:#FBFAF7;color:#14120F">Все отзывы
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+            </a>
+            <a href="Reviews.dc.html#leave" style="display:inline-flex;align-items:center;height:54px;padding:0 24px;border-radius:999px;border:1px solid rgba(251,250,247,.3);color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;transition:border-color .3s, background-color .3s" style-hover="border-color:#FBFAF7;background:rgba(251,250,247,.06);color:#FBFAF7">Оставить отзыв</a>
+            <button type="button" onClick="{{ copyReviews }}" style="display:inline-flex;align-items:center;height:54px;padding:0 24px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:transparent;color:#FBFAF7;font:600 15px Manrope, sans-serif;cursor:pointer;transition:border-color .3s, background-color .3s" style-hover="border-color:#FBFAF7;background:rgba(251,250,247,.06)">Скопировать ссылку</button>
+          </div>
+        </div>
+        <div data-reveal="1" onMouseEnter="{{ qcPause }}" onMouseLeave="{{ qcResume }}">
+          <div style="display:grid">
+            <sc-for list="{{ quotes }}" as="q" hint-placeholder-count="1">
+              <figure aria-hidden="{{ q.hidden }}" style="grid-area:1/1;margin:0;display:flex;flex-direction:column;justify-content:center;gap:32px;opacity:{{ q.op }};transform:translateY({{ q.ty }});transition:{{ q.tr }};pointer-events:{{ q.pe }}">
+                <blockquote style="margin:0;font:italic 300 clamp(1.6rem,2.8vw,2.6rem)/1.3 'Noto Serif Display', serif;letter-spacing:-.01em;text-wrap:pretty">«{{ q.body }}»</blockquote>
+                <figcaption style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;color:#A79E93">
+                  <span style="width:50px;height:50px;border-radius:999px;border:1px solid #C9A074;display:grid;place-items:center;font:300 22px 'Noto Serif Display', serif;color:#E2C7A2">{{ q.initial }}</span>
+                  <span><strong style="display:block;color:#FBFAF7;font:600 15px Manrope, sans-serif">{{ q.name }}</strong><small style="font:400 13.5px Manrope, sans-serif">{{ q.meta }}</small></span>
+                  <span role="img" aria-label="{{ q.aria }}" style="margin-left:auto;display:flex;gap:2px;font-size:15px"><sc-for list="{{ q.stars }}" as="st"><span aria-hidden="true" style="color:{{ st }}">★</span></sc-for></span>
+                </figcaption>
+              </figure>
+            </sc-for>
+          </div>
+          <sc-if value="{{ multiQuotes }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:16px;margin-top:40px">
+              <div style="display:flex;gap:8px">
+                <sc-for list="{{ quotes }}" as="q">
+                  <button type="button" aria-label="{{ q.dotLabel }}" onClick="{{ q.go }}" style="width:40px;height:20px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center">
+                    <span style="display:block;width:100%;height:2px;background:rgba(251,250,247,.2);position:relative;overflow:hidden"><span style="position:absolute;inset:0;background:#C9A074;transform-origin:left;transform:scaleX({{ q.fill }});transition:{{ q.ftr }}"></span></span>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:10px">
+                <button type="button" aria-label="Предыдущий отзыв" onClick="{{ qcPrev }}" style="width:52px;height:52px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:transparent;color:#FBFAF7;cursor:pointer;display:grid;place-items:center;transition:background-color .3s, color .3s, border-color .3s" style-hover="background:#E2C7A2;border-color:#E2C7A2;color:#14120F">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12H4M10 6l-6 6 6 6"></path></svg>
+                </button>
+                <button type="button" aria-label="Следующий отзыв" onClick="{{ qcNext }}" style="width:52px;height:52px;border-radius:999px;border:1px solid rgba(251,250,247,.3);background:transparent;color:#FBFAF7;cursor:pointer;display:grid;place-items:center;transition:background-color .3s, color .3s, border-color .3s" style-hover="background:#E2C7A2;border-color:#E2C7A2;color:#14120F">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+                </button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <section data-screen-label="06 Design project" style="padding:clamp(72px,9vw,140px) 0;background:#F4F1EC">
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
+      <div data-reveal="0" style="position:relative;overflow:hidden;border-radius:28px;background:#1D1A16;color:#FBFAF7;padding:clamp(32px,5.5vw,88px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:56px clamp(40px,6vw,96px);align-items:center">
+        <div>
+          <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#C9A074;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Дизайн-проект</div>
+          <h2 style="margin:0;font:300 clamp(2.4rem,4.4vw,4.2rem)/1.04 'Noto Serif Display', serif;letter-spacing:-.03em;text-wrap:balance">Дизайн-проект мебели для <em style="font-style:italic;color:#E2C7A2">вашего дома</em></h2>
+          <p style="margin:24px 0 0;color:#A79E93;max-width:44ch;font:400 16.5px/1.7 Manrope, sans-serif;text-wrap:pretty">Ответьте на пять коротких вопросов, и дизайнер подготовит проект мебели под вашу квартиру. План и фотографии можно приложить сразу.</p>
+          <ol style="list-style:none;margin:36px 0 0;padding:0;border-top:1px solid rgba(251,250,247,.14)">
+            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">01</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Что вам необходимо</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Мебель</span></li>
+            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">02</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Стадия ремонта</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Ремонт</span></li>
+            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">03</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Есть ли план или проект</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">План</span></li>
+            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">04</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">План, фото и референсы</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Файлы</span></li>
+            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">05</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Ваши контакты</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Связь</span></li>
+          </ol>
+          <a href="Quiz.dc.html" style="margin-top:36px;display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 28px;border-radius:999px;background:#E2C7A2;color:#14120F;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1), background-color .35s" style-hover="gap:20px;background:#FBFAF7;color:#14120F">Пройти опрос
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+        <div style="position:relative;border:1px solid rgba(201,160,116,.28);border-radius:16px;background:linear-gradient(160deg, rgba(251,250,247,.04), rgba(251,250,247,0));overflow:hidden">
+          <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(201,160,116,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(201,160,116,.06) 1px, transparent 1px);background-size:32px 32px;pointer-events:none"></div>
+          <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(201,160,116,.2)">
+            <span style="display:inline-flex;align-items:center;gap:10px;font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E2C7A2"><span style="width:6px;height:6px;border-radius:999px;background:#C9A074"></span>Чертёж · онлайн</span>
+            <span style="font:500 12px Manrope, sans-serif;color:#8A8177;font-variant-numeric:tabular-nums">{{ sheetNo }}</span>
+          </div>
+          <div style="position:relative;padding:clamp(16px,2.4vw,32px) clamp(12px,2vw,28px) 8px;color:#C9A074">
+            <svg ref="{{ bpRef }}" role="img" aria-label="Чертёж кухни с размерами" viewBox="40 -32 1010 656" fill="none" style="width:100%;height:auto;display:block;overflow:visible"></svg>
+          </div>
+          <div aria-hidden="true" style="position:relative;display:grid;grid-template-columns:1.4fr 1fr .8fr;border-top:1px solid rgba(201,160,116,.2)">
+            <div style="padding:14px 20px;border-right:1px solid rgba(201,160,116,.2)"><small style="display:block;font:600 9.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Проект</small><b style="display:block;margin-top:6px;font:400 14px 'Noto Serif Display', serif;color:#E2C7A2;white-space:nowrap">ASD · Кухня на заказ</b></div>
+            <div style="padding:14px 20px;border-right:1px solid rgba(201,160,116,.2)"><small style="display:block;font:600 9.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Лист</small><b style="display:block;margin-top:6px;font:400 14px 'Noto Serif Display', serif;color:#E2C7A2">{{ sheetNo }}</b></div>
+            <div style="padding:14px 20px"><small style="display:block;font:600 9.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Масштаб</small><b style="display:block;margin-top:6px;font:400 14px 'Noto Serif Display', serif;color:#E2C7A2">1 : 20</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dc-import name="SiteFooter" hint-size="100%,560px"></dc-import>
+
+<div role="status" aria-live="polite" style="position:fixed;left:50%;bottom:28px;z-index:150;transform:translateX(-50%) translateY({{ toastY }});opacity:{{ toastOp }};transition:opacity .35s, transform .5s cubic-bezier(.2,.8,.2,1);background:#1A1714;color:#FBFAF7;padding:14px 22px;border-radius:999px;font:500 14px Manrope, sans-serif;box-shadow:0 20px 40px -16px rgba(0,0,0,.5);pointer-events:none;display:flex;align-items:center;gap:10px">
+  <span style="width:6px;height:6px;border-radius:999px;background:#C9A074"></span>{{ toast }}
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { ready: false, w: 1280, slide: 0, reviews: [], cur: 0, cnt: 0, hov: -1, toast: '', toastOn: false, sheet: 1, sheets: 3 };
+  bpRef = React.createRef(); prevRef = React.createRef(); marqRef = React.createRef();
+  reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  SLIDES = [
+    { src: 'img/works/kuhni/kuhni-121-738113.webp', label: 'Кухни' },
+    { src: 'img/works/tv-zony/tv-zony-004-029cba.webp', label: 'ТВ-зоны' },
+    { src: 'img/works/kuhni/kuhni-125-0a1707.webp', label: 'Кухни' },
+  ];
+  CAT_IMG = { kuhni: 'img/works/kuhni/kuhni-144-376436.webp', shkafy: 'img/works/shkafy/shkafy-017-94616f.webp', sanuzly: 'img/works/sanuzly/sanuzly-014-8acf25.webp', 'tv-zony': 'img/works/tv-zony/tv-zony-004-029cba.webp', ofis: 'img/works/ofis/ofis-005-e30479.webp' };
+  PICKS = [['a', 'kuhni', 'kuhni-121-738113'], ['b', 'kuhni', 'kuhni-144-376436'], ['c', 'sanuzly', 'sanuzly-014-8acf25'], ['d', 'shkafy', 'shkafy-017-94616f'], ['e', 'tv-zony', 'tv-zony-004-029cba'], ['f', 'shkafy', 'shkafy-031-508fd6'], ['g', 'kuhni', 'kuhni-125-0a1707']];
+  AREAS = { a: ['1 / 7', '1 / 3'], b: ['7 / 10', '1 / 4'], c: ['10 / 13', '1 / 3'], d: ['1 / 4', '3 / 5'], e: ['4 / 7', '3 / 5'], f: ['10 / 13', '3 / 5'], g: ['7 / 10', '4 / 5'] };
+
+  R(u) { return (window.__resources && window.__resources[u]) || u; }
+  boot() {
+    return window.__asdBoot || (window.__asdBoot = ['js/config.js', 'js/works-data.js', 'js/api.js'].reduce((p, src) => p.then(() => new Promise((res) => {
+      const s = document.createElement('script'); s.src = (window.__resources && window.__resources[src]) || src; s.onload = res; s.onerror = res; document.head.appendChild(s);
+    })), Promise.resolve()));
+  }
+  loadScript(src) { return new Promise((res) => { const s = document.createElement('script'); s.src = this.R(src); s.onload = res; s.onerror = res; document.head.appendChild(s); }); }
+  plural(n, f) { const a = Math.abs(n) % 100, b = a % 10; return (a > 10 && a < 20) ? f[2] : b > 1 && b < 5 ? f[1] : b === 1 ? f[0] : f[2]; }
+  fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0'); }
+  fmtNum(n) { return (Math.round(n * 10) / 10).toFixed(1).replace('.', ','); }
+  fmtDate(iso) { try { return new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return ''; } }
+  stars(n, on, off) { return [1, 2, 3, 4, 5].map((i) => (i <= Math.round(n) ? on : off)); }
+
+  componentDidMount() {
+    this.onR = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onR); this.onR();
+    this.heroIn();
+    this.reveal();
+    if (!this.reduce) {
+      this.slideT = setInterval(() => this.setState((s) => ({ slide: (s.slide + 1) % this.SLIDES.length })), 6500);
+      document.querySelectorAll('[data-kb]').forEach((img, i) => img.animate([{ transform: 'scale(1.02)' }, { transform: 'scale(1.12)' }], { duration: 16000 + i * 2000, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' }));
+      if (this.marqRef.current) this.marq = this.marqRef.current.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], { duration: 60000, iterations: Infinity });
+    }
+    this.boot().then(() => {
+      this.setState({ ready: true }, () => this.reveal());
+      this.countUp(((window.WORKS || {}).items || []).length);
+      if (window.Api) window.Api.listReviews().then((list) => this.setState({ reviews: list || [] }, () => { this.reveal(); this.showQ(0); })).catch(() => {});
+    });
+    this.loadScript('js/kitchens.js').then(() => this.bpInit());
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onR); clearInterval(this.slideT); clearTimeout(this.qT); clearTimeout(this.toastT);
+    (this.bpTimers || []).forEach(clearTimeout); if (this.io) this.io.disconnect(); if (this.bpIo) this.bpIo.disconnect();
+  }
+
+  heroIn() {
+    if (this.reduce) return;
+    const ease = 'cubic-bezier(.2,.8,.2,1)';
+    document.querySelectorAll('[data-line]').forEach((el) => el.animate([{ transform: 'translateY(110%)' }, { transform: 'none' }], { duration: 1400, delay: 150 + (+el.dataset.line) * 130, easing: ease, fill: 'both' }));
+    document.querySelectorAll('[data-hero-fade]').forEach((el) => el.animate([{ opacity: 0, transform: 'translateY(20px)' }, { opacity: 1, transform: 'none' }], { duration: 1200, delay: 600 + (+el.dataset.heroFade) * 150, easing: ease, fill: 'both' }));
+  }
+  reveal() {
+    if (this.reduce || !('IntersectionObserver' in window)) return;
+    if (!this.io) {
+      this.anims = new WeakMap();
+      this.io = new IntersectionObserver((es) => es.forEach((en) => {
+        if (!en.isIntersecting) return;
+        (this.anims.get(en.target) || []).forEach((a) => a.play());
+        this.io.unobserve(en.target);
+      }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    }
+    const ease = 'cubic-bezier(.2,.8,.2,1)';
+    const add = (el, kf, opt) => {
+      if (this.anims.has(el)) return;
+      const a = el.animate(kf, Object.assign({ easing: ease, fill: 'both' }, opt)); a.pause();
+      this.anims.set(el, [a]); this.io.observe(el);
+    };
+    document.querySelectorAll('[data-reveal]').forEach((el) => add(el, [{ opacity: 0, transform: 'translateY(36px)' }, { opacity: 1, transform: 'none' }], { duration: 1100, delay: (+el.dataset.reveal || 0) * 90 }));
+    document.querySelectorAll('[data-grow]').forEach((el) => add(el, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 1400, delay: (+el.dataset.grow) * 160 }));
+    document.querySelectorAll('[data-draw]').forEach((el) => add(el, [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 1800, delay: 400 + (+el.dataset.draw) * 160 }));
+  }
+  countUp(to) {
+    if (this.reduce || !to) { this.setState({ cnt: to }); return; }
+    const t0 = performance.now(), dur = 1800;
+    const tick = (t) => { const p = Math.min(1, (t - t0) / dur); this.setState({ cnt: Math.round(to * (1 - Math.pow(1 - p, 3))) }); if (p < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  }
+
+  showQ(n) {
+    const len = Math.min(5, this.state.reviews.length); if (!len) return;
+    this.setState({ cur: (n + len) % len });
+    clearTimeout(this.qT);
+    if (!this.reduce && len > 1 && !this.qPaused) this.qT = setTimeout(() => this.showQ(this.state.cur + 1), 7000);
+  }
+
+  bpInit() {
+    const svg = this.bpRef.current, list = window.KITCHENS || [];
+    if (!svg || !list.length) return;
+    this.bpTimers = []; this.bpIdx = -1; this.bpVisible = false; this.setState({ sheets: list.length });
+    if (this.reduce) { this.bpLoad(0); this.bpStatic(); return; }
+    this.bpIo = new IntersectionObserver((e) => { this.bpVisible = e[0].isIntersecting; if (this.bpVisible && this.bpIdx < 0) this.bpDraw(); }, { threshold: 0.3 });
+    this.bpIo.observe(svg);
+  }
+  bpLoad(i) {
+    const svg = this.bpRef.current, list = window.KITCHENS;
+    svg.innerHTML = list[i % list.length];
+    const scan = svg.querySelector('.scan'); if (scan) scan.remove();
+    svg.querySelectorAll('.ln').forEach((p) => {
+      const thin = p.classList.contains('thin'), dim = p.classList.contains('dim');
+      p.setAttribute('fill', 'none'); p.setAttribute('stroke', 'currentColor'); p.setAttribute('stroke-width', thin || dim ? '1' : '1.4');
+      p.setAttribute('vector-effect', 'non-scaling-stroke'); p.setAttribute('stroke-linecap', 'square'); p.setAttribute('stroke-dasharray', '1');
+      if (thin) p.setAttribute('opacity', '.7'); if (dim) p.setAttribute('opacity', '.55');
+    });
+    const OP = { 'f-cab': 0.07, 'f-top': 0.5, 'f-app': 0.16, 'f-sink': 0.22 };
+    svg.querySelectorAll('.fill').forEach((f) => { f.setAttribute('fill', 'currentColor'); const k = Object.keys(OP).find((c) => f.classList.contains(c)); f.dataset.o = OP[k] || 0.1; f.setAttribute('opacity', f.dataset.o); });
+    svg.querySelectorAll('text').forEach((t) => {
+      const tag = t.classList.contains('tag');
+      t.setAttribute('fill', tag ? '#A79E93' : '#EAD6B4');
+      t.style.font = (tag ? '600 11px' : '500 13px') + ' Manrope, sans-serif'; t.style.letterSpacing = tag ? '.16em' : '.08em'; if (tag) t.style.textTransform = 'uppercase';
+    });
+    this.setState({ sheet: (i % list.length) + 1 });
+  }
+  bpStatic() { this.bpRef.current.querySelectorAll('.cnt').forEach((el) => { el.textContent = this.fmt(+el.dataset.val); }); }
+  bpDraw() {
+    const svg = this.bpRef.current; if (!svg) return;
+    this.bpIdx++; this.bpLoad(this.bpIdx);
+    const k = 0.75, D = (el) => parseFloat(el.style.getPropertyValue('--d')) || 0;
+    svg.style.opacity = 1;
+    svg.querySelectorAll('.ln').forEach((p) => { const t = parseFloat(p.style.getPropertyValue('--t')) || 1; p.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: t * 1000 * k, delay: D(p) * 1000 * k, easing: 'cubic-bezier(.55,.1,.25,1)', fill: 'both' }); });
+    svg.querySelectorAll('.fill').forEach((f) => f.animate([{ opacity: 0 }, { opacity: f.dataset.o }], { duration: 900, delay: D(f) * 1000 * k, fill: 'both' }));
+    svg.querySelectorAll('text').forEach((t) => t.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: D(t) * 1000 * k, fill: 'both' }));
+    svg.querySelectorAll('.cnt').forEach((el) => {
+      const v = +el.dataset.val, t0 = performance.now() + D(el) * 1000 * k; el.textContent = '0';
+      const tick = (now) => { const p = Math.min(1, Math.max(0, (now - t0) / 1100)); el.textContent = this.fmt(Math.round(v * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    });
+    this.bpTimers.push(setTimeout(() => this.bpNext(), 7.2 * 1000 * k + 5000));
+  }
+  bpNext() {
+    if (!this.bpVisible || document.hidden) { this.bpTimers.push(setTimeout(() => this.bpNext(), 1000)); return; }
+    const svg = this.bpRef.current; if (!svg) return;
+    svg.animate([{ opacity: 1, filter: 'blur(0)' }, { opacity: 0, filter: 'blur(4px)' }], { duration: 700, fill: 'forwards' }).onfinish = () => { svg.getAnimations().forEach((a) => a.cancel()); this.bpDraw(); };
+  }
+
+  copy(page) {
+    const url = new URL(page, location.href).href;
+    const done = () => { this.setState({ toast: 'Ссылка скопирована', toastOn: true }); clearTimeout(this.toastT); this.toastT = setTimeout(() => this.setState({ toastOn: false }), 2200); };
+    if (navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent)) { navigator.share({ url, title: 'ASD' }).catch(() => {}); return; }
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(done).catch(() => {
+      const ta = document.createElement('textarea'); ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {} ta.remove(); done();
+    });
+  }
+
+  renderVals() {
+    const W = window.WORKS || { categories: [], items: [] };
+    const counts = {}; (W.items || []).forEach((i) => { counts[i.cat] = (counts[i.cat] || 0) + 1; });
+    const photos = (n) => n + ' фото';
+    const wide = this.state.w > 900, desk = this.state.w > 900;
+    const slide = this.state.slide;
+
+    const slides = this.SLIDES.map((s, i) => ({
+      src: this.R(s.src), op: i === slide ? 1 : 0, aria: 'Слайд ' + (i + 1),
+      fill: i < slide ? 1 : i === slide ? 1 : 0, tr: i === slide && !this.reduce ? 'transform 6.5s linear' : 'none',
+      go: () => { this.setState({ slide: i }); clearInterval(this.slideT); if (!this.reduce) this.slideT = setInterval(() => this.setState((st) => ({ slide: (st.slide + 1) % this.SLIDES.length })), 6500); },
+    }));
+    const tiles = this.PICKS.map(([k, cat, file], i) => {
+      const item = (W.items || []).find((x) => x.full.indexOf(file) !== -1);
+      const c = (W.categories || []).find((x) => x.id === cat) || { title: '' };
+      const big = k === 'a' || k === 'g';
+      return {
+        href: 'Works.dc.html?c=' + cat, src: this.R(item ? item.full : 'img/works/' + cat + '/' + file + '.webp'), alt: c.title + ' на заказ — работа ASD',
+        title: c.title, n: counts[cat] ? photos(counts[cat]) : '', aria: 'Раздел «' + c.title + '»', ri: i % 4,
+        col: desk ? this.AREAS[k][0] : (big ? '1 / -1' : 'auto'), row: desk ? this.AREAS[k][1] : 'auto', ar: desk ? 'auto' : (big ? '4 / 3' : '3 / 4'),
+      };
+    });
+    const hov = this.state.hov;
+    const cats = (W.categories || []).map((c, i) => ({
+      href: 'Works.dc.html?c=' + c.id, idx: '0' + (i + 1), title: c.title, text: c.text, n: counts[c.id] ? photos(counts[c.id]) : 'скоро',
+      img: this.R(this.CAT_IMG[c.id]), ri: i, op: wide && hov >= 0 && hov !== i ? 0.35 : 1,
+      enter: () => this.setState({ hov: i }),
+      arrowBd: hov === i ? '#E2C7A2' : 'rgba(251,250,247,.3)', arrowBg: hov === i ? '#E2C7A2' : 'transparent', arrowFg: hov === i ? '#14120F' : '#FBFAF7', arrowTf: hov === i ? 'rotate(-45deg)' : 'none',
+      pop: hov === i ? 1 : 0, pscale: hov === i ? 1 : 1.12,
+    }));
+
+    const all = this.state.reviews || [];
+    const real = all.filter((r) => !r.sample);
+    let proof = false;
+    if (real.length) {
+      const avg = real.reduce((s, r) => s + r.rating, 0) / real.length;
+      proof = { avg: this.fmtNum(avg), label: 'по ' + real.length + ' ' + this.plural(real.length, ['отзыву', 'отзывам', 'отзывам']), stars: this.stars(avg, '#E2C7A2', 'rgba(251,250,247,.3)'), aria: 'Оценка ' + this.fmtNum(avg) + ' из 5' };
+    }
+    const base = real.length ? real : all;
+    const avgB = base.length ? base.reduce((s, r) => s + r.rating, 0) / base.length : 0;
+    const top = all.slice(0, 5), cur = this.state.cur;
+    const quotes = top.map((r, i) => ({
+      body: r.body.length > 260 ? r.body.slice(0, 257).trim() + '…' : r.body, name: r.name, initial: (r.name || '?').trim().charAt(0).toUpperCase(),
+      meta: this.fmtDate(r.created_at) + (r.sample ? ' · пример отзыва' : ''), stars: this.stars(r.rating, '#E2C7A2', 'rgba(251,250,247,.25)'), aria: 'Оценка ' + r.rating + ' из 5',
+      op: i === cur ? 1 : 0, ty: i === cur ? '0px' : '18px', pe: i === cur ? 'auto' : 'none', hidden: i === cur ? 'false' : 'true',
+      tr: i === cur ? 'opacity .9s cubic-bezier(.2,.8,.2,1) .25s, transform .9s cubic-bezier(.2,.8,.2,1) .25s' : 'opacity .3s ease, transform .3s ease',
+      fill: i <= cur ? 1 : 0, ftr: i === cur && !this.reduce ? 'transform 7s linear' : 'none', dotLabel: 'Отзыв ' + (i + 1), go: () => this.showQ(i),
+    }));
+    const marqWords = (W.categories || []).map((c) => c.title).concat(['Под ваши размеры', 'Дизайн-проект']);
+
+    return {
+      slides, slideNo: String(slide + 1).padStart(2, '0') + ' / ' + String(this.SLIDES.length).padStart(2, '0'), slideLabel: this.SLIDES[slide].label,
+      cntStr: this.fmt(this.state.cnt), proof,
+      marqRef: this.marqRef, marqGroups: [0, 1], marqWords: marqWords.length > 2 ? marqWords : ['Кухни', 'Шкафы', 'Санузлы', 'ТВ-зоны', 'Офисная мебель', 'Под ваши размеры', 'Дизайн-проект'],
+      marqPause: () => this.marq && this.marq.pause(), marqPlay: () => this.marq && this.marq.play(),
+      mosaicCols: desk ? 'repeat(12, minmax(0,1fr))' : 'repeat(2, minmax(0,1fr))', mosaicRows: desk ? 'clamp(120px, 13vw, 200px)' : 'auto', tiles,
+      copyWorks: () => this.copy('Works.dc.html'), copyReviews: () => this.copy('Reviews.dc.html'),
+      cats, wide, narrow: !wide, catCols: wide ? '64px minmax(0,1.3fr) minmax(0,1fr) auto 52px' : '36px minmax(0,1fr) 64px 52px',
+      prevRef: this.prevRef, prevOp: hov >= 0 ? 1 : 0, prevScale: hov >= 0 ? 1 : 0.86, prevRot: hov >= 0 ? '-2deg' : '0deg',
+      onCatMove: (e) => { const el = this.prevRef.current; if (el) el.style.transform = 'translate3d(' + (e.clientX + 32) + 'px,' + (e.clientY - 190) + 'px,0)'; },
+      onCatLeave: () => this.setState({ hov: -1 }),
+      hasReviews: top.length > 0,
+      score: { avg: this.fmtNum(avgB), stars: this.stars(avgB, '#E2C7A2', 'rgba(251,250,247,.25)'), aria: 'Оценка ' + this.fmtNum(avgB) + ' из 5', label: 'средняя оценка по ' + base.length + ' ' + this.plural(base.length, ['отзыву', 'отзывам', 'отзывам']) },
+      quotes, multiQuotes: top.length > 1,
+      qcPrev: () => this.showQ(cur - 1), qcNext: () => this.showQ(cur + 1),
+      qcPause: () => { this.qPaused = true; clearTimeout(this.qT); }, qcResume: () => { this.qPaused = false; this.showQ(this.state.cur); },
+      bpRef: this.bpRef, sheetNo: String(this.state.sheet).padStart(2, '0') + ' / ' + String(this.state.sheets).padStart(2, '0'),
+      toast: this.state.toast, toastOp: this.state.toastOn ? 1 : 0, toastY: this.state.toastOn ? '0px' : '20px',
+    };
+  }
+}
+</script>
+</body>
+</html>
