@@ -30,7 +30,7 @@ const Chrome = (() => {
     return `
       <header class="site-header">
         <div class="wrap site-header__in">
-          <a class="logo" href="index.html" aria-label="${esc(S.brand)} — на главную"><img src="img/logo.svg" alt="${esc(S.brand)}" width="116" height="42"></a>
+          <a class="logo" href="index.html" aria-label="${esc(S.brand)} — на главную"><img src="${active === 'home' ? 'img/logo-light.svg' : 'img/logo.svg'}" alt="${esc(S.brand)}" width="116" height="42"></a>
           <button class="menu-btn" id="menu-btn" aria-label="Меню" aria-expanded="false" aria-controls="nav"><span></span></button>
           <nav class="nav" id="nav" aria-label="Основное меню">
             <a href="works.html" ${active === 'works' ? 'aria-current="page"' : ''}>Наши работы</a>
@@ -52,7 +52,8 @@ const Chrome = (() => {
     ].join('');
     return `
       <footer class="site-footer">
-        <div class="wrap">
+        <div class="site-footer__word" aria-hidden="true">ASD</div>
+        <div class="wrap site-footer__in">
           <div class="site-footer__grid">
             <div>
               <a class="logo logo--foot" href="index.html" aria-label="${esc(S.brand)} — на главную"><img src="img/logo-light.svg" alt="${esc(S.brand)}" width="150" height="55"></a>

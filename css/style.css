@@ -337,7 +337,9 @@ fieldset.field { border: 0; margin: 0 0 20px; padding: 0; min-width: 0; }
 @media (max-width: 600px) { .lb__prev, .lb__next { top: auto; bottom: 14px; transform: none; } .lb__prev { left: 16px; } .lb__next { right: 16px; } }
 
 /* ---------- Подвал ---------- */
-.site-footer { background: var(--ink); color: var(--white); padding: clamp(48px, 6vw, 88px) 0 32px; margin-top: clamp(56px, 8vw, 112px); }
+.site-footer { position: relative; overflow: hidden; isolation: isolate; background: var(--ink); color: var(--white); padding: clamp(48px, 6vw, 88px) 0 32px; margin-top: clamp(56px, 8vw, 112px); }
+.site-footer__word { position: absolute; left: 50%; bottom: -.32em; transform: translateX(-50%); z-index: -1; font: 500 clamp(9rem, 34vw, 32rem)/1 var(--font-display); letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1px rgba(221, 191, 133, .13); user-select: none; pointer-events: none; white-space: nowrap; }
+.site-footer__bottom { position: relative; }
 .site-footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
 .site-footer p, .site-footer li, .site-footer a { color: #AEBBB5; }
 .site-footer .logo { color: var(--white); }

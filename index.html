@@ -5,91 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ASD — мебель на заказ: наши работы и отзывы</title>
   <meta name="description" content="Кухни, шкафы, санузлы, ТВ-зоны и офисная мебель на заказ. Смотрите наши работы и читайте отзывы клиентов.">
-  <meta name="theme-color" content="#16201C">
+  <meta name="theme-color" content="#0F1613">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Golos+Text:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+  <script>document.documentElement.classList.add('js');</script>
 </head>
-<body>
+<body class="home">
+  <div class="h-progress" id="h-progress" aria-hidden="true"></div>
   <div id="site-header"></div>
 
   <main>
+    <!-- ===== Первый экран ===== -->
     <section class="hero" id="hero">
+      <div class="hero__spot" id="hero-spot" aria-hidden="true"></div>
       <div class="wrap hero__in">
         <div class="hero__text">
-          <div class="hero__brand"><img src="img/logo-light.svg" alt="ASD" width="164" height="60"><span>Мебель на заказ<br>Ростов-на-Дону</span></div>
-          <h1>Мебель, сделанная под ваш дом</h1>
+          <div class="eyebrow">Мебель на заказ · Ростов-на-Дону</div>
+          <h1 id="h-title">
+            <span class="w"><span style="--d:0">Мебель,</span></span>
+            <span class="w"><span style="--d:1">сделанная</span></span>
+            <span class="w"><span style="--d:2">под ваш <em>дом</em></span></span>
+          </h1>
           <p class="lead">Кухни, шкафы, санузлы и ТВ-зоны на заказ. Посмотрите наши работы и прочитайте, что говорят те, кто уже живёт с нашей мебелью.</p>
           <div class="hero__actions">
-            <a class="btn btn--brass" href="works.html">Смотреть работы</a>
+            <a class="btn btn--brass" href="works.html">Смотреть работы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
             <a class="btn btn--light" href="reviews.html">Читать отзывы</a>
           </div>
           <div class="hero__proof" id="hero-proof"></div>
         </div>
-        <div class="bp is-drawing" id="bp" role="img" aria-label="Чертёж кухни с размерами, рисующийся линиями">
-          <svg viewBox="40 -32.0 1010 656.0" fill="none" aria-hidden="true" focusable="false">
+
+        <div class="sheet" data-reveal style="--i:2">
+          <i class="sheet__c sheet__c--tl"></i><i class="sheet__c sheet__c--tr"></i><i class="sheet__c sheet__c--bl"></i><i class="sheet__c sheet__c--br"></i>
+          <span class="sheet__live"><i></i>Чертёж · онлайн</span>
+          <div class="bp is-drawing" id="bp" role="img" aria-label="Чертёж кухни с размерами, рисующийся линиями">
+            <svg viewBox="40 -32.0 1010 656.0" fill="none" aria-hidden="true" focusable="false">
   <defs><linearGradient id="scan-g" x1="0" x2="1"><stop offset="0" stop-color="#DDBF85" stop-opacity="0"/><stop offset=".85" stop-color="#DDBF85" stop-opacity=".28"/><stop offset="1" stop-color="#F3E3BC" stop-opacity=".7"/></linearGradient></defs>
   <rect class="fill f-cab" style="--d:5.00" x="111.0" y="317.0" width="142.0" height="178.0"/><rect class="fill f-cab" style="--d:5.10" x="255.0" y="317.0" width="142.0" height="178.0"/><rect class="fill f-cab" style="--d:5.20" x="399.0" y="317.0" width="190.0" height="178.0"/><rect class="fill f-cab" style="--d:5.30" x="591.0" y="317.0" width="142.0" height="178.0"/><rect class="fill f-cab" style="--d:5.40" x="735.0" y="317.0" width="142.0" height="178.0"/><rect class="fill f-top" style="--d:5.20" x="102.8" y="306.9" width="782.4000000000001" height="9.100000000000023"/><rect class="fill f-cab" style="--d:5.10" x="111.0" y="41.0" width="142.0" height="130.0"/><rect class="fill f-cab" style="--d:5.20" x="255.0" y="41.0" width="142.0" height="130.0"/><rect class="fill f-cab" style="--d:5.40" x="591.0" y="41.0" width="142.0" height="130.0"/><rect class="fill f-cab" style="--d:5.50" x="735.0" y="41.0" width="142.0" height="130.0"/><rect class="fill f-app" style="--d:5.40" x="412.0" y="332.0" width="164.0" height="148.0"/><rect class="fill f-app" style="--d:5.50" x="428.0" y="300.9" width="132.0" height="10"/><rect class="fill f-sink" style="--d:5.60" x="612.0" y="306.9" width="100.0" height="22"/><polygon class="fill f-app" style="--d:5.50" points="420,172 568,172 538,112 450,112"/>
   <path class="ln " pathLength="1" style="--d:0.00;--t:1.2s" d="M74.0 520.0H914.0"/><path class="ln thin" pathLength="1" style="--d:0.20;--t:1.0s" d="M110.0 520.0V-20.0"/><path class="ln thin" pathLength="1" style="--d:0.30;--t:1.0s" d="M878.0 520.0V-20.0"/><path class="ln thin" pathLength="1" style="--d:0.60;--t:1.0s" d="M110.0 496.0h768.0v24.0h-768.0Z"/><path class="ln " pathLength="1" style="--d:0.90;--t:1.0s" d="M110.0 316.0h144.0v180.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:1.08;--t:1.0s" d="M254.0 316.0h144.0v180.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:1.26;--t:1.0s" d="M398.0 316.0h192.0v180.0h-192.0Z"/><path class="ln " pathLength="1" style="--d:1.44;--t:1.0s" d="M590.0 316.0h144.0v180.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:1.62;--t:1.0s" d="M734.0 316.0h144.0v180.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:1.90;--t:1.6s" d="M102.8 306.9h782.4000000000001v9.100000000000023h-782.4000000000001Z"/><path class="ln thin" pathLength="1" style="--d:2.20;--t:0.8s" d="M110.0 306.9V172.0"/><path class="ln thin" pathLength="1" style="--d:2.20;--t:0.8s" d="M878.0 306.9V172.0"/><path class="ln " pathLength="1" style="--d:2.40;--t:1.0s" d="M110.0 40.0h144.0v132.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:2.60;--t:1.0s" d="M254.0 40.0h144.0v132.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:3.00;--t:1.0s" d="M590.0 40.0h144.0v132.0h-144.0Z"/><path class="ln " pathLength="1" style="--d:3.20;--t:1.0s" d="M734.0 40.0h144.0v132.0h-144.0Z"/><path class="ln thin" pathLength="1" style="--d:4.00;--t:0.6s" d="M182.0 316.0V496.0"/><path class="ln thin" pathLength="1" style="--d:4.10;--t:0.5s" d="M176.0 328.0L176.0 346.0"/><path class="ln thin" pathLength="1" style="--d:4.15;--t:0.5s" d="M188.0 328.0L188.0 346.0"/><path class="ln thin" pathLength="1" style="--d:4.20;--t:0.6s" d="M254.0 376.0H398.0"/><path class="ln thin" pathLength="1" style="--d:4.30;--t:0.6s" d="M254.0 436.0H398.0"/><path class="ln thin" pathLength="1" style="--d:4.40;--t:0.5s" d="M276.0 346.0H376.0"/><path class="ln thin" pathLength="1" style="--d:4.48;--t:0.5s" d="M276.0 406.0H376.0"/><path class="ln thin" pathLength="1" style="--d:4.56;--t:0.5s" d="M276.0 466.0H376.0"/><path class="ln thin" pathLength="1" style="--d:3.70;--t:1.0s" d="M412.0 332.0h164.0v148.0h-164.0Z"/><path class="ln thin" pathLength="1" style="--d:3.90;--t:0.8s" d="M428.0 378.0h132.0v64h-132.0Z"/><path class="ln thin" pathLength="1" style="--d:4.20;--t:0.5s" d="M420.0 360.0H568.0"/><path class="ln " pathLength="1" style="--d:4.30;--t:0.3s" d="M452.0 344.0h0.1"/><path class="ln " pathLength="1" style="--d:4.30;--t:0.3s" d="M486.0 344.0h0.1"/><path class="ln " pathLength="1" style="--d:4.30;--t:0.3s" d="M520.0 344.0h0.1"/><path class="ln thin" pathLength="1" style="--d:4.20;--t:0.6s" d="M662.0 316.0V496.0"/><path class="ln thin" pathLength="1" style="--d:4.30;--t:0.5s" d="M656.0 328.0L656.0 346.0"/><path class="ln thin" pathLength="1" style="--d:4.35;--t:0.5s" d="M668.0 328.0L668.0 346.0"/><path class="ln thin" pathLength="1" style="--d:4.30;--t:0.5s" d="M748.0 328.0L748.0 352.0"/><path class="ln " pathLength="1" style="--d:3.30;--t:0.7s" d="M428.0 300.9h132.0v10h-132.0Z"/><path class="ln thin" pathLength="1" style="--d:3.50;--t:0.5s" d="M442.0 298.9h36"/><path class="ln thin" pathLength="1" style="--d:3.60;--t:0.4s" d="M450.0 294.9h20"/><path class="ln thin" pathLength="1" style="--d:3.50;--t:0.5s" d="M510.0 298.9h36"/><path class="ln thin" pathLength="1" style="--d:3.60;--t:0.4s" d="M518.0 294.9h20"/><path class="ln " pathLength="1" style="--d:3.40;--t:0.9s" d="M612.0 306.9L624.0 328.9H700.0L712.0 306.9"/><path class="ln " pathLength="1" style="--d:3.90;--t:0.9s" d="M688.0 306.9V272.9Q688.0 258.9 674.0 258.9H660.0"/><path class="ln thin" pathLength="1" style="--d:0.00;--t:0.1s" d="M398.0 172.0H398.0"/><path class="ln " pathLength="1" style="--d:2.90;--t:1.0s" d="M420.0 172.0L450.0 112.0V40.0"/><path class="ln " pathLength="1" style="--d:2.95;--t:1.0s" d="M568.0 172.0L538.0 112.0V40.0"/><path class="ln " pathLength="1" style="--d:3.00;--t:0.7s" d="M420.0 172.0H568.0"/><path class="ln thin" pathLength="1" style="--d:3.10;--t:0.5s" d="M450.0 40.0H538.0"/><path class="ln dim" pathLength="1" style="--d:5.60;--t:1.0s" d="M110.0 554H878.0"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M110.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M254.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M398.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M590.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M734.0 547V561"/><path class="ln dim" pathLength="1" style="--d:5.70;--t:0.4s" d="M878.0 547V561"/><path class="ln dim" pathLength="1" style="--d:6.20;--t:1.0s" d="M110.0 594H878.0"/><path class="ln dim" pathLength="1" style="--d:6.30;--t:0.4s" d="M110.0 587V601"/><path class="ln dim" pathLength="1" style="--d:6.30;--t:0.4s" d="M878.0 587V601"/><path class="ln dim" pathLength="1" style="--d:6.00;--t:1.2s" d="M930.0 520.0V40.0"/><path class="ln dim" pathLength="1" style="--d:6.10;--t:0.4s" d="M923.0 520.0H937.0"/><path class="ln dim" pathLength="1" style="--d:6.10;--t:0.4s" d="M923.0 316.0H937.0"/><path class="ln dim" pathLength="1" style="--d:6.10;--t:0.4s" d="M923.0 172.0H937.0"/><path class="ln dim" pathLength="1" style="--d:6.10;--t:0.4s" d="M923.0 40.0H937.0"/>
   <text x="182.0" y="545" text-anchor="middle" class="cnt" data-val="600" style="--d:5.90">0</text><text x="326.0" y="545" text-anchor="middle" class="cnt" data-val="600" style="--d:6.02">0</text><text x="494.0" y="545" text-anchor="middle" class="cnt" data-val="800" style="--d:6.14">0</text><text x="662.0" y="545" text-anchor="middle" class="cnt" data-val="600" style="--d:6.26">0</text><text x="806.0" y="545" text-anchor="middle" class="cnt" data-val="600" style="--d:6.38">0</text><text x="494.0" y="585" text-anchor="middle" class="cnt" data-val="3200" style="--d:6.4">0</text><text x="944.0" y="422.0" class="cnt" data-val="850" style="--d:6.20">0</text><text x="944.0" y="248.0" class="cnt" data-val="600" style="--d:6.41">0</text><text x="944.0" y="110.0" class="cnt" data-val="550" style="--d:6.56">0</text><text class="tag" x="138.8" y="-6" style="--d:6.8">Фасады МДФ · фурнитура Blum</text><text class="tag" x="138.8" y="15" style="--d:7.0">Масштаб 1 : 20</text>
   <rect class="scan" x="50.0" y="16.0" width="60" height="504.0"/>
 </svg>
+          </div>
+          <div class="sheet__title" aria-hidden="true">
+            <div><small>Проект</small><b>ASD · Кухня на заказ</b></div>
+            <div><small>Лист</small><b id="sheet-no">01 / 03</b></div>
+            <div><small>Масштаб</small><b>1 : 20</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="hero__stats" id="hero-stats" data-reveal style="--i:4">
+          <div><b data-count="0" id="st-works">0</b><span>фото готовых работ</span></div>
+          <div><b data-count="5">5</b><span>направлений мебели</span></div>
+          <div><b data-count="100" data-suffix="%">100<sup>%</sup></b><span>по вашим размерам</span></div>
+          <div><b style="font-size:clamp(1.6rem,2.6vw,2.4rem);padding-top:.4em">Ростов-на-Дону</b><span>и область</span></div>
         </div>
       </div>
     </section>
 
-    <section class="section section--tight">
+    <!-- ===== Бегущая строка ===== -->
+    <div class="marq" aria-hidden="true"><div class="marq__track" id="marq"></div></div>
+
+    <!-- ===== Витрина работ ===== -->
+    <section class="sec sc" id="works">
       <div class="wrap">
-        <div class="index">
-          <div class="index__row">
-            <h2>Наши работы</h2>
-            <p>Фотографии готовых кухонь, шкафов, санузлов и ТВ-зон. Можно отправить клиенту ссылку сразу на нужный раздел.</p>
-            <div class="index__act">
-              <a class="btn btn--ink" href="works.html">Открыть</a>
-              <button class="btn" type="button" data-copy="works.html">Скопировать ссылку</button>
-            </div>
+        <div class="sec-head">
+          <div data-reveal>
+            <div class="eyebrow">Портфолио</div>
+            <h2 class="h2">Наши <em>работы</em></h2>
+            <p class="h-lead">Фотографии готовых кухонь, шкафов, санузлов и ТВ-зон из квартир наших клиентов.</p>
           </div>
-          <div class="index__row">
-            <h2>Отзывы клиентов</h2>
-            <p>Оценки и слова тех, для кого мы уже сделали мебель. Ваш отзыв помогает будущим клиентам выбрать с уверенностью.</p>
-            <div class="index__act">
-              <a class="btn btn--ink" href="reviews.html">Открыть</a>
-              <button class="btn" type="button" data-copy="reviews.html">Скопировать ссылку</button>
-            </div>
-          </div>
+          <div class="sc-head__count" data-reveal style="--i:1"><b id="sc-total" data-count="0">0</b><span>готовых работ в&nbsp;портфолио</span></div>
+        </div>
+        <div class="mosaic" id="mosaic"></div>
+        <div class="sc-foot" data-reveal>
+          <a class="btn btn--ink" href="works.html">Все работы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
+          <button class="btn" type="button" data-copy="works.html">Скопировать ссылку</button>
+          <p>Можно отправить клиенту ссылку сразу на нужный раздел&nbsp;— откройте раздел и скопируйте адрес.</p>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- ===== Направления ===== -->
+    <section class="sec sec--dark on-dark" id="cats-sec">
       <div class="wrap">
-        <div class="section__head">
-          <div><h2>Что мы делаем</h2><p>Выберите раздел, чтобы посмотреть работы.</p></div>
+        <div class="sec-head">
+          <div data-reveal>
+            <div class="eyebrow">Что мы делаем</div>
+            <h2 class="h2" style="color:#fff">Пять направлений <em>мебели</em></h2>
+          </div>
+          <p class="h-lead" data-reveal style="--i:1;margin:0">Выберите раздел, чтобы посмотреть работы. Каждая карточка&nbsp;— чертёж изделия, которое мы делаем.</p>
         </div>
         <div class="cats" id="cats"></div>
       </div>
     </section>
 
-    <section class="section" id="latest" style="padding-top:0" hidden>
+    <!-- ===== Как мы работаем ===== -->
+    <section class="sec pr" id="process">
       <div class="wrap">
-        <div class="section__head">
-          <div><h2>Что говорят клиенты</h2></div>
-          <a class="link" href="reviews.html">Все отзывы</a>
+        <div class="sec-head">
+          <div data-reveal>
+            <div class="eyebrow">Процесс</div>
+            <h2 class="h2">Как мы <em>работаем</em></h2>
+          </div>
+          <p class="h-lead" data-reveal style="--i:1;margin:0">От первого разговора до готовой мебели в&nbsp;вашем доме&nbsp;— четыре понятных шага.</p>
         </div>
-        <div class="quotes" id="latest-list"></div>
+        <div class="pr-steps">
+          <article class="pr-step" style="--i:0" data-reveal>
+            <div class="pr-step__n">01</div>
+            <div class="pr-step__ico"><svg viewBox="0 0 60 60" fill="none"><path class="ln" pathLength="1" d="M10 22 30 8l20 14v4H10zM14 26v22M46 26v22M8 54h44M8 48v12M52 48v12"/></svg></div>
+            <h3>Замер и задача</h3>
+            <p>Обсуждаем, что и&nbsp;как вам нужно, снимаем точные размеры помещения.</p>
+          </article>
+          <article class="pr-step" style="--i:1" data-reveal>
+            <div class="pr-step__n">02</div>
+            <div class="pr-step__ico"><svg viewBox="0 0 60 60" fill="none"><path class="ln" pathLength="1" d="M12 6h28l8 8v40H12zM40 6v8h8M20 26h20M20 34h20M20 42h12"/></svg></div>
+            <h3>Дизайн-проект</h3>
+            <p>Готовим чертёж с&nbsp;размерами и&nbsp;подбираем материалы ещё до производства.</p>
+          </article>
+          <article class="pr-step" style="--i:2" data-reveal>
+            <div class="pr-step__n">03</div>
+            <div class="pr-step__ico"><svg viewBox="0 0 60 60" fill="none"><path class="ln" pathLength="1" d="M30 6l22 12v24L30 54 8 42V18zM8 18l22 12 22-12M30 30v24"/></svg></div>
+            <h3>Изготовление</h3>
+            <p>Делаем мебель точно под ваши размеры и&nbsp;утверждённый проект.</p>
+          </article>
+          <article class="pr-step" style="--i:3" data-reveal>
+            <div class="pr-step__n">04</div>
+            <div class="pr-step__ico"><svg viewBox="0 0 60 60" fill="none"><path class="ln" pathLength="1" d="M10 6h40v46H10zM30 6v46M24 26v8M36 26v8M10 52v5M50 52v5"/></svg></div>
+            <h3>Доставка и монтаж</h3>
+            <p>Привозим, собираем и&nbsp;аккуратно устанавливаем&nbsp;— мебель готова к&nbsp;жизни.</p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section" style="padding-top:0">
+    <!-- ===== Отзывы ===== -->
+    <section class="sec rvs on-dark" id="latest" hidden>
       <div class="wrap">
-        <div class="tech">
-          <div>
-            <h2>Дизайн-проект мебели для вашего дома</h2>
-            <p>Ответьте на пять коротких вопросов, и дизайнер подготовит проект мебели под вашу квартиру. План и фотографии можно приложить сразу.</p>
+        <div class="rvs__grid">
+          <div data-reveal>
+            <div class="eyebrow">Отзывы</div>
+            <h2 class="h2">Что говорят <em>клиенты</em></h2>
+            <div class="rvs__score" id="rvs-score"></div>
+            <div class="rvs__act">
+              <a class="btn btn--brass" href="reviews.html">Все отзывы <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
+              <a class="btn btn--light" href="reviews.html#leave">Оставить отзыв</a>
+              <button class="btn btn--light" type="button" data-copy="reviews.html">Скопировать ссылку</button>
+            </div>
           </div>
-          <a class="btn btn--brass" href="quiz.html">Пройти опрос</a>
+          <div data-reveal style="--i:1">
+            <div class="qc" id="qc"></div>
+            <div class="qc__nav">
+              <div class="qc__dots" id="qc-dots"></div>
+              <div class="qc__arrows">
+                <button type="button" id="qc-prev" aria-label="Предыдущий отзыв"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button>
+                <button type="button" id="qc-next" aria-label="Следующий отзыв"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Опросник ===== -->
+    <section class="sec qz">
+      <div class="wrap">
+        <div class="qz-card" data-reveal>
+          <div>
+            <div class="eyebrow">Дизайн-проект</div>
+            <h2>Дизайн-проект мебели для <em>вашего дома</em></h2>
+            <p>Ответьте на&nbsp;пять коротких вопросов, и&nbsp;дизайнер подготовит проект мебели под вашу квартиру. План и&nbsp;фотографии можно приложить сразу.</p>
+            <a class="btn btn--brass" href="quiz.html">Пройти опрос <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 12h16M14 6l6 6-6 6"/></svg></a>
+          </div>
+          <ol class="qz-steps">
+            <li><b>Что вам необходимо</b><span>Мебель</span></li>
+            <li><b>Стадия ремонта</b><span>Ремонт</span></li>
+            <li><b>Есть ли план или проект</b><span>План</span></li>
+            <li><b>План, фото и референсы</b><span>Файлы</span></li>
+            <li><b>Ваши контакты</b><span>Связь</span></li>
+          </ol>
         </div>
       </div>
     </section>
@@ -103,85 +201,6 @@
   <script src="js/cat-art.js"></script>
   <script src="js/api.js"></script>
   <script src="js/common.js"></script>
-  <script>
-    Chrome.init('home');
-    const { esc, ICONS, stars, fmtNum, plural } = Chrome;
-
-    /* Чертежи: три кухни по кругу. Рисуется ~7 с, держится 5 с (если видно), «перематывается» назад, через 1 с — следующая */
-    const W = window.WORKS;
-    const bp = document.getElementById('bp');
-    const bpSvg = bp.querySelector('svg');
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0');
-    let cnts = [];
-    const timers = [];
-    const later = (fn, ms) => timers.push(setTimeout(fn, ms));
-    let inView = true, idx = -1;
-    new IntersectionObserver((e) => { inView = e[0].isIntersecting; }, { threshold: 0.35 }).observe(bp);
-
-    function counters(dir) {            // dir: 1 — набираем, -1 — откатываем
-      cnts.forEach((el) => {
-        const v = +el.dataset.val, d0 = parseFloat(el.style.getPropertyValue('--d'));
-        const delay = dir > 0 ? d0 * 1000 : (7.2 - d0) * 0.28 * 1000, dur = dir > 0 ? 1100 : 900, t0 = performance.now() + delay;
-        const tick = (now) => {
-          const k = Math.min(1, Math.max(0, (now - t0) / dur)), e = 1 - Math.pow(1 - k, 3);
-          el.textContent = fmt(Math.round(dir > 0 ? v * e : v * (1 - e)));
-          if (k < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      });
-    }
-    function load(i) {                  // подставляем чертёж i
-      const list = window.KITCHENS || [];
-      if (!list.length) { cnts = [...bp.querySelectorAll('.cnt')]; return; }
-      bpSvg.innerHTML = list[i % list.length];
-      cnts = [...bp.querySelectorAll('.cnt')];
-    }
-    function draw() {
-      idx = (idx + 1) % Math.max(1, (window.KITCHENS || []).length || 1);
-      bp.classList.remove('is-drawing', 'is-undrawing');
-      load(idx); void bp.getBoundingClientRect();
-      bp.classList.add('is-drawing');
-      cnts.forEach((el) => { el.textContent = '0'; });
-      counters(1);
-      later(waitThenRewind, 7200 + 5000);
-    }
-    function waitThenRewind() {
-      if (!inView || document.hidden) { later(waitThenRewind, 1000); return; }   // не мешаем, пока чертёж не на виду
-      bp.classList.remove('is-drawing'); void bp.getBoundingClientRect();
-      bp.classList.add('is-undrawing');
-      counters(-1);
-      later(draw, 3200 + 1000);
-    }
-    if (reduce) { cnts = [...bp.querySelectorAll('.cnt')]; cnts.forEach((el) => { el.textContent = fmt(+el.dataset.val); }); bp.classList.remove('is-drawing'); }
-    else draw();
-
-    const counts = Chrome.counts();
-    document.getElementById('cats').innerHTML = W.categories.map((c) => {
-      const art = (window.CAT_ART || {})[c.id];
-      return `
-      <a class="cat ${art ? 'cat--bp' : ''}" href="works.html?c=${c.id}">
-        ${art ? `<span class="cat__art" aria-hidden="true">${art}</span>` : `<span class="cat__icon">${ICONS[c.id]}</span>`}
-        <span class="cat__name">${esc(c.title)}<span class="cat__n">${counts[c.id] ? Chrome.photosWord(counts[c.id]) : 'скоро'}</span></span>
-      </a>`; }).join('');
-
-    Api.listReviews().then((list) => {
-      const real = list.filter((r) => !r.sample);
-      if (real.length) {
-        const avg = real.reduce((s, r) => s + r.rating, 0) / real.length;
-        document.getElementById('hero-proof').innerHTML = `${stars(avg)} <span><strong>${fmtNum(avg)}</strong> по ${real.length} ${plural(real.length, ['отзыву', 'отзывам', 'отзывам'])}</span>`;
-      }
-      const top = list.slice(0, 3);
-      if (top.length) {
-        document.getElementById('latest').hidden = false;
-        document.getElementById('latest-list').innerHTML = top.map((r) => `
-          <article class="quote">
-            ${stars(r.rating)}
-            <p>«${esc(r.body.length > 170 ? r.body.slice(0, 167).trim() + '…' : r.body)}»</p>
-            <footer><strong>${esc(r.name)}</strong><span>${Chrome.fmtDate(r.created_at)}</span>${r.sample ? '<span class="tag tag--sample">Пример отзыва</span>' : ''}</footer>
-          </article>`).join('');
-      }
-    }).catch(() => {});
-  </script>
+  <script src="js/home.js"></script>
 </body>
 </html>
