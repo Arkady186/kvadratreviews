@@ -127,12 +127,20 @@
     if (isField) applyValue(o);
   }
 
+  function isC(n) { return n.nodeType === 8; }
   function morphChildren(op, np, inst) {
     var o = op.firstChild, n = np.firstChild;
     while (n) {
       var nn = n.nextSibling;
       if (!o) {
         op.appendChild(n); bindTree(n, inst); applyInit(n);
+      } else if (isC(o) && isC(n)) {
+        o = o.nextSibling; // метки начала/конца блоков sc-if / sc-for
+      } else if (isC(o)) {
+        op.insertBefore(n, o); bindTree(n, inst); applyInit(n); // в блоке появилось содержимое
+      } else if (isC(n)) {
+        while (o && !isC(o)) { var rm = o.nextSibling; op.removeChild(o); o = rm; } // из блока убрали лишнее
+        if (o) o = o.nextSibling; else op.appendChild(n);
       } else if (o.nodeType === n.nodeType && (o.nodeType === 3 || o.tagName === n.tagName)) {
         morphNode(o, n, inst);
         o = o.nextSibling;

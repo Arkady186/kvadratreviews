@@ -110,12 +110,12 @@ def gen(node, scope, comp):
         v = dict(node['attrs']).get('value', '')
         m = PURE.match(v)
         cond = path(m.group(1), scope)
-        return 'if(' + cond + '){' + ''.join(gen(k, scope, comp) for k in kids) + '}'
+        return '__o+="<!--?-->";if(' + cond + '){' + ''.join(gen(k, scope, comp) for k in kids) + '}__o+="<!--/-->";'
     if tag == 'sc-for':
         a = dict(node['attrs'])
         lst = path(PURE.match(a['list']).group(1), scope)
         var = a['as']
-        return 'for(const ' + var + ' of (' + lst + '||[])){' + ''.join(gen(k, scope | {var}, comp) for k in kids) + '}'
+        return '__o+="<!--?-->";for(const ' + var + ' of (' + lst + '||[])){' + ''.join(gen(k, scope | {var}, comp) for k in kids) + '}__o+="<!--/-->";'
     if tag == 'dc-import':
         a = dict(node['attrs'])
         props = {k: v for k, v in a.items() if k not in ('name',) and not k.startswith('hint-')}

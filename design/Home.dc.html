@@ -44,10 +44,10 @@
           <div data-hero-fade="0" style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#E2C7A2;margin-bottom:clamp(22px,3vh,34px)">
             <span style="width:36px;height:1px;background:currentColor"></span>Мебель на заказ · Ростов-на-Дону
           </div>
-          <h1 style="margin:0;font:300 clamp(3.4rem,8.2vw,8.6rem)/.94 'Noto Serif Display', serif;letter-spacing:-.035em">
-            <span style="display:block;overflow:hidden;padding:.02em 0 .1em;margin-bottom:-.1em"><span data-line="0" style="display:block">Мебель,</span></span>
-            <span style="display:block;overflow:hidden;padding:.02em 0 .1em;margin-bottom:-.1em"><span data-line="1" style="display:block">сделанная</span></span>
-            <span style="display:block;overflow:hidden;padding:.02em 0 .1em"><span data-line="2" style="display:block">под ваш <em style="font-style:italic;color:#E2C7A2">дом</em></span></span>
+          <h1 style="margin:0;font:300 clamp(3.1rem,7.2vw,7.8rem)/.94 'Noto Serif Display', serif;letter-spacing:-.035em">
+            <span style="display:block;overflow:hidden;padding:.02em .2em .1em 0;margin:0 -.2em -.1em 0"><span data-line="0" style="display:block">Мебель,</span></span>
+            <span style="display:block;overflow:hidden;padding:.02em .2em .1em 0;margin:0 -.2em -.1em 0"><span data-line="1" style="display:block">сделанная</span></span>
+            <span style="display:block;overflow:hidden;padding:.02em .2em .1em 0;margin-right:-.2em"><span data-line="2" style="display:block">под ваш <em style="font-style:italic;color:#E2C7A2">дом</em></span></span>
           </h1>
         </div>
         <div style="justify-self:end;max-width:440px;display:flex;flex-direction:column;gap:30px;padding-bottom:8px">
@@ -370,11 +370,11 @@ class Component extends DCLogic {
   reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   SLIDES = [
     { src: 'img/works/kuhni/kuhni-121-738113.webp', label: 'Кухни' },
-    { src: 'img/works/tv-zony/tv-zony-004-029cba.webp', label: 'ТВ-зоны' },
+    { src: 'img/works/tv-zony/tv-zony-001-4479ee.webp', label: 'ТВ-зоны' },
     { src: 'img/works/shkafy/shkafy-017-94616f.webp', label: 'Шкафы' },
   ];
-  CAT_IMG = { kuhni: 'img/works/kuhni/kuhni-144-376436.webp', shkafy: 'img/works/shkafy/shkafy-017-94616f.webp', sanuzly: 'img/works/sanuzly/sanuzly-014-8acf25.webp', 'tv-zony': 'img/works/tv-zony/tv-zony-004-029cba.webp', ofis: 'img/works/ofis/ofis-005-e30479.webp' };
-  PICKS = [['a', 'kuhni', 'kuhni-144-376436'], ['b', 'shkafy', 'shkafy-031-508fd6'], ['c', 'sanuzly', 'sanuzly-014-8acf25'], ['d', 'tv-zony', 'tv-zony-004-029cba'], ['e', 'ofis', 'ofis-005-e30479']];
+  CAT_IMG = { kuhni: 'img/works/kuhni/kuhni-144-376436.webp', shkafy: 'img/works/shkafy/shkafy-017-94616f.webp', sanuzly: 'img/works/sanuzly/sanuzly-014-8acf25.webp', 'tv-zony': 'img/works/tv-zony/tv-zony-001-4479ee.webp', ofis: 'img/works/ofis/ofis-005-e30479.webp' };
+  PICKS = [['a', 'kuhni', 'kuhni-144-376436'], ['b', 'shkafy', 'shkafy-031-508fd6'], ['c', 'sanuzly', 'sanuzly-014-8acf25'], ['d', 'tv-zony', 'tv-zony-001-4479ee'], ['e', 'ofis', 'ofis-005-e30479']];
   AREAS = { a: ['1 / 7', '1 / 3'], b: ['7 / 10', '1 / 3'], c: ['10 / 13', '1 / 3'], d: ['1 / 7', '3 / 5'], e: ['7 / 13', '3 / 5'] };
 
   R(u) { return (window.__resources && window.__resources[u]) || u; }
