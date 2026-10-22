@@ -34,11 +34,11 @@ class Component extends DCLogic {
   SLIDES = [
     { src: 'img/works/kuhni/kuhni-121-738113.webp', label: 'Кухни' },
     { src: 'img/works/tv-zony/tv-zony-004-029cba.webp', label: 'ТВ-зоны' },
-    { src: 'img/works/kuhni/kuhni-125-0a1707.webp', label: 'Кухни' },
+    { src: 'img/works/shkafy/shkafy-017-94616f.webp', label: 'Шкафы' },
   ];
   CAT_IMG = { kuhni: 'img/works/kuhni/kuhni-144-376436.webp', shkafy: 'img/works/shkafy/shkafy-017-94616f.webp', sanuzly: 'img/works/sanuzly/sanuzly-014-8acf25.webp', 'tv-zony': 'img/works/tv-zony/tv-zony-004-029cba.webp', ofis: 'img/works/ofis/ofis-005-e30479.webp' };
-  PICKS = [['a', 'kuhni', 'kuhni-121-738113'], ['b', 'kuhni', 'kuhni-144-376436'], ['c', 'sanuzly', 'sanuzly-014-8acf25'], ['d', 'shkafy', 'shkafy-017-94616f'], ['e', 'tv-zony', 'tv-zony-004-029cba'], ['f', 'shkafy', 'shkafy-031-508fd6'], ['g', 'kuhni', 'kuhni-125-0a1707']];
-  AREAS = { a: ['1 / 7', '1 / 3'], b: ['7 / 10', '1 / 4'], c: ['10 / 13', '1 / 3'], d: ['1 / 4', '3 / 5'], e: ['4 / 7', '3 / 5'], f: ['10 / 13', '3 / 5'], g: ['7 / 10', '4 / 5'] };
+  PICKS = [['a', 'kuhni', 'kuhni-144-376436'], ['b', 'shkafy', 'shkafy-031-508fd6'], ['c', 'sanuzly', 'sanuzly-014-8acf25'], ['d', 'tv-zony', 'tv-zony-004-029cba'], ['e', 'ofis', 'ofis-005-e30479']];
+  AREAS = { a: ['1 / 7', '1 / 3'], b: ['7 / 10', '1 / 3'], c: ['10 / 13', '1 / 3'], d: ['1 / 7', '3 / 5'], e: ['7 / 13', '3 / 5'] };
 
   R(u) { return (window.__resources && window.__resources[u]) || u; }
   boot() {
@@ -189,16 +189,16 @@ class Component extends DCLogic {
     const tiles = this.PICKS.map(([k, cat, file], i) => {
       const item = (W.items || []).find((x) => x.full.indexOf(file) !== -1);
       const c = (W.categories || []).find((x) => x.id === cat) || { title: '' };
-      const big = k === 'a' || k === 'g';
+      const big = k === 'a';
       return {
         href: 'works.html?c=' + cat, src: this.R(item ? item.full : 'img/works/' + cat + '/' + file + '.webp'), alt: c.title + ' на заказ — работа ASD',
-        title: c.title, n: counts[cat] ? photos(counts[cat]) : '', aria: 'Раздел «' + c.title + '»', ri: i % 4,
+        title: c.title.replace(/-/g, '\u2011'), n: counts[cat] ? photos(counts[cat]) : '', aria: 'Раздел «' + c.title + '»', ri: i % 4,
         col: desk ? this.AREAS[k][0] : (big ? '1 / -1' : 'auto'), row: desk ? this.AREAS[k][1] : 'auto', ar: desk ? 'auto' : (big ? '4 / 3' : '3 / 4'),
       };
     });
     const hov = this.state.hov;
     const cats = (W.categories || []).map((c, i) => ({
-      href: 'works.html?c=' + c.id, idx: '0' + (i + 1), title: c.title, text: c.text, n: counts[c.id] ? photos(counts[c.id]) : 'скоро',
+      href: 'works.html?c=' + c.id, idx: '0' + (i + 1), title: c.title.replace(/-/g, '\u2011'), text: c.text, n: counts[c.id] ? photos(counts[c.id]) : 'скоро',
       img: this.R(this.CAT_IMG[c.id]), ri: i, op: wide && hov >= 0 && hov !== i ? 0.35 : 1,
       enter: () => this.setState({ hov: i }),
       arrowBd: hov === i ? '#E2C7A2' : 'rgba(251,250,247,.3)', arrowBg: hov === i ? '#E2C7A2' : 'transparent', arrowFg: hov === i ? '#14120F' : '#FBFAF7', arrowTf: hov === i ? 'rotate(-45deg)' : 'none',
