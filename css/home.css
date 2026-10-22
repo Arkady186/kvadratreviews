@@ -256,3 +256,24 @@ body.home .site-footer { margin-top: 0; }
   .pr-step::before, .pr-step::after, .pr-step__ico .ln { transition: none !important; transform: none; stroke-dashoffset: 0; }
   .pr-step::after { transform: rotate(45deg); }
 }
+
+/* ============================================================
+   Направления на телефоне: крупные чертежи
+   (раньше область под рисунок была ~60px высотой)
+   ============================================================ */
+@media (max-width: 600px) {
+  .home .cat--bp { aspect-ratio: auto; height: 268px; padding: 14px; }
+  .cat__idx { left: 14px; top: 12px; font-size: 1.05rem; }
+  .cat__arrow { right: 10px; top: 10px; width: 30px; height: 30px; }
+  .cat__arrow svg { width: 13px; height: 13px; }
+  .home .cat__art { inset: 42px 2px 86px; }
+  .home .cat__name { font-size: 1.32rem; padding-top: 10px; }
+  .home .cat__n { font-size: .8rem; margin-top: 4px; }
+  /* пятая карточка — на всю ширину: рисунок слева, подпись справа */
+  .home .cat--bp:last-child { grid-column: 1 / -1; width: auto; justify-self: stretch; height: 214px; }
+  .home .cat--bp:last-child .cat__art { inset: 44px 50% 14px 4px; }
+  .home .cat--bp:last-child .cat__name { margin-left: 52%; }
+}
+@media (min-width: 601px) and (max-width: 1000px) {
+  .home .cat__art { inset: 52px 8px 112px; }
+}

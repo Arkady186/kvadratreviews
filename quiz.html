@@ -309,10 +309,22 @@
         }, (d, t) => { btn.textContent = 'Загружаем файлы ' + d + ' из ' + t + '…'; });
         finish();
       } catch (er) {
+        if (er.code === 'duplicate') { showAlready(); return; }
         err.textContent = (er.message || 'Не получилось отправить.') + ' Данные сохранены, нажмите «Отправить заявку» ещё раз.';
         err.classList.add('is-on'); err.scrollIntoView({ block: 'center', behavior: 'smooth' });
         btn.disabled = false; $('q-back').disabled = false; btn.textContent = old;
       }
+    }
+    /* одна заявка с одного устройства */
+    function showAlready() {
+      try { sessionStorage.removeItem('kv_quiz'); } catch (e) { /* ignore */ }
+      $('quiz').hidden = true; const side = document.querySelector('.quiz__side'); if (side) side.hidden = true;
+      const d = $('done'); d.hidden = false;
+      d.innerHTML = `<div class="done__mark">${ICONS.check}</div>
+        <h2>Заявка с этого устройства уже отправлена</h2>
+        <p>Повторно пройти опрос нельзя: дизайнер уже получил ваши ответы и свяжется с вами по указанному номеру.</p>
+        <p>Нужно что-то добавить или изменить? Нажмите «Поддержка сайта» внизу страницы или позвоните нам.</p>
+        <div class="done__act"><a class="btn btn--brass" href="works.html">Смотреть работы</a><a class="btn" href="index.html">На главную</a></div>`;
     }
     function finish() {
       try { sessionStorage.removeItem('kv_quiz'); } catch (e) { /* ignore */ }
@@ -328,6 +340,7 @@
     }
 
     go(1, false);
+    if (Api.leadSentQuick()) showAlready(); else Api.myLeadStatus().then((r) => { if (r === 'sent') showAlready(); });
     window.addEventListener('beforeunload', (e) => { if (!$('quiz').hidden && files.length) { e.preventDefault(); e.returnValue = ''; } });
   </script>
 </body>

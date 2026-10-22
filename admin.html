@@ -17,7 +17,7 @@
     <div class="wrap">
       <div class="page-hero" style="padding-top:0">
         <h1>Админка</h1>
-        <p class="lead" id="sub">Войдите, чтобы видеть заявки и проверять отзывы.</p>
+        <p class="lead" id="sub">Войдите, чтобы видеть заявки, отзывы и ошибки сайта.</p>
       </div>
 
       <div class="admin-box form-card" id="login-box">
@@ -54,13 +54,15 @@
     const RV_STATUS = { pending: 'На проверке', approved: 'Опубликованные', hidden: 'Скрытые' };
     const LD_STATUS = { new: 'Новые', work: 'В работе', done: 'Завершённые' };
     const EMPTY = { new: 'Новых заявок пока нет.', work: 'Нет заявок в работе.', done: 'Завершённых заявок пока нет.' };
-    let reviews = [], leads = [], leadsErr = '', section = 'leads', tab = { leads: 'new', reviews: 'pending' };
+    const BG_STATUS = { new: 'Новые', fixed: 'Исправлено' };
+    const BG_KIND = { bug: 'Ошибка', ui: 'Неудобно / криво', idea: 'Предложение', other: 'Другое' };
+    let reviews = [], leads = [], leadsErr = '', bugs = [], bugsErr = '', section = 'leads', tab = { leads: 'new', reviews: 'pending', bugs: 'new' };
     const fmtDT = (iso) => { try { return new Date(iso).toLocaleString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
     const ICON_FILE = { pdf: 'PDF', other: 'ФАЙЛ' };
 
     async function load() {
-      const [rv, ld] = await Promise.allSettled([Api.adminList(), Api.adminLeads()]);
-      const authFail = [rv, ld].some((r) => r.status === 'rejected' && r.reason && r.reason.code === 'auth');
+      const [rv, ld, bg] = await Promise.allSettled([Api.adminList(), Api.adminLeads(), Api.adminBugs()]);
+      const authFail = [rv, ld, bg].some((r) => r.status === 'rejected' && r.reason && r.reason.code === 'auth');
       if (authFail) { Api.adminLogout(); showLogin('Сессия закончилась. Войдите снова.'); return; }
       reviews = rv.status === 'fulfilled' ? rv.value : [];
       leadsErr = ''; leads = [];
@@ -68,18 +70,23 @@
       else leadsErr = (ld.reason && (ld.reason.status === 404 || /schema cache|does not exist|PGRST205/i.test(ld.reason.message || '')))
         ? 'Таблица заявок ещё не создана. Откройте в Supabase SQL Editor файл supabase/leads.sql и выполните его (см. README.md).'
         : (ld.reason && ld.reason.message) || 'Не удалось загрузить заявки.';
+      bugsErr = ''; bugs = [];
+      if (bg.status === 'fulfilled') bugs = bg.value;
+      else bugsErr = (bg.reason && (bg.reason.status === 404 || /schema cache|does not exist|PGRST205/i.test(bg.reason.message || '')))
+        ? 'Таблица ошибок ещё не создана. Откройте в Supabase SQL Editor файл supabase/support_and_once.sql и выполните его (см. README.md).'
+        : (bg.reason && bg.reason.message) || 'Не удалось загрузить сообщения.';
       render();
     }
 
     function render() {
-      const nNew = leads.filter((l) => l.status === 'new').length, nPend = reviews.filter((r) => r.status === 'pending').length;
-      document.title = (nNew ? '(' + nNew + ') ' : '') + 'Админка — ASD';
-      $('top').innerHTML = [['leads', 'Заявки', nNew], ['reviews', 'Отзывы', nPend]].map(([id, t, n]) =>
+      const nNew = leads.filter((l) => l.status === 'new').length, nPend = reviews.filter((r) => r.status === 'pending').length, nBug = bugs.filter((b) => b.status === 'new').length;
+      document.title = (nNew + nBug ? '(' + (nNew + nBug) + ') ' : '') + 'Админка — ASD';
+      $('top').innerHTML = [['leads', 'Заявки', nNew], ['reviews', 'Отзывы', nPend], ['bugs', 'Ошибки сайта', nBug]].map(([id, t, n]) =>
         `<button class="chip" type="button" role="tab" data-s="${id}" aria-pressed="${id === section}">${t}${n ? `<small style="opacity:1;color:var(--brass-d);font-weight:600">${n} нов.</small>` : ''}</button>`).join('');
-      const map = section === 'leads' ? LD_STATUS : RV_STATUS, src = section === 'leads' ? leads : reviews;
+      const map = { leads: LD_STATUS, reviews: RV_STATUS, bugs: BG_STATUS }[section], src = { leads, reviews, bugs }[section];
       $('tabs').innerHTML = Object.keys(map).map((s) => `<button class="chip" type="button" data-t="${s}" aria-pressed="${s === tab[section]}">${map[s]}<small>${src.filter((x) => x.status === s).length}</small></button>`).join('');
-      $('sub').textContent = section === 'leads' ? 'Заявки из опросника: имя, телефон и ответы клиента.' : 'Новые отзывы видны на сайте только после публикации.';
-      if (section === 'leads') renderLeads(); else renderReviews();
+      $('sub').textContent = { leads: 'Заявки из опросника: имя, телефон и ответы клиента.', reviews: 'Новые отзывы видны на сайте только после публикации.', bugs: 'Сообщения посетителей из кнопки «Поддержка сайта».' }[section];
+      if (section === 'leads') renderLeads(); else if (section === 'bugs') renderBugs(); else renderReviews();
     }
 
     /* ---------- Заявки ---------- */
@@ -135,6 +142,7 @@
       if (cp) { try { await navigator.clipboard.writeText(cp.dataset.copyPhone); Chrome.toast('Номер скопирован'); } catch (er) { Chrome.toast(cp.dataset.copyPhone); } return; }
       const b = e.target.closest('[data-la]'); if (b) return leadAction(b);
       const r = e.target.closest('[data-a]'); if (r) return reviewAction(r);
+      const g = e.target.closest('[data-ba]'); if (g) return bugAction(g);
     });
     $('list').addEventListener('focusout', async (e) => {                // заметка сохраняется, когда выходите из поля
       const t = e.target.closest('[data-note]'); if (!t) return;
@@ -151,6 +159,48 @@
         if (a === 'delete') await Api.adminLeadDelete(l); else await Api.adminLeadPatch(id, { status: a });
         await load();
       } catch (er) { b.disabled = false; Chrome.toast(er.message || 'Не получилось. Попробуйте ещё раз.'); }
+    }
+
+    /* ---------- Ошибки сайта ---------- */
+    function device(ua) {
+      ua = String(ua || '');
+      const os = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : /Android/.test(ua) ? 'Android' : /Windows/.test(ua) ? 'Windows' : /Mac OS X/.test(ua) ? 'Mac' : /Linux/.test(ua) ? 'Linux' : 'устройство';
+      const br = /YaBrowser/.test(ua) ? 'Яндекс Браузер' : /EdgA?\//.test(ua) ? 'Edge' : /OPR\//.test(ua) ? 'Opera' : /SamsungBrowser/.test(ua) ? 'Samsung' : /(Chrome|CriOS)\//.test(ua) ? 'Chrome' : /(Firefox|FxiOS)\//.test(ua) ? 'Firefox' : /Safari\//.test(ua) ? 'Safari' : 'браузер';
+      return os + ', ' + br;
+    }
+    function renderBugs() {
+      if (bugsErr) { $('list').innerHTML = `<div class="empty"><h3>Ошибки недоступны</h3><p>${esc(bugsErr)}</p></div>`; return; }
+      const list = bugs.filter((b) => b.status === tab.bugs);
+      if (!list.length) { $('list').innerHTML = `<div class="empty"><h3>Здесь пусто</h3><p>${tab.bugs === 'new' ? 'Новых сообщений об ошибках нет.' : 'Исправленных пока нет.'}</p></div>`; return; }
+      $('list').innerHTML = list.map((b) => {
+        const row = (t, v) => v ? `<div><dt>${t}</dt><dd>${v}</dd></div>` : '';
+        const page = b.page ? `<a href="${esc(b.page.split('?')[0] || 'index.html')}${b.page.includes('?') ? esc('?' + b.page.split('?').slice(1).join('?')) : ''}" target="_blank" rel="noopener">${esc(b.page)}</a>` : '';
+        return `
+        <article class="ld ${b.status === 'fixed' ? 'ld--done' : ''}">
+          <div class="ld__head">
+            <span class="ld__name">${esc(BG_KIND[b.kind] || b.kind)}</span>
+            ${b.contact ? `<span class="ld__phone">${esc(b.contact)}</span>` : '<span class="muted">контакт не указан</span>'}
+            <span class="ld__date">${fmtDT(b.created_at)}</span>
+          </div>
+          <p style="overflow-wrap:anywhere;margin:0 0 12px;line-height:1.6">${esc(b.message).replace(/\n/g, '<br>')}</p>
+          <dl class="ld__rows">
+            ${row('Страница', page)}
+            ${row('Устройство', esc(device(b.ua)) + (b.viewport ? ' · экран ' + esc(b.viewport) : ''))}
+            ${row('Ошибка в коде', b.err ? `<code style="overflow-wrap:anywhere">${esc(b.err)}</code>` : '')}
+          </dl>
+          <div class="adm__actions">
+            ${b.status === 'new' ? `<button class="btn btn--brass btn--sm" data-ba="fixed" data-id="${esc(b.id)}">Исправлено</button>` : `<button class="btn btn--sm" data-ba="new" data-id="${esc(b.id)}">Вернуть в новые</button>`}
+            <button class="btn btn--sm" data-ba="delete" data-id="${esc(b.id)}">Удалить</button>
+          </div>
+        </article>`;
+      }).join('');
+    }
+    async function bugAction(b) {
+      const id = b.dataset.id, a = b.dataset.ba;
+      if (a === 'delete' && !confirm('Удалить сообщение? Это нельзя отменить.')) return;
+      b.disabled = true;
+      try { if (a === 'delete') await Api.adminBugDelete(id); else await Api.adminBugPatch(id, { status: a }); await load(); }
+      catch (er) { b.disabled = false; Chrome.toast(er.message || 'Не получилось. Попробуйте ещё раз.'); }
     }
 
     /* ---------- Отзывы ---------- */

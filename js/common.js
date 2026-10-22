@@ -66,7 +66,9 @@ const Chrome = (() => {
             </ul></div>
             <div><h4>Связаться</h4><ul>${contacts || '<li>Контакты скоро появятся</li>'}</ul></div>
           </div>
-          <div class="site-footer__bottom">© ${new Date().getFullYear()} ${esc(S.brand)}</div>
+          <div class="site-footer__bottom"><span>© ${new Date().getFullYear()} ${esc(S.brand)}</span>
+            <button class="support-btn" type="button" data-support><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" stroke-linejoin="round"/><path d="M12 9v3M12 14.2v.1" stroke-linecap="round"/></svg>Поддержка сайта</button>
+          </div>
         </div>
       </footer>`;
   }
@@ -122,16 +124,92 @@ const Chrome = (() => {
   }
   const photosWord = (n) => `${n} ${plural(n, ['фото', 'фото', 'фото'])}`;
 
+
+  /* ---------- Поддержка сайта: «сообщить об ошибке» ---------- */
+  let lastJsError = '';
+  window.addEventListener('error', (e) => { lastJsError = (e.message || 'error') + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : ''); });
+  window.addEventListener('unhandledrejection', (e) => { lastJsError = 'promise: ' + String((e.reason && e.reason.message) || e.reason || '').slice(0, 200); });
+
+  const KINDS = [['bug', 'Ошибка на сайте'], ['ui', 'Неудобно или криво'], ['idea', 'Предложение'], ['other', 'Другое']];
+  function supportDialog() {
+    let d = document.getElementById('support');
+    if (d) return d;
+    d = document.createElement('div'); d.id = 'support'; d.className = 'sup'; d.hidden = true;
+    d.innerHTML = `
+      <div class="sup__back" data-sup-close></div>
+      <div class="sup__box" role="dialog" aria-modal="true" aria-labelledby="sup-t">
+        <button class="sup__x" type="button" data-sup-close aria-label="Закрыть">×</button>
+        <form id="sup-form" novalidate>
+          <h2 id="sup-t">Поддержка сайта</h2>
+          <p class="sup__lead">Что-то не работает или выглядит неправильно? Опишите, мы исправим.</p>
+          <div class="sup__kinds" role="radiogroup" aria-label="Тип сообщения">
+            ${KINDS.map(([v, t], i) => `<label><input type="radio" name="kind" value="${v}" ${i === 0 ? 'checked' : ''}><span>${t}</span></label>`).join('')}
+          </div>
+          <label class="sup__f"><span>Что случилось</span>
+            <textarea id="sup-msg" rows="5" maxlength="2000" placeholder="Например: на странице «Отзывы» не открывается форма, кнопка ничего не делает."></textarea></label>
+          <label class="sup__f"><span>Как с вами связаться <em>(необязательно)</em></span>
+            <input id="sup-contact" type="text" maxlength="120" autocomplete="off" placeholder="Телефон или Telegram, если нужен ответ"></label>
+          <input id="sup-site" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0">
+          <p class="sup__hint">Мы автоматически прикладываем страницу, тип устройства и размер экрана, чтобы быстрее найти причину.</p>
+          <div class="sup__err" id="sup-err" role="alert"></div>
+          <button class="btn btn--brass sup__send" type="submit">Отправить</button>
+        </form>
+        <div class="sup__ok" id="sup-ok" hidden>
+          <div class="sup__mark">${ICONS.check}</div>
+          <h2>Спасибо!</h2>
+          <p>Сообщение получено. Мы посмотрим и исправим.</p>
+          <button class="btn" type="button" data-sup-close>Закрыть</button>
+        </div>
+      </div>`;
+    document.body.appendChild(d);
+    d.addEventListener('click', (e) => { if (e.target.closest('[data-sup-close]')) closeSupport(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !d.hidden) closeSupport(); });
+    d.querySelector('#sup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = d.querySelector('#sup-msg').value.trim(), err = d.querySelector('#sup-err'), btn = d.querySelector('.sup__send');
+      const fail = (t) => { err.textContent = t; err.classList.add('is-on'); };
+      err.classList.remove('is-on');
+      if (msg.length < 5) { fail('Опишите проблему хотя бы парой слов.'); d.querySelector('#sup-msg').focus(); return; }
+      if (d.querySelector('#sup-site').value) { showOk(d); return; }       // «ловушка» для роботов
+      btn.disabled = true; const old = btn.textContent; btn.textContent = 'Отправляем…';
+      try {
+        await Api.submitBug({
+          kind: d.querySelector('input[name=kind]:checked').value, message: msg, contact: d.querySelector('#sup-contact').value,
+          page: location.pathname.replace(/^.*\//, '') + location.search, ua: navigator.userAgent,
+          viewport: innerWidth + 'x' + innerHeight + '@' + (window.devicePixelRatio || 1), err: lastJsError,
+        });
+        showOk(d);
+      } catch (er) { fail(er.message || 'Не получилось отправить. Попробуйте ещё раз.'); }
+      btn.disabled = false; btn.textContent = old;
+    });
+    return d;
+  }
+  function showOk(d) { d.querySelector('#sup-form').hidden = true; d.querySelector('#sup-ok').hidden = false; d.querySelector('#sup-ok .btn').focus(); }
+  let supReturn = null;
+  function openSupport() {
+    const d = supportDialog(); supReturn = document.activeElement;
+    d.querySelector('#sup-form').hidden = false; d.querySelector('#sup-ok').hidden = true;
+    d.querySelector('#sup-form').reset(); d.querySelector('#sup-err').classList.remove('is-on');
+    d.hidden = false; document.documentElement.classList.add('sup-open');
+    setTimeout(() => d.querySelector('#sup-msg').focus({ preventScroll: true }), 30);
+  }
+  function closeSupport() {
+    const d = document.getElementById('support'); if (!d) return;
+    d.hidden = true; document.documentElement.classList.remove('sup-open');
+    if (supReturn && supReturn.focus) supReturn.focus({ preventScroll: true });
+  }
+
   function init(active) {
     const h = document.getElementById('site-header'); if (h) h.innerHTML = header(active);
     const f = document.getElementById('site-footer'); if (f) f.innerHTML = footer();
     const b = document.getElementById('menu-btn'), n = document.getElementById('nav');
     if (b && n) b.addEventListener('click', () => { const o = n.classList.toggle('is-open'); b.setAttribute('aria-expanded', String(o)); });
     document.addEventListener('click', (e) => {
+      if (e.target.closest('[data-support]')) { e.preventDefault(); openSupport(); return; }
       const s = e.target.closest('[data-copy]');
       if (s) { e.preventDefault(); copyLink(abs(s.getAttribute('data-copy')), s); }
     });
   }
 
-  return { init, esc, plural, fmtDate, stars, fmtNum, ICONS, copyLink, toast, confetti, counts, photosWord, abs, root };
+  return { init, esc, plural, fmtDate, stars, fmtNum, ICONS, copyLink, toast, confetti, openSupport, counts, photosWord, abs, root };
 })();

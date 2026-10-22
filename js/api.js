@@ -21,9 +21,10 @@ const Api = (() => {
   const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0; return (c === 'x' ? r : (r & 3) | 8).toString(16);
   }));
-  const readCookie = () => { const m = document.cookie.match(new RegExp('(?:^|; )' + DEV_KEY + '=([^;]+)')); return m ? m[1] : null; };
-  const writeCookie = (v) => { try { document.cookie = DEV_KEY + '=' + v + '; max-age=63072000; path=/; SameSite=Lax'; } catch (e) { /* ignore */ } };
-  function idb(mode, value) {
+  const readCookie = (k) => { const m = document.cookie.match(new RegExp('(?:^|; )' + (k || DEV_KEY) + '=([^;]+)')); return m ? m[1] : null; };
+  const writeCookie = (v, k) => { try { document.cookie = (k || DEV_KEY) + '=' + v + '; max-age=63072000; path=/; SameSite=Lax'; } catch (e) { /* ignore */ } };
+  function idb(mode, value, key) {
+    key = key || DEV_KEY;
     return new Promise((resolve) => {
       try {
         const open = indexedDB.open('kv', 1);
@@ -33,8 +34,8 @@ const Api = (() => {
           try {
             const tx = open.result.transaction('s', mode === 'set' ? 'readwrite' : 'readonly');
             const st = tx.objectStore('s');
-            if (mode === 'set') { st.put(value, DEV_KEY); tx.oncomplete = () => resolve(value); }
-            else { const r = st.get(DEV_KEY); r.onsuccess = () => resolve(r.result || null); r.onerror = () => resolve(null); }
+            if (mode === 'set') { st.put(value, key); tx.oncomplete = () => resolve(value); }
+            else { const r = st.get(key); r.onsuccess = () => resolve(r.result || null); r.onerror = () => resolve(null); }
           } catch (e) { resolve(null); }
         };
       } catch (e) { resolve(null); }
@@ -172,6 +173,24 @@ const Api = (() => {
     return rest('/rest/v1/reviews?id=eq.' + encodeURIComponent(id), { method: 'DELETE', headers: { Prefer: 'return=minimal' } }, adminToken());
   }
 
+  /* ---------- «Один опрос с устройства» ----------
+     Метка «заявка уже отправлена» хранится в localStorage, cookie и IndexedDB сразу
+     (очистка одного места её не снимает), плюс проверка на сервере по идентификатору устройства. */
+  const LEAD_FLAG = 'kv_lead_sent';
+  function leadSentQuick() { return !!(LS.get(LEAD_FLAG, null) || readCookie(LEAD_FLAG)); }
+  async function leadSentLocal() { return leadSentQuick() || !!(await idb('get', null, LEAD_FLAG)); }
+  function markLeadSent() { const v = String(Date.now()); LS.set(LEAD_FLAG, v); writeCookie(v, LEAD_FLAG); idb('set', v, LEAD_FLAG); }
+  /* 'none' | 'sent' */
+  async function myLeadStatus() {
+    if (await leadSentLocal()) { markLeadSent(); return 'sent'; }          // восстановим метку во всех местах
+    if (!configured) return 'none';
+    try {
+      const r = await rest('/rest/v1/rpc/my_lead_status', { method: 'POST', body: JSON.stringify({ dev: await deviceId() }) });
+      if (r === 'sent') { markLeadSent(); return 'sent'; }
+    } catch (e) { /* сервер недоступен или SQL ещё не выполнен — полагаемся на метку в браузере */ }
+    return 'none';
+  }
+
   /* ---------- Заявки из опросника ---------- */
   const BUCKET = 'lead-files';
   const MAX_FILES = 8, MAX_BYTES = 10 * 1024 * 1024;
@@ -207,6 +226,7 @@ const Api = (() => {
   /* lead: { items[], itemsOther, stage, plan, name, phone, comment, files: File[] }, onProgress(done,total) */
   async function submitLead(lead, onProgress) {
     const id = uuid();
+    if (await leadSentLocal()) { const d = new Error('duplicate'); d.code = 'duplicate'; throw d; }
     const payload = {
       id, items: lead.items, items_other: lead.itemsOther || null, stage: lead.stage, plan: lead.plan,
       name: String(lead.name || '').trim(), phone: String(lead.phone || '').trim(),
@@ -216,6 +236,7 @@ const Api = (() => {
       payload.created_at = new Date().toISOString(); payload.status = 'new';
       payload.files = (lead.files || []).map((f) => ({ name: f.name, size: f.size, type: f.type }));
       const list = LS.get('kv_leads_demo', []); list.push(payload); LS.set('kv_leads_demo', list);
+      markLeadSent();
       return payload;
     }
     const files = (lead.files || []).slice(0, MAX_FILES);
@@ -229,12 +250,20 @@ const Api = (() => {
       payload.files.push({ path, name: f.name.slice(0, 120), size: pr.blob.size, type: pr.type });
       if (onProgress) onProgress(i + 1, files.length);
     }
+    const [dev, fp] = await Promise.all([deviceId(), fingerprint()]);
+    const send = (body) => rest('/rest/v1/leads', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(body) });
     try {
-      await rest('/rest/v1/leads', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(payload) });
+      try { await send(Object.assign({}, payload, { device_id: dev, fp })); }
+      catch (e) {
+        /* таблица ещё без колонок device_id/fp (не выполнен supabase/support_and_once.sql) — шлём как раньше */
+        if (e.status === 400 && /device_id|\bfp\b|column|PGRST204/i.test((e.message || '') + (e.code || ''))) await send(payload); else throw e;
+      }
     } catch (e) {
+      if (e.status === 409 || e.code === '23505') { markLeadSent(); const d = new Error('duplicate'); d.code = 'duplicate'; throw d; }
       if (/too many|flood/i.test(e.message)) throw new Error('Сейчас очень много заявок. Попробуйте через несколько минут.');
       throw e;
     }
+    markLeadSent();
     return payload;
   }
 
@@ -263,8 +292,40 @@ const Api = (() => {
     return out;
   }
 
+  /* ---------- Поддержка сайта: сообщения об ошибках ---------- */
+  async function submitBug(b) {
+    const last = LS.get('kv_bug_last', 0);
+    if (Date.now() - last < 45000) { const e = new Error('Сообщение только что отправлено. Подождите минуту и попробуйте снова.'); e.code = 'throttle'; throw e; }
+    const payload = {
+      kind: b.kind || 'bug', message: String(b.message || '').trim().slice(0, 2000),
+      contact: String(b.contact || '').trim().slice(0, 120) || null,
+      page: String(b.page || '').slice(0, 300) || null, ua: String(b.ua || '').slice(0, 300) || null,
+      viewport: String(b.viewport || '').slice(0, 30) || null, err: String(b.err || '').slice(0, 500) || null,
+    };
+    if (!configured) {
+      const list = LS.get('kv_bugs_demo', []); list.push(Object.assign({ id: 'b' + Date.now(), created_at: new Date().toISOString(), status: 'new' }, payload)); LS.set('kv_bugs_demo', list);
+      LS.set('kv_bug_last', Date.now()); return payload;
+    }
+    payload.device_id = await deviceId();
+    try { await rest('/rest/v1/bug_reports', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(payload) }); }
+    catch (e) {
+      if (/too many|flood/i.test(e.message)) throw new Error('Сейчас очень много сообщений. Попробуйте через несколько минут.');
+      if (e.status === 404 || /schema cache|does not exist|PGRST205/i.test(e.message)) throw new Error('Приём сообщений ещё не настроен. Напишите нам другим способом.');
+      throw e;
+    }
+    LS.set('kv_bug_last', Date.now());
+    return payload;
+  }
+  async function adminBugs() {
+    const t = adminToken(); if (!t) { const e = new Error('auth'); e.code = 'auth'; throw e; }
+    try { return await rest('/rest/v1/bug_reports?select=*&order=created_at.desc&limit=500', {}, t); }
+    catch (e) { if (e.status === 401) e.code = 'auth'; throw e; }
+  }
+  const adminBugPatch = (id, patch) => rest('/rest/v1/bug_reports?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(patch) }, adminToken());
+  const adminBugDelete = (id) => rest('/rest/v1/bug_reports?id=eq.' + encodeURIComponent(id), { method: 'DELETE', headers: { Prefer: 'return=minimal' } }, adminToken());
+
   return {
-    configured, listReviews, myStatus, submitReview, deviceId,
+    configured, listReviews, myStatus, myLeadStatus, leadSentQuick, submitBug, adminBugs, adminBugPatch, adminBugDelete, submitReview, deviceId,
     adminToken, adminLogin, adminLogout, adminList, adminSet, adminDelete,
     submitLead, MAX_FILES, MAX_BYTES, adminLeads, adminLeadPatch, adminLeadDelete, adminSignFiles,
   };
