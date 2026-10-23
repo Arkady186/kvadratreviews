@@ -12,7 +12,7 @@
   <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:48px clamp(32px,5vw,80px);padding-bottom:clamp(120px,18vw,260px)">
       <div style="display:flex;flex-direction:column;gap:22px;max-width:380px">
-        <a href="Home.dc.html" aria-label="ASD — на главную" style="line-height:0"><img src="{{ logoSrc }}" alt="ASD" width="130" height="48" style="height:44px;width:auto"></img></a>
+        <a href="Home.dc.html" aria-label="ASD — на главную" style="line-height:0"><img src="{{ logoSrc }}" alt="ASD" width="162" height="60" style="height:56px;width:auto"></img></a>
         <p style="margin:0;color:#A79E93;font:400 15px/1.7 Manrope, sans-serif;text-wrap:pretty">Мебель на заказ. Смотрите наши работы и читайте отзывы тех, кто уже живёт с нашей мебелью.</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:18px">
@@ -139,7 +139,7 @@ class Component extends DCLogic {
     if (S.telegram) contacts.push({ href: S.telegram, label: 'Telegram', target: '_blank' });
     const KINDS = [['bug', 'Ошибка на сайте'], ['ui', 'Неудобно или криво'], ['idea', 'Предложение'], ['other', 'Другое']];
     return {
-      logoSrc: (window.__resources && window.__resources['img/logo-light.svg']) || 'img/logo-light.svg', contacts, city: S.city || (contacts.length ? '' : 'Ростов-на-Дону'), year: new Date().getFullYear(),
+      logoSrc: (window.__resources && window.__resources['img/logo-light.svg']) || 'img/logo-light.svg', contacts, city: S.city || (contacts.length ? '' : 'Работаем по югу России'), year: new Date().getFullYear(),
       openSup: () => this.open(), closeSup: () => this.close(), sendSup: (e) => this.send(e),
       supOpen: this.state.open, supForm: !this.state.ok, supOk: this.state.ok,
       kinds: KINDS.map(([v, t]) => {
