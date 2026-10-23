@@ -32,7 +32,7 @@
     <div data-in="0" style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
       <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#8C6239;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Дизайн-проект</div>
       <h1 style="margin:0;max-width:16ch;font:300 clamp(2.8rem,6.2vw,6rem)/1 'Noto Serif Display', serif;letter-spacing:-.035em;text-wrap:balance">Дизайн-проект мебели для <em style="font-style:italic;color:#8C6239">вашего дома</em></h1>
-      <p style="margin:24px 0 0;max-width:56ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty">Ответьте на несколько вопросов, и дизайнер подготовит проект мебели под вашу квартиру. Это займёт около трёх минут, а фотографии и планы можно приложить сразу.</p>
+      <p style="margin:24px 0 0;max-width:56ch;color:#6B635A;font:400 17px/1.7 Manrope, sans-serif;text-wrap:pretty">Ответьте на несколько вопросов, и дизайнер подготовит проект мебели под вашу квартиру. Это займёт около трёх минут.</p>
     </div>
   </section>
 
@@ -45,11 +45,11 @@
       <sc-if value="{{ showQuiz }}" hint-placeholder-val="{{ true }}">
         <form ref="{{ formRef }}" onSubmit="{{ submit }}" novalidate="" style="background:#FBFAF7;border:1px solid #E2DCD3;border-radius:28px;padding:clamp(24px,3.6vw,48px);min-height:480px;display:flex;flex-direction:column;box-shadow:0 30px 60px -40px rgba(26,23,20,.25);scroll-margin-top:96px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px">
-            <span aria-live="polite" style="font:600 13.5px Manrope, sans-serif;font-variant-numeric:tabular-nums">Шаг {{ step }} <span style="color:#8A8177;font-weight:500">из 10</span></span>
+            <span aria-live="polite" style="font:600 13.5px Manrope, sans-serif;font-variant-numeric:tabular-nums">Шаг {{ step }} <span style="color:#8A8177;font-weight:500">из 9</span></span>
             <span style="font:600 11px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8C6239">{{ stepName }}</span>
           </div>
-          <div aria-hidden="true" style="display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-bottom:clamp(28px,3.4vw,44px)">
-            <sc-for list="{{ bar }}" as="b" hint-placeholder-count="10">
+          <div aria-hidden="true" style="display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-bottom:clamp(28px,3.4vw,44px)">
+            <sc-for list="{{ bar }}" as="b" hint-placeholder-count="9">
               <span style="height:3px;border-radius:999px;background:#E2DCD3;overflow:hidden"><span style="display:block;height:100%;background:#B98D5E;transform-origin:left;transform:scaleX({{ b }});transition:transform .8s cubic-bezier(.2,.8,.2,1)"></span></span>
             </sc-for>
           </div>
@@ -192,7 +192,7 @@ class Component extends DCLogic {
   ITEMS = ['Комплексную меблировку квартиры', 'Кухню', 'Шкаф или гардеробную', 'Мебель в прихожую', 'Мебель в гостиную', 'Мебель в спальню', 'Детскую', 'Мебель для ванной', 'Рабочую зону или домашний кабинет', 'Другое'];
   STAGES = ['Планируем ремонт', 'Идёт черновой ремонт', 'Сейчас делаем электрику и сантехнику', 'Идёт чистовая отделка', 'Ремонт почти завершён', 'Квартира с ремонтом', 'Свой вариант'];
   PLANS = ['Да, есть дизайн-проект', 'Есть план с размерами', 'Есть только планировка от застройщика', 'Пока ничего нет'];
-  TITLES = ['', 'Кухонная техника', 'Кухонная техника', 'Кухонная техника', 'Кухонная техника', 'Кухонная техника', 'Мебель', 'Ремонт', 'План', 'Файлы', 'Контакты'];
+  TITLES = ['', 'Кухонная техника', 'Кухонная техника', 'Кухонная техника', 'Кухонная техника', 'Кухонная техника', 'Мебель', 'Ремонт', 'План', 'Контакты'];
   KQ = [
     { key: 'bought', title: 'Кухонная техника уже куплена?', hint: 'Так дизайнер заранее учтёт размеры, ниши и подключения.', opts: ['Да, вся техника уже куплена', 'Куплена часть техники', 'Нет, пока ничего не куплено'] },
     { key: 'fridge', title: 'Какой холодильник вы планируете установить?', hint: 'Встраиваемый прячется за фасадом, отдельностоящий остаётся на виду.', opts: ['Встраиваемый', 'Отдельностоящий', 'Ещё не решил(а)'] },
@@ -201,7 +201,7 @@ class Component extends DCLogic {
     { key: 'oven', title: 'Где вы хотите разместить духовой шкаф?', hint: 'В высоком пенале духовка на уровне рук, под варочной панелью — компактнее и дешевле.', opts: ['В пенале', 'Под варочной панелью', 'Ещё не решил(а)'] },
   ];
   KEYS = ['bought', 'fridge', 'dishwasher', 'microwave', 'oven'];
-  K = 5; LAST = 10; OTHER_ITEM = 9; OTHER_STAGE = 6;
+  K = 5; LAST = 9; OTHER_ITEM = 9; OTHER_STAGE = 6;
   state = { ready: false, w: 1280, step: 1, items: [], itemsOther: '', stage: -1, stageOther: '', plan: -1, name: '', phone: '', comment: '', consent: false, site: '',
     kitchen: [-1, -1, -1, -1, -1], skipped: false, files: [], stepErr: '', errs: {}, sendErr: '', sending: false, sendLabel: '', over: false, result: null };
   formRef = React.createRef(); titleRef = React.createRef(); nameRef = React.createRef(); phoneRef = React.createRef(); doneRef = React.createRef();
@@ -276,7 +276,7 @@ class Component extends DCLogic {
       if (s.stage === this.OTHER_STAGE && !s.stageOther.trim()) { this.stageOtherRef.current && this.stageOtherRef.current.focus(); return this.err('Опишите свой вариант.'); }
     }
     if (n === 3 && s.plan < 0) return this.err('Выберите один из вариантов.');
-    if (n === 5) {
+    if (n === 4) {
       const errs = { name: s.name.trim().length < 2, phone: !this.phoneOk(s.phone), consent: !s.consent };
       this.setState({ errs });
       if (errs.name) { this.nameRef.current && this.nameRef.current.focus(); return false; }
@@ -350,8 +350,7 @@ class Component extends DCLogic {
       opts: this.STAGES.map((t, i) => opt(t, s.stage === i, false, () => this.set({ stage: i, stepErr: '' }, () => { if (i === this.OTHER_STAGE) setTimeout(() => this.stageOtherRef.current && this.stageOtherRef.current.focus({ preventScroll: true }), 30); }))) };
     if (step === 8) q = { title: 'Есть ли уже план помещения или дизайн-проект?', hint: 'Выберите один вариант.', hasOpts: true, groupRole: 'radiogroup',
       opts: this.PLANS.map((t, i) => opt(t, s.plan === i, false, () => this.set({ plan: i, stepErr: '' }))) };
-    if (step === 9) q = { title: 'Прикрепите план, чертёж или фотографии', hint: 'Фотографии плана помещения, размеры, снимки комнат и референсы: в каком стиле вам хочется мебель. Этот шаг можно пропустить.', hasOpts: false, opts: [], groupRole: 'group' };
-    if (step === 10) q = { title: 'Как с вами связаться?', hint: 'Дизайнер позвонит вам, уточнит детали и расскажет, что можно сделать.', hasOpts: false, opts: [], groupRole: 'group' };
+    if (step === 9) q = { title: 'Как с вами связаться?', hint: 'Дизайнер позвонит вам, уточнит детали и расскажет, что можно сделать.', hasOpts: false, opts: [], groupRole: 'group' };
 
     const last = step === this.LAST;
     const first = (s.name.trim().split(/\s+/)[0] || '');
@@ -361,10 +360,10 @@ class Component extends DCLogic {
       demo: s.ready && !configured, cols: s.w > 1000 ? 'minmax(0,1fr) 340px' : 'minmax(0,1fr)', sidePos: s.w > 1000 ? 'sticky' : 'static',
       showQuiz: !s.result, showDone: !!s.result, showSide: !s.result,
       formRef: this.formRef, titleRef: this.titleRef, nameRef: this.nameRef, phoneRef: this.phoneRef, doneRef: this.doneRef, itemsOtherRef: this.itemsOtherRef, stageOtherRef: this.stageOtherRef,
-      step, stepName: this.TITLES[step], bar: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (i <= step ? 1 : 0)), q, showSkip: step <= this.K, skipKitchen: () => this.set({ kitchen: [-1, -1, -1, -1, -1], skipped: true, stepErr: '' }, () => this.go(this.K + 1)), optCols: step === 6 && s.w > 640 ? 'repeat(2, minmax(0,1fr))' : 'minmax(0,1fr)',
+      step, stepName: this.TITLES[step], bar: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (i <= step ? 1 : 0)), q, showSkip: step <= this.K, skipKitchen: () => this.set({ kitchen: [-1, -1, -1, -1, -1], skipped: true, stepErr: '' }, () => this.go(this.K + 1)), optCols: step === 6 && s.w > 640 ? 'repeat(2, minmax(0,1fr))' : 'minmax(0,1fr)',
       showItemsOther: step === 6 && s.items.includes(this.OTHER_ITEM), itemsOther: s.itemsOther, onItemsOther: (e) => this.set({ itemsOther: e.target.value }),
       showStageOther: step === 7 && s.stage === this.OTHER_STAGE, stageOther: s.stageOther, onStageOther: (e) => this.set({ stageOther: e.target.value }),
-      isFiles: step === 9, isContacts: step === 10,
+      isFiles: false, isContacts: step === 9,
       dropBd: s.over ? '#1A1714' : '#B5ACA1', dropBg: s.over ? '#fff' : '#F7F4EF',
       dragOn: (e) => { e.preventDefault(); if (!s.over) this.setState({ over: true }); }, dragOff: (e) => { e.preventDefault(); this.setState({ over: false }); },
       onDrop: (e) => { e.preventDefault(); this.setState({ over: false }); if (e.dataTransfer && e.dataTransfer.files) this.addFiles(e.dataTransfer.files); },
@@ -380,7 +379,7 @@ class Component extends DCLogic {
       consentSh: s.errs.consent ? '0 0 0 4px rgba(163,58,40,.15)' : 'none', eConsent: !!s.errs.consent,
       stepErr: s.stepErr, canBack: step > 1, back: () => this.go(step - 1), sending: s.sending,
       submit: (e) => this.submit(e),
-      nextLabel: s.sending ? s.sendLabel : (last ? 'Отправить заявку' : (step === 9 && !s.files.length ? 'Пропустить' : 'Далее')),
+      nextLabel: s.sending ? s.sendLabel : (last ? 'Отправить заявку' : 'Далее'),
       nextBg: last ? '#B98D5E' : '#1A1714', nextFg: last ? '#14120F' : '#FBFAF7',
       doneTitle: sent ? 'Спасибо' + (first ? ', ' + first : '') + '! Заявка отправлена' : 'Заявка с этого устройства уже отправлена',
       doneP1: sent ? 'Дизайнер свяжется с вами по номеру ' : 'Повторно пройти опрос нельзя: дизайнер уже получил ваши ответы и свяжется с вами по указанному номеру.',
