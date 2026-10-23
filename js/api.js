@@ -223,7 +223,8 @@ const Api = (() => {
     }
   }
 
-  /* lead: { items[], itemsOther, stage, plan, name, phone, comment, files: File[] }, onProgress(done,total) */
+  const KITCHEN_LABELS = [['bought', 'Техника куплена'], ['fridge', 'Холодильник'], ['dishwasher', 'Посудомоечная машина'], ['microwave', 'Микроволновая печь'], ['oven', 'Духовой шкаф']];
+  /* lead: { kitchen{}, items[], itemsOther, stage, plan, name, phone, comment, files: File[] }, onProgress(done,total) */
   async function submitLead(lead, onProgress) {
     const id = uuid();
     if (await leadSentLocal()) { const d = new Error('duplicate'); d.code = 'duplicate'; throw d; }
@@ -232,6 +233,7 @@ const Api = (() => {
       name: String(lead.name || '').trim(), phone: String(lead.phone || '').trim(),
       comment: String(lead.comment || '').trim() || null, files: [],
     };
+    if (lead.kitchen && Object.keys(lead.kitchen).length) payload.kitchen = lead.kitchen;
     if (!configured) {
       payload.created_at = new Date().toISOString(); payload.status = 'new';
       payload.files = (lead.files || []).map((f) => ({ name: f.name, size: f.size, type: f.type }));
@@ -252,12 +254,24 @@ const Api = (() => {
     }
     const [dev, fp] = await Promise.all([deviceId(), fingerprint()]);
     const send = (body) => rest('/rest/v1/leads', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(body) });
+    const colErr = (e) => e.status === 400 && /device_id|\bfp\b|kitchen|column|PGRST204/i.test((e.message || '') + (e.code || ''));
+    /* ответы про технику лежат в колонке kitchen (supabase/kitchen.sql); если колонки ещё нет — кладём их текстом в комментарий */
+    const kText = lead.kitchen ? KITCHEN_LABELS.filter(([k]) => lead.kitchen[k]).map(([k, t]) => t + ': ' + lead.kitchen[k]).join('\n') : '';
+    const noKitchen = Object.assign({}, payload); delete noKitchen.kitchen;
+    if (kText) noKitchen.comment = ('Кухонная техника\n' + kText + (payload.comment ? '\n\n' + payload.comment : '')).slice(0, 2000);
     try {
-      try { await send(Object.assign({}, payload, { device_id: dev, fp })); }
-      catch (e) {
-        /* таблица ещё без колонок device_id/fp (не выполнен supabase/support_and_once.sql) — шлём как раньше */
-        if (e.status === 400 && /device_id|\bfp\b|column|PGRST204/i.test((e.message || '') + (e.code || ''))) await send(payload); else throw e;
+      const attempts = [
+        Object.assign({}, payload, { device_id: dev, fp }),
+        Object.assign({}, noKitchen, { device_id: dev, fp }),
+        noKitchen,
+      ];
+      let done = false, last = null;
+      for (let i = 0; i < attempts.length && !done; i++) {
+        if (i === 0 && !payload.kitchen) continue;
+        try { await send(attempts[i]); done = true; }
+        catch (e) { last = e; if (!colErr(e)) throw e; }
       }
+      if (!done) throw last;
     } catch (e) {
       if (e.status === 409 || e.code === '23505') { markLeadSent(); const d = new Error('duplicate'); d.code = 'duplicate'; throw d; }
       if (/too many|flood/i.test(e.message)) throw new Error('Сейчас очень много заявок. Попробуйте через несколько минут.');
