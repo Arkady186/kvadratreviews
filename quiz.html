@@ -189,7 +189,7 @@ class Component extends DCLogic {
       opts: this.STAGES.map((t, i) => opt(t, s.stage === i, false, () => this.set({ stage: i, stepErr: '' }, () => { if (i === this.OTHER_STAGE) setTimeout(() => this.stageOtherRef.current && this.stageOtherRef.current.focus({ preventScroll: true }), 30); }))) };
     if (step === 8) q = { title: 'Есть ли уже план помещения или дизайн-проект?', hint: 'Выберите один вариант.', hasOpts: true, groupRole: 'radiogroup',
       opts: this.PLANS.map((t, i) => opt(t, s.plan === i, false, () => this.set({ plan: i, stepErr: '' }))) };
-    if (step === 9) q = { title: 'Как с вами связаться?', hint: 'Дизайнер позвонит вам, уточнит детали и расскажет, что можно сделать.', hasOpts: false, opts: [], groupRole: 'group' };
+    if (step === 9) q = { title: 'Как с вами связаться?', hint: 'Дизайнер позвонит вам, уточнит детали и создаст проект вашей мебели.', hasOpts: false, opts: [], groupRole: 'group' };
 
     const last = step === this.LAST;
     const first = (s.name.trim().split(/\s+/)[0] || '');
