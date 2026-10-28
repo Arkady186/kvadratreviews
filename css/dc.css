@@ -1,47 +1,49 @@
 .dc1:hover{background-size:100% 1px !important}
 .dc2:hover{background-size:100% 1px !important}
 .dc3:hover{background-size:100% 1px !important}
-.dc4:hover{background:#B98D5E !important;border-color:#B98D5E !important;color:#14120F !important}
-.dc5:hover{color:#C9A074 !important}
+.dc4:hover{background-size:100% 1px !important}
+.dc5:hover{background:#B98D5E !important;border-color:#B98D5E !important;color:#14120F !important}
 .dc6:hover{color:#C9A074 !important}
 .dc7:hover{color:#C9A074 !important}
 .dc8:hover{color:#C9A074 !important}
-.dc9:hover{border-color:#C9A074 !important;color:#FBFAF7 !important;background:rgba(201,160,116,.1) !important}
-.dc10:hover{background:#F0ECE5 !important}
-.dc11:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
-.dc12:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
-.dc13:hover{background:#3A332C !important}
-.dc14:hover{gap:20px !important;background:#E2C7A2 !important;color:#14120F !important}
-.dc15:hover{background:rgba(251,250,247,.12) !important;border-color:#FBFAF7 !important;color:#FBFAF7 !important}
-.dc16:hover{transform:scale(1.06) !important}
-.dc17:hover{gap:20px !important;background:#3A332C !important;color:#FBFAF7 !important}
-.dc18:hover{padding-left:clamp(0px,1.6vw,24px) !important;color:#FBFAF7 !important}
-.dc19:hover{gap:20px !important;background:#FBFAF7 !important;color:#14120F !important}
-.dc20:hover{border-color:#FBFAF7 !important;background:rgba(251,250,247,.06) !important;color:#FBFAF7 !important}
-.dc21:hover{background:#E2C7A2 !important;border-color:#E2C7A2 !important;color:#14120F !important}
-.dc22:hover{background:#E2C7A2 !important;border-color:#E2C7A2 !important;color:#14120F !important}
-.dc23:hover{gap:20px !important;background:#FBFAF7 !important;color:#14120F !important}
-.dc24:hover{border-color:#1A1714 !important}
-.dc25:hover{transform:scale(1.045) !important;filter:brightness(1.04) !important}
-.dc26:hover{background:#FBFAF7 !important;color:#14120F !important}
-.dc27:hover{background:#FBFAF7 !important;color:#14120F !important}
+.dc9:hover{color:#C9A074 !important}
+.dc10:hover{color:#C9A074 !important}
+.dc11:hover{border-color:#C9A074 !important;color:#FBFAF7 !important;background:rgba(201,160,116,.1) !important}
+.dc12:hover{background:#F0ECE5 !important}
+.dc13:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc14:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc15:hover{background:#3A332C !important}
+.dc16:hover{gap:20px !important;background:#E2C7A2 !important;color:#14120F !important}
+.dc17:hover{background:rgba(251,250,247,.12) !important;border-color:#FBFAF7 !important;color:#FBFAF7 !important}
+.dc18:hover{transform:scale(1.06) !important}
+.dc19:hover{gap:20px !important;background:#3A332C !important;color:#FBFAF7 !important}
+.dc20:hover{padding-left:clamp(0px,1.6vw,24px) !important;color:#FBFAF7 !important}
+.dc21:hover{gap:20px !important;background:#FBFAF7 !important;color:#14120F !important}
+.dc22:hover{border-color:#FBFAF7 !important;background:rgba(251,250,247,.06) !important;color:#FBFAF7 !important}
+.dc23:hover{background:#E2C7A2 !important;border-color:#E2C7A2 !important;color:#14120F !important}
+.dc24:hover{background:#E2C7A2 !important;border-color:#E2C7A2 !important;color:#14120F !important}
+.dc25:hover{gap:20px !important;background:#FBFAF7 !important;color:#14120F !important}
+.dc26:hover{border-color:#1A1714 !important}
+.dc27:hover{transform:scale(1.045) !important;filter:brightness(1.04) !important}
 .dc28:hover{background:#FBFAF7 !important;color:#14120F !important}
-.dc29:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
-.dc30:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc29:hover{background:#FBFAF7 !important;color:#14120F !important}
+.dc30:hover{background:#FBFAF7 !important;color:#14120F !important}
 .dc31:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
-.dc32:hover{background:#3A332C !important;gap:18px !important}
-.dc33:hover{gap:18px !important;background:#3A332C !important;color:#FBFAF7 !important}
-.dc34:hover{border-color:#1A1714 !important}
-.dc35:hover{border-color:#1A1714 !important;background:#fff !important}
-.dc36:hover{color:#1A1714 !important;border-color:#1A1714 !important}
-.dc37:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
-.dc38:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
-.dc39:hover{border-color:#1A1714 !important;background:#fff !important}
-.dc40:hover{background:#1A1714 !important;color:#FBFAF7 !important;border-color:#1A1714 !important}
-.dc41:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
-.dc42:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc32:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc33:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc34:hover{background:#3A332C !important;gap:18px !important}
+.dc35:hover{gap:18px !important;background:#3A332C !important;color:#FBFAF7 !important}
+.dc36:hover{border-color:#1A1714 !important}
+.dc37:hover{border-color:#1A1714 !important;background:#fff !important}
+.dc38:hover{color:#1A1714 !important;border-color:#1A1714 !important}
+.dc39:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc40:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc41:hover{border-color:#1A1714 !important;background:#fff !important}
+.dc42:hover{background:#1A1714 !important;color:#FBFAF7 !important;border-color:#1A1714 !important}
 .dc43:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
-.dc44:hover{border-color:#1A1714 !important}
-.dc45:hover{gap:18px !important}
-.dc46:hover{gap:18px !important;color:#FBFAF7 !important}
-.dc47:hover{border-color:#1A1714 !important}
+.dc44:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc45:focus{border-color:#1A1714 !important;box-shadow:0 0 0 4px rgba(185,141,94,.2) !important}
+.dc46:hover{border-color:#1A1714 !important}
+.dc47:hover{gap:18px !important}
+.dc48:hover{gap:18px !important;color:#FBFAF7 !important}
+.dc49:hover{border-color:#1A1714 !important}

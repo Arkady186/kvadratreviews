@@ -9,8 +9,8 @@ import re, sys, json, os
 
 SRC, OUT = sys.argv[1], sys.argv[2]
 VOID = {'img', 'input', 'br', 'hr', 'meta', 'link', 'source', 'wbr'}
-PAGES = {'Home': 'index.html', 'Works': 'works.html', 'Reviews': 'reviews.html', 'Quiz': 'quiz.html'}
-LINKS = {'Home.dc.html': 'index.html', 'Works.dc.html': 'works.html', 'Reviews.dc.html': 'reviews.html', 'Quiz.dc.html': 'quiz.html'}
+PAGES = {'Home': 'index.html', 'Works': 'works.html', 'Reviews': 'reviews.html', 'Quiz': 'quiz.html', 'Guide': 'guide.html'}
+LINKS = {'Home.dc.html': 'index.html', 'Works.dc.html': 'works.html', 'Reviews.dc.html': 'reviews.html', 'Quiz.dc.html': 'quiz.html', 'Guide.dc.html': 'guide.html'}
 uid = [0]
 css_rules = []
 

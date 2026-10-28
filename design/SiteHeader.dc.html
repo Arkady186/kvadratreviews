@@ -16,6 +16,7 @@
       <nav aria-label="Основное меню" style="display:flex;align-items:center;gap:clamp(20px,2.6vw,40px);margin-left:auto">
         <a href="Works.dc.html" aria-current="{{ curWorks }}" style="color:{{ fg }};text-decoration:none;font:500 14.5px/1 Manrope, sans-serif;letter-spacing:.01em;padding:10px 0;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:{{ uWorks }};transition:background-size .45s cubic-bezier(.2,.8,.2,1), color .4s" style-hover="background-size:100% 1px">Наши работы</a>
         <a href="Reviews.dc.html" aria-current="{{ curReviews }}" style="color:{{ fg }};text-decoration:none;font:500 14.5px/1 Manrope, sans-serif;letter-spacing:.01em;padding:10px 0;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:{{ uReviews }};transition:background-size .45s cubic-bezier(.2,.8,.2,1), color .4s" style-hover="background-size:100% 1px">Отзывы</a>
+        <a href="Guide.dc.html" aria-current="{{ curGuide }}" style="color:{{ fg }};text-decoration:none;font:500 14.5px/1 Manrope, sans-serif;letter-spacing:.01em;padding:10px 0;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:{{ uGuide }};transition:background-size .45s cubic-bezier(.2,.8,.2,1), color .4s" style-hover="background-size:100% 1px">Гид по материалам</a>
         <a href="Quiz.dc.html" aria-current="{{ curQuiz }}" style="color:{{ fg }};text-decoration:none;font:500 14.5px/1 Manrope, sans-serif;letter-spacing:.01em;padding:10px 0;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:{{ uQuiz }};transition:background-size .45s cubic-bezier(.2,.8,.2,1), color .4s" style-hover="background-size:100% 1px">Дизайн-проект</a>
         <sc-if value="{{ phone }}" hint-placeholder-val="{{ false }}">
           <a href="{{ phoneHref }}" style="color:{{ fg }};text-decoration:none;font:600 14.5px/1 Manrope, sans-serif;font-variant-numeric:tabular-nums">{{ phone }}</a>
@@ -33,6 +34,7 @@
     <nav aria-label="Мобильное меню" style="background:#F4F1EC;border-top:1px solid #E2DCD3;padding:8px clamp(20px,4vw,56px) 28px;display:flex;flex-direction:column;box-shadow:0 30px 60px -30px rgba(20,18,15,.35)">
       <a href="Works.dc.html" style="padding:18px 0;border-bottom:1px solid #E2DCD3;color:#1A1714;text-decoration:none;font:300 26px/1.1 'Noto Serif Display', serif">Наши работы</a>
       <a href="Reviews.dc.html" style="padding:18px 0;border-bottom:1px solid #E2DCD3;color:#1A1714;text-decoration:none;font:300 26px/1.1 'Noto Serif Display', serif">Отзывы</a>
+      <a href="Guide.dc.html" style="padding:18px 0;border-bottom:1px solid #E2DCD3;color:#1A1714;text-decoration:none;font:300 26px/1.1 'Noto Serif Display', serif">Гид по материалам</a>
       <a href="Quiz.dc.html" style="padding:18px 0;border-bottom:1px solid #E2DCD3;color:#1A1714;text-decoration:none;font:300 26px/1.1 'Noto Serif Display', serif">Дизайн-проект</a>
       <sc-if value="{{ phone }}" hint-placeholder-val="{{ false }}">
         <a href="{{ phoneHref }}" style="padding:18px 0;border-bottom:1px solid #E2DCD3;color:#1A1714;text-decoration:none;font:600 16px Manrope, sans-serif">{{ phone }}</a>
@@ -74,8 +76,8 @@ class Component extends DCLogic {
       fg: overHero ? '#FBFAF7' : '#1A1714',
       ctaBorder: overHero ? 'rgba(251,250,247,.5)' : 'rgba(26,23,20,.28)',
       logo: ((u) => (window.__resources && window.__resources[u]) || u)(overHero ? 'img/logo-light.svg' : 'img/logo.svg'),
-      uWorks: u('works'), uReviews: u('reviews'), uQuiz: u('quiz'),
-      curWorks: active === 'works' ? 'page' : undefined, curReviews: active === 'reviews' ? 'page' : undefined, curQuiz: active === 'quiz' ? 'page' : undefined,
+      uWorks: u('works'), uReviews: u('reviews'), uQuiz: u('quiz'), uGuide: u('guide'),
+      curWorks: active === 'works' ? 'page' : undefined, curReviews: active === 'reviews' ? 'page' : undefined, curQuiz: active === 'quiz' ? 'page' : undefined, curGuide: active === 'guide' ? 'page' : undefined,
       phone, phoneHref: 'tel:' + phone.replace(/[^+\d]/g, ''),
       burgerPath: this.state.open ? 'M2 1l14 10M2 11L16 1' : 'M0 1h18M0 6h18M0 11h18',
       toggle: () => this.setState((s) => ({ open: !s.open })),
