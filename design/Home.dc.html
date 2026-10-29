@@ -21,6 +21,8 @@
     a { color: inherit; } a:hover { color: #8C6239; }
     ::selection { background: #C9A074; color: #14120F; }
     :focus-visible { outline: 2px solid #B98D5E; outline-offset: 3px; }
+    .h-hero-grid { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); }
+    @media (max-width: 900px) { .h-hero-grid { grid-template-columns: minmax(0, 1fr); } }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
   </style>
 </helmet>
@@ -28,7 +30,7 @@
 <dc-import name="SiteHeader" active="home" tone="dark" hint-size="100%,0px"></dc-import>
 
 <main>
-  <section data-screen-label="01 Hero" style="position:relative;min-height:max(680px,100svh);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;background:#14120F;color:#FBFAF7">
+  <section data-screen-label="01 Hero" style="position:relative;min-height:max(680px,100vh);min-height:max(680px,100svh);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;background:#14120F;color:#FBFAF7">
     <div aria-hidden="true" style="position:absolute;inset:0;z-index:-2">
       <sc-for list="{{ slides }}" as="s" hint-placeholder-count="0">
         <div style="position:absolute;inset:0;opacity:{{ s.op }};transition:opacity 1.8s ease">
@@ -39,12 +41,12 @@
     <div aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg, rgba(20,18,15,.62) 0%, rgba(20,18,15,.18) 32%, rgba(20,18,15,.35) 58%, rgba(20,18,15,.92) 100%), linear-gradient(90deg, rgba(20,18,15,.55) 0%, rgba(20,18,15,0) 60%)"></div>
 
     <div style="width:100%;max-width:1440px;margin:0 auto;padding:140px clamp(20px,4vw,56px) 0;box-sizing:border-box">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:40px clamp(32px,5vw,96px);align-items:end">
+      <div class="h-hero-grid" style="display:grid;gap:40px clamp(32px,5vw,96px);align-items:end">
         <div>
           <div data-hero-fade="0" style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#E2C7A2;margin-bottom:clamp(22px,3vh,34px)">
             <span style="width:36px;height:1px;background:currentColor"></span>Мебель на заказ
           </div>
-          <h1 style="margin:0;font:300 clamp(3.1rem,7.2vw,7.8rem)/.94 'Noto Serif Display', serif;letter-spacing:-.035em">
+          <h1 style="margin:0;font:300 clamp(2.6rem,5.4vw,5.8rem)/.96 'Noto Serif Display', serif;letter-spacing:-.03em">
             <span style="display:block;overflow:hidden;padding:.02em .2em .1em 0;margin:0 -.2em -.1em 0"><span data-line="0" style="display:block">Мебель,</span></span>
             <span style="display:block;overflow:hidden;padding:.02em .2em .1em 0;margin:0 -.2em -.1em 0"><span data-line="1" style="display:block">созданная</span></span>
             <span style="display:block;overflow:hidden;padding:.02em .2em .1em 0;margin-right:-.2em"><span data-line="2" style="display:block">для вашего <em style="font-style:italic;color:#E2C7A2">дома</em></span></span>

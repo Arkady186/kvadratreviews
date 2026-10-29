@@ -229,10 +229,20 @@ os.makedirs(os.path.join(OUT, 'css'), exist_ok=True)
 open(os.path.join(OUT, 'js', 'dc-site.js'), 'w', encoding='utf-8').write(site_js)
 open(os.path.join(OUT, 'css', 'dc.css'), 'w', encoding='utf-8').write('\n'.join(css_rules) + '\n')
 
+MOBILE_CSS = (
+    'html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}'
+    'a,button,[role=button],label,input,select,textarea,summary{touch-action:manipulation}'
+    'button,input,textarea,select{-webkit-appearance:none;appearance:none;border-radius:0}'
+    'input[type=checkbox],input[type=radio]{-webkit-appearance:auto;appearance:auto}'
+    'img{-webkit-touch-callout:none}'
+    'header{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}'
+    'footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))!important}'
+    '@media(pointer:coarse),(max-width:820px){input,textarea,select{font-size:16px!important}}'
+)
 for out, (js, helm) in pages.items():
     name = [k for k, v in PAGES.items() if v == out][0]
-    html = '<!DOCTYPE html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n' \
-        + helm + '\n<link rel="stylesheet" href="css/dc.css">\n</head>\n<body>\n' \
+    html = '<!DOCTYPE html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' \
+        + helm + '\n<link rel="stylesheet" href="css/dc.css">\n<style>' + MOBILE_CSS + '</style>\n</head>\n<body>\n' \
         + '<div data-dc="%s" style="display:contents"></div>\n' % name \
         + '<noscript><p style="padding:40px;font:16px sans-serif">Для работы сайта нужен включённый JavaScript.</p></noscript>\n' \
         + '<script src="js/dc.js"></script>\n<script src="js/dc-site.js"></script>\n<script>\n' + js + '\nDC.start();\n</script>\n</body>\n</html>\n'
