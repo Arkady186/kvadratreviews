@@ -3,3 +3,7 @@ photos/
 _originals/
 __pycache__/
 *.log
+_pdf/
+_t3d.html
+_tk.html
+.taste-skill/

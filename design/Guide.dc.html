@@ -43,6 +43,18 @@
     .g-btn--d { background:#1A1714;color:#FBFAF7;border-color:#1A1714 } .g-btn--d:hover { background:#8C6239;border-color:#8C6239 }
     .g-herophoto { aspect-ratio: 4/5; border-radius: 200px 200px 24px 24px; overflow: hidden; background:#E8E1D6 }
     .g-herophoto img { width:100%;height:100%;object-fit:cover;display:block }
+    .g-3dbox { position:relative; background:#E6DFD3 }
+    .g-3d { position:absolute; inset:0 0 70px 0; opacity:0; transition:opacity 1s ease }
+    .g-3dbox.is-3d .g-3d { opacity:1 } .g-3dbox.is-3d .g-3dfb { opacity:0 } .g-3dfb { transition:opacity .8s ease }
+    .g-3dcap { position:absolute; left:24px; right:24px; bottom:22px; display:none; flex-direction:column; gap:4px; text-align:center }
+    .g-3dbox.is-3d .g-3dcap { display:flex }
+    .g-3dcap b { font:300 clamp(1.5rem,2.2vw,2rem)/1.1 'Noto Serif Display','Bitstream Charter',serif; letter-spacing:-.02em; color:#1A1714 }
+    .g-3dcap span { font:500 14px/1.4 Manrope, Inter, sans-serif; color:#6B635A }
+    .g-3dhint { position:absolute; top:22%; right:18px; display:none; font:500 12px Manrope, Inter, sans-serif; color:#8A8177; writing-mode:vertical-rl; letter-spacing:.06em }
+    .g-3dbox.is-3d .g-3dhint { display:block }
+    [data-tilt] { transform-style:preserve-3d; transition:transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease; will-change:transform }
+    [data-tilt].is-tilt { box-shadow:0 30px 60px -36px rgba(26,23,20,.45) }
+    .g-tier { transition:transform .5s cubic-bezier(.2,.8,.2,1) }
     .g-toc { display:flex;flex-wrap:wrap;gap:10px;margin-top:40px }
     .g-toc a { display:inline-flex;gap:10px;align-items:center;padding:12px 20px;border-radius:999px;border:1px solid #DCD5CA;background:#FBFAF7;text-decoration:none;font:600 14px Manrope, Inter, sans-serif;transition:all .3s }
     .g-toc a:hover { background:#1A1714;color:#FBFAF7;border-color:#1A1714 } .g-toc b { color:#B98D5E;font:italic 300 16px 'Noto Serif Display','Bitstream Charter',serif }
@@ -85,7 +97,7 @@
     @page { size: A4; margin: 10mm }
     @media print {
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      [data-dc="SiteHeader"], [data-dc="SiteFooter"], .g-btns, .g-toc, .g-cta .g-btn { display: none !important; }
+      [data-dc="SiteHeader"], [data-dc="SiteFooter"], .g-btns, .g-toc, .g-cta .g-btn, .g-3d, .g-3dcap, .g-3dhint { display: none !important; } .g-3dfb { opacity: 1 !important; }
       body { background: #F4F1EC; } .g-hero { padding-top: 24px; } .g-sech { margin-top: 36px; page-break-after: avoid; }
       .g-card, .g-mini, .g-note, .g-banner { page-break-inside: avoid; break-inside: avoid; }
       .g-hero-in { grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); gap: 28px; } .g-herophoto { aspect-ratio: 4/4.6; max-width: none; border-radius: 160px 160px 20px 20px; }
@@ -114,14 +126,19 @@
             <a href="#facades"><b>01</b>Фасады</a><a href="#korpusa"><b>02</b>Корпуса</a><a href="#stoleshnitsy"><b>03</b>Столешницы</a><a href="#furnitura"><b>04</b>Фурнитура</a><a href="#price"><b>05</b>По цене</a><a href="#rooms"><b>06</b>По помещениям</a>
           </nav>
         </div>
-        <div class="g-herophoto" data-in="1"><img src="img/works/kuhni/kuhni-024-f7e64c.webp" alt="Кухня ASD" loading="eager"></img></div>
+        <div class="g-herophoto g-3dbox" data-in="1">
+          <img class="g-3dfb" src="img/works/kuhni/kuhni-024-f7e64c.webp" alt="Кухня ASD" loading="eager"></img>
+          <div id="g3d" class="g-3d" aria-hidden="false"></div>
+          <div class="g-3dcap" aria-live="polite"><b id="g3d-name">Образцы фасадов</b><span id="g3d-note">наведите или нажмите на образец</span></div>
+          <div class="g-3dhint">Потяните, чтобы повернуть</div>
+        </div>
       </div>
     </div>
   </section>
 
   <div class="g-wrap">
 <div class="g-sech" id="facades" data-in="1"><span class="g-secno">01</span><div><h2 class="g-h2">Фасады</h2><p class="g-lead">Фасады видно сразу, они определяют внешний вид мебели и то, как она переживёт ежедневное использование.</p></div></div>
-<article class="g-card" data-in="1">
+<article class="g-card" id="m-ldsp" data-in="1" data-tilt="1">
   <div class="g-ph"><img src="img/works/shkafy/shkafy-149-b2c536.webp" alt="Шкаф с фасадами из ЛДСП" loading="lazy"></img><span class="g-no">01</span></div>
   <div class="g-info">
     <h3 class="g-h3">ЛДСП</h3><div class="g-sub">ламинированная плита</div>
@@ -131,7 +148,7 @@
     <div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Форма только плоская, без фрезеровки</li><li>Торцы закрыты кромкой — на стыках её видно</li><li>Боится воды на срезах</li></ul>
   </div>
 </article>
-<article class="g-card g-flip" data-in="1">
+<article class="g-card g-flip" id="m-plenka" data-in="1" data-tilt="1">
   <div class="g-ph"><img src="img/works/kuhni/kuhni-016-b5268e.webp" alt="Кухня с рамочными фасадами из МДФ" loading="lazy"></img><span class="g-no">02</span></div>
   <div class="g-info">
     <h3 class="g-h3">Плёнка ПВХ</h3><div class="g-sub">вакуумное прессование</div>
@@ -141,7 +158,7 @@
     <div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Подходит для кухни не в каждом случае: не любит жар у плиты и духовки</li><li>Цвет может выгорать на солнце</li><li>Повреждённое место сложно отремонтировать</li></ul>
   </div>
 </article>
-<article class="g-card" data-in="1">
+<article class="g-card" id="m-hpl" data-in="1" data-tilt="1">
   <div class="g-ph"><img src="img/works/sanuzly/sanuzly-009-32ee6f.webp" alt="Тумба в санузле с фасадами из пластика" loading="lazy"></img><span class="g-no">03</span></div>
   <div class="g-info">
     <h3 class="g-h3">Пластик HPL</h3><div class="g-sub">слоистый пластик высокого давления</div>
@@ -151,7 +168,7 @@
     <div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Форма фасада проще: в основном плоские</li><li>На торцах бывает заметна кромка</li><li>Дороже плёнки ПВХ</li></ul>
   </div>
 </article>
-<article class="g-card g-flip" data-in="1">
+<article class="g-card g-flip" id="m-emal" data-in="1" data-tilt="1">
   <div class="g-ph"><img src="img/works/kuhni/kuhni-026-364306.webp" alt="Кухня с эмалированными фасадами" loading="lazy"></img><span class="g-no">04</span></div>
   <div class="g-info">
     <h3 class="g-h3">Эмаль</h3><div class="g-sub">краска + лак</div>
@@ -161,7 +178,7 @@
     <div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Боится сильных ударов — скол придётся красить заново</li><li>Дороже плёнки</li><li>Дольше делается: каждый слой сушится</li></ul>
   </div>
 </article>
-<article class="g-card" data-in="1">
+<article class="g-card" id="m-massiv" data-in="1" data-tilt="1">
   <div class="g-ph"><img src="img/works/kuhni/kuhni-001-81dcf6.webp" alt="Кухня из массива в классическом стиле" loading="lazy"></img><span class="g-no">05</span></div>
   <div class="g-info">
     <h3 class="g-h3">Массив дерева</h3><div class="g-sub">дуб, ясень, бук и другие породы</div>
@@ -172,8 +189,8 @@
   </div>
 </article>
 <div class="g-sech" id="korpusa" data-in="1"><span class="g-secno">02</span><div><h2 class="g-h2">Корпуса</h2><p class="g-lead">Основа любой мебели — корпус: он держит нагрузку, а ошибки в нём заметны не сразу.</p></div></div>
-<article class="g-card g-flip" data-in="1">
-  <div class="g-ph"><img src="img/works/kuhni/kuhni-065-d2ff43.webp" alt="Внутреннее наполнение кухонного корпуса" loading="lazy"></img><span class="g-no">01</span></div>
+<article class="g-card g-flip" data-in="1" data-tilt="1">
+  <div class="g-ph"><img src="img/works/shkafy/shkafy-041-68e668.webp" alt="Внутреннее наполнение кухонного корпуса" loading="lazy"></img><span class="g-no">01</span></div>
   <div class="g-info">
     <h3 class="g-h3">ЛДСП</h3><div class="g-sub">древесная плита с ламинированным покрытием</div>
     <div class="g-rule"></div>
@@ -182,8 +199,8 @@
     <div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Боится воды на срезах без кромки</li><li>Не подлежит перекрашиванию</li><li>Тяжёлые нагрузки требуют правильной конструкции</li></ul>
   </div>
 </article>
-<article class="g-card" data-in="1">
-  <div class="g-ph"><img src="img/works/kuhni/kuhni-066-c90ced.webp" alt="Выдвижной ящик с лотком для приборов" loading="lazy"></img><span class="g-no">02</span></div>
+<article class="g-card" data-in="1" data-tilt="1">
+  <div class="g-ph"><img src="img/works/shkafy/shkafy-094-59835d.webp" alt="Выдвижной ящик с лотком для приборов" loading="lazy"></img><span class="g-no">02</span></div>
   <div class="g-info">
     <h3 class="g-h3">Кромка</h3><div class="g-sub">защита торцов плиты</div>
     <div class="g-rule"></div>
@@ -196,7 +213,6 @@
 <!-- TODO ASD: заменить сведения о столешницах на наши (материалы, толщины, цены) -->
 <div class="g-banner" data-in="1"><img src="img/works/kuhni/kuhni-072-4a038c.webp" alt="Кухня со столешницей под мрамор" loading="lazy"></img></div>
 <div class="g-grid"><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">ЛДСП</h3><div class=g-sub>ламинированная плита</div><div class="g-rule"></div><div class="g-k">Основа</div><div class="g-v">ЛДСП с закруглённым торцом, толщина обычно 38–40 мм</div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Доступная цена</li><li>Много декоров</li><li>Быстро изготавливается</li></ul><div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Боится воды на стыках и срезах</li><li>Горячее лучше не ставить</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Компакт-плита HPL</h3><div class=g-sub>слоистый пластик</div><div class="g-rule"></div><div class="g-k">Основа</div><div class="g-v">слоистый пластик по всей толщине, 10–12 мм</div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Очень прочная, влагостойкая и ударостойкая</li><li>Не боится бытовой химии</li><li>Тонкая и современная</li></ul><div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Цена выше, чем у ЛДСП</li><li>Торец виден и всегда чёрный — это сам пластик</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Искусственный камень</h3><div class=g-sub>акриловый</div><div class="g-rule"></div><div class="g-k">Основа</div><div class="g-v">акрил и минеральный наполнитель, толщина 12–40 мм</div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Бесшовные стыки</li><li>Мелкие царапины шлифуются</li><li>Мойка может быть встроена заподлицо</li></ul><div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Боится горячих сковород</li><li>Дороже ламинированных столешниц</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Кварцевый агломерат</h3><div class=g-sub>кварц + смола</div><div class="g-rule"></div><div class="g-k">Основа</div><div class="g-v">кварцевый песок до 90–95%, толщина 20–40 мм</div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Очень твёрдый, трудно поцарапать</li><li>Не впитывает жидкости</li><li>Стойкий цвет</li></ul><div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Высокая цена и большой вес</li><li>Не любит резкий жар</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Керамогранит</h3><div class=g-sub>керамическая плита</div><div class="g-rule"></div><div class="g-k">Основа</div><div class="g-v">обожжённая керамика, толщина 12–80 мм</div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Не боится жара и царапин</li><li>Не впитывает жидкости</li><li>Рисунок под мрамор и бетон</li></ul><div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Хрупкая кромка</li><li>Нужен точный монтаж и аккуратная резка</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Натуральный камень</h3><div class=g-sub>гранит, мрамор</div><div class="g-rule"></div><div class="g-k">Основа</div><div class="g-v">природный камень</div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Уникальный рисунок</li><li>Срок службы — десятилетия</li><li>Благородный вид</li></ul><div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Высокая цена</li><li>Мрамор боится кислот, нужна пропитка</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Массив дерева</h3><div class=g-sub>дуб, ясень, ореховое дерево</div><div class="g-rule"></div><div class="g-k">Основа</div><div class="g-v">цельная древесина</div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Тёплый, живой материал</li><li>Можно отшлифовать и обновить</li><li>Подходит для барной стойки и острова</li></ul><div class="g-k">Минусы</div><ul class="g-ul g-mi"><li>Нужен уход: масло или лак</li><li>Боится воды вокруг мойки</li></ul></article></div>
-<aside class="g-note" data-in="1"><div class="g-nl">Важно знать</div><p>Толщина, обработка торца и стык у мойки влияют на срок службы столешницы больше, чем «название» материала. Уточните это в проекте, пока мебель не изготовлена.</p></aside>
 <div class="g-sech" id="furnitura" data-in="1"><span class="g-secno">04</span><div><h2 class="g-h2">Фурнитура</h2><p class="g-lead">Фурнитура — то, чем вы пользуетесь каждый день. Хорошая заметна сразу, плохая — через год.</p></div></div>
 <div class="g-banner g-banner2" data-in="1"><img src="img/works/kuhni/kuhni-076-2e2654.webp" alt="Выдвижные ящики с лотками" loading="lazy"></img></div>
 <div class="g-grid"><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Петли с доводчиком</h3><div class=g-sub>фасады шкафов</div><div class="g-rule"></div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Плавное, тихое закрывание</li><li>Регулировка в трёх направлениях</li><li>Снимаются при мытье и сборке</li></ul><div class="g-k">На что смотреть</div><ul class="g-ul g-mi"><li>Заявленный ресурс в циклах открывания</li><li>Тип крепления и угол открывания</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Выдвижные ящики</h3><div class=g-sub>направляющие скрытого монтажа</div><div class="g-rule"></div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Ровный, плавный ход</li><li>Полное выдвижение: виден весь ящик</li><li>Доводчик в комплекте</li></ul><div class="g-k">На что смотреть</div><ul class="g-ul g-mi"><li>Допустимая нагрузка на ящик</li><li>Ширина и глубина под ваши предметы</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Подъёмные механизмы</h3><div class=g-sub>верхние шкафы</div><div class="g-rule"></div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Фасад поднимается вверх, не мешая работе</li><li>Удобно при ограниченном пространстве</li></ul><div class="g-k">На что смотреть</div><ul class="g-ul g-mi"><li>Подбор по весу фасада</li><li>Плавность хода и фиксация</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Системы хранения</h3><div class=g-sub>лотки, корзины, карусели</div><div class="g-rule"></div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Каждому предмету — своё место</li><li>Использование угла и узких проёмов</li><li>Порядок без лишних поисков</li></ul><div class="g-k">На что смотреть</div><ul class="g-ul g-mi"><li>Размеры под ваш набор посуды</li><li>Материал: нержавеющая сталь или пластик</li></ul></article><article class="g-mini" data-in="1"><h3 class="g-h3 g-h3s">Ручки и профиль</h3><div class=g-sub>способы открывания</div><div class="g-rule"></div><div class="g-k">Плюсы</div><ul class="g-ul g-pl"><li>Накладные ручки — привычно и недорого</li><li>Профиль-ручка — гладкий минималистичный фасад</li><li>Push-to-open — без ручек вообще</li></ul><div class="g-k">На что смотреть</div><ul class="g-ul g-mi"><li>Удобство хвата ежедневно</li><li>Совместимость с фасадом и толщиной</li></ul></article></div>
@@ -204,7 +220,7 @@
 <div class="g-sech" id="price" data-in="1"><span class="g-secno">05</span><div><h2 class="g-h2">Сравнение по цене</h2><p class="g-lead">Ориентир по ценовым группам: точная стоимость зависит от размеров, цвета и сложности проекта.</p></div></div>
 <div class="g-tiers" data-in="1"><div class="g-tier g-t1"><h3>Бюджетные</h3><ul><li>ЛДСП</li><li>Плёнка ПВХ</li><li>ЛДСП (столешница)</li></ul></div><div class="g-tier g-t2"><h3>Средний сегмент</h3><ul><li>Пластик HPL</li><li>Эмаль</li><li>Искусственный камень</li><li>Компакт-плита</li></ul></div><div class="g-tier g-t3"><h3>Премиум</h3><ul><li>Массив</li><li>Кварцевый агломерат</li><li>Керамогранит</li></ul></div></div>
 <div class="g-sech" id="rooms" data-in="1"><span class="g-secno">06</span><div><h2 class="g-h2">Подборки по помещениям</h2><p class="g-lead">Сочетания, которые мы чаще всего предлагаем в проектах.</p></div></div>
-<div class="g-rooms" data-in="1"><div class="g-room"><img src="img/works/kuhni/kuhni-024-f7e64c.webp" alt="Кухня" loading="lazy"></img><h3>Кухня</h3><p>эмаль или пластик HPL, столешница из кварца или искусственного камня</p></div><div class="g-room"><img src="img/works/kuhni/kuhni-038-8526da.webp" alt="Прихожая" loading="lazy"></img><h3>Прихожая</h3><p>фасады из ЛДСП или эмали, столешница — компакт-плита</p></div><div class="g-room"><img src="img/works/kuhni/kuhni-090-ec994f.webp" alt="Гостиная и спальня" loading="lazy"></img><h3>Гостиная и спальня</h3><p>эмаль с фрезеровкой или плёнка ПВХ</p></div><div class="g-room"><img src="img/works/kuhni/kuhni-026-364306.webp" alt="Ванная" loading="lazy"></img><h3>Ванная</h3><p>эмаль, влагостойкая столешница из искусственного камня</p></div></div>
+<div class="g-rooms" data-in="1"><div class="g-room" data-tilt="1"><img src="img/works/kuhni/kuhni-024-f7e64c.webp" alt="Кухня" loading="lazy"></img><h3>Кухня</h3><p>эмаль или пластик HPL, столешница из кварца или искусственного камня</p></div><div class="g-room" data-tilt="1"><img src="img/works/shkafy/shkafy-110-c408b6.webp" alt="Прихожая" loading="lazy"></img><h3>Прихожая</h3><p>фасады из ЛДСП или эмали, полки и столешница — компакт-плита</p></div><div class="g-room" data-tilt="1"><img src="img/works/shkafy/shkafy-138-611244.webp" alt="Гостиная и спальня" loading="lazy"></img><h3>Гостиная и спальня</h3><p>эмаль с фрезеровкой или плёнка ПВХ</p></div><div class="g-room" data-tilt="1"><img src="img/works/sanuzly/sanuzly-014-8acf25.webp" alt="Ванная" loading="lazy"></img><h3>Ванная</h3><p>пластик HPL или эмаль, влагостойкая столешница из искусственного камня</p></div></div>
 
     <section class="g-cta" data-in="1">
       <div>
@@ -225,12 +241,38 @@
 class Component extends DCLogic {
   reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   componentDidMount() {
+    this.mount3d();
+    this.tilt();
     if (this.reduce || !('IntersectionObserver' in window)) return;
     const io = new IntersectionObserver((es) => es.forEach((e) => {
       if (!e.isIntersecting) return; io.unobserve(e.target);
-      e.target.animate([{ opacity: 0, transform: 'translateY(26px)' }, { opacity: 1, transform: 'none' }], { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      e.target.animate([{ opacity: 0, transform: 'perspective(1400px) rotateX(12deg) translateY(48px)' }, { opacity: 1, transform: 'none' }], { duration: 1100, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
     }), { threshold: 0.08 });
     document.querySelectorAll('[data-in]').forEach((el) => io.observe(el));
+  }
+  load(src) { return new Promise((res) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = res; document.head.appendChild(s); }); }
+  mount3d() {
+    const host = document.getElementById('g3d'); if (!host) return;
+    this.load('js/gl3d.js').then(() => this.load('js/samples3d.js')).then(() => {
+      if (!window.ASDSamples) return;
+      const nm = document.getElementById('g3d-name'), nt = document.getElementById('g3d-note');
+      const api = window.ASDSamples.mount(host, {
+        onPick: (m) => { if (!m) return; nm.textContent = m.name; nt.textContent = m.note + ' · подробнее ниже'; },
+        onOpen: (m) => { const el = document.getElementById('m-' + m.id); if (el) el.scrollIntoView({ behavior: this.reduce ? 'auto' : 'smooth', block: 'center' }); }
+      });
+      if (api) host.parentNode.classList.add('is-3d');
+    });
+  }
+  tilt() {
+    if (this.reduce || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    document.querySelectorAll('[data-tilt]').forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        const k = r.width > 700 ? 3 : 7;
+        el.style.transform = 'perspective(1200px) rotateY(' + (x * k) + 'deg) rotateX(' + (-y * k) + 'deg) translateZ(0)'; el.classList.add('is-tilt');
+      });
+      el.addEventListener('pointerleave', () => { el.style.transform = ''; el.classList.remove('is-tilt'); });
+    });
   }
   renderVals() { return { print: () => window.print() }; }
 }

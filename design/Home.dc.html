@@ -31,7 +31,7 @@
 
 <main>
   <section data-screen-label="01 Hero" style="position:relative;min-height:max(680px,100vh);min-height:max(680px,100svh);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate;background:#14120F;color:#FBFAF7">
-    <div aria-hidden="true" style="position:absolute;inset:0;z-index:-2">
+    <div aria-hidden="true" data-par="" style="position:absolute;inset:-2%;z-index:-2;transition:transform 1.6s cubic-bezier(.2,.8,.2,1);will-change:transform">
       <sc-for list="{{ slides }}" as="s" hint-placeholder-count="0">
         <div style="position:absolute;inset:0;opacity:{{ s.op }};transition:opacity 1.8s ease">
           <img data-kb="" src="{{ s.src }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;transform-origin:60% 40%"></img>
@@ -132,7 +132,7 @@
 
       <div style="display:grid;grid-template-columns:{{ mosaicCols }};grid-auto-rows:{{ mosaicRows }};gap:clamp(10px,1.2vw,18px)">
         <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="0">
-          <a href="{{ t.href }}" data-reveal="{{ t.ri }}" aria-label="{{ t.aria }}" style="position:relative;display:block;overflow:hidden;border-radius:6px;background:#E2DCD3;grid-column:{{ t.col }};grid-row:{{ t.row }};aspect-ratio:{{ t.ar }};color:#FBFAF7;text-decoration:none;isolation:isolate">
+          <a href="{{ t.href }}" data-reveal="{{ t.ri }}" data-tilt="" aria-label="{{ t.aria }}" style="position:relative;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .6s ease;overflow:hidden;border-radius:6px;background:#E2DCD3;grid-column:{{ t.col }};grid-row:{{ t.row }};aspect-ratio:{{ t.ar }};color:#FBFAF7;text-decoration:none;isolation:isolate">
             <img src="{{ t.src }}" alt="{{ t.alt }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.8,.2,1), filter 1s;z-index:-2" style-hover="transform:scale(1.06)"></img>
             <span aria-hidden="true" style="position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg, rgba(20,18,15,0) 45%, rgba(20,18,15,.78) 100%)"></span>
             <span style="position:absolute;left:clamp(16px,1.8vw,26px);right:clamp(16px,1.8vw,26px);bottom:clamp(16px,1.8vw,24px);display:flex;align-items:flex-end;justify-content:space-between;gap:12px;pointer-events:none">
@@ -321,10 +321,10 @@
         <div>
           <div style="display:flex;align-items:center;gap:14px;font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#C9A074;margin-bottom:24px"><span style="width:36px;height:1px;background:currentColor"></span>Дизайн-проект</div>
           <h2 style="margin:0;font:300 clamp(2.4rem,4.4vw,4.2rem)/1.04 'Noto Serif Display', serif;letter-spacing:-.03em;text-wrap:balance">Дизайн-проект мебели для <em style="font-style:italic;color:#E2C7A2">вашего дома</em></h2>
-          <p style="margin:24px 0 0;color:#A79E93;max-width:44ch;font:400 16.5px/1.7 Manrope, sans-serif;text-wrap:pretty">Ответьте на несколько коротких вопросов, и дизайнер подготовит проект мебели под вашу квартиру.</p>
+          <p style="margin:24px 0 0;color:#A79E93;max-width:44ch;font:400 16.5px/1.7 Manrope, sans-serif;text-wrap:pretty">Ответьте на несколько коротких вопросов, и дизайнер подготовит проект мебели под вашу квартиру или дом.</p>
           <ol style="list-style:none;margin:36px 0 0;padding:0;border-top:1px solid rgba(251,250,247,.14)">
-            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">01</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Кухонная техника</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Техника</span></li>
-            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">02</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Что вам необходимо</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Мебель</span></li>
+            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">01</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Какая мебель нужна</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Мебель</span></li>
+            <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">02</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Кухонная техника</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Техника</span></li>
             <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">03</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Стадия ремонта</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Ремонт</span></li>
             <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">04</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Есть ли план или проект</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">План</span></li>
             <li style="display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">05</span><b style="font:400 19px/1.25 'Noto Serif Display', serif">Ваши контакты</b><span style="font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Связь</span></li>
@@ -336,11 +336,12 @@
         <div style="position:relative;border:1px solid rgba(201,160,116,.28);border-radius:16px;background:linear-gradient(160deg, rgba(251,250,247,.04), rgba(251,250,247,0));overflow:hidden">
           <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(201,160,116,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(201,160,116,.06) 1px, transparent 1px);background-size:32px 32px;pointer-events:none"></div>
           <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(201,160,116,.2)">
-            <span style="display:inline-flex;align-items:center;gap:10px;font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E2C7A2"><span style="width:6px;height:6px;border-radius:999px;background:#C9A074"></span>Чертёж · онлайн</span>
+            <span style="display:inline-flex;align-items:center;gap:10px;font:600 10.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#E2C7A2"><span style="width:6px;height:6px;border-radius:999px;background:#C9A074"></span>{{ bpLabel }}</span>
             <span style="font:500 12px Manrope, sans-serif;color:#8A8177;font-variant-numeric:tabular-nums">{{ sheetNo }}</span>
           </div>
           <div style="position:relative;padding:clamp(16px,2.4vw,32px) clamp(12px,2vw,28px) 8px;color:#C9A074">
-            <svg ref="{{ bpRef }}" role="img" aria-label="Чертёж кухни с размерами" viewBox="40 -32 1010 656" fill="none" style="width:100%;height:auto;display:block;overflow:visible"></svg>
+            <div style="opacity:{{ svgOp }};transform:{{ svgTf }};transition:opacity .9s ease, transform 1.2s cubic-bezier(.2,.8,.2,1);transform-origin:50% 60%"><svg ref="{{ bpRef }}" role="img" aria-label="Чертёж кухни с размерами" viewBox="40 -32 1010 656" fill="none" style="width:100%;height:auto;display:block;overflow:visible"></svg></div>
+            <div ref="{{ k3Ref }}" aria-hidden="true" style="position:absolute;inset:0;opacity:{{ k3Op }};transition:opacity 1s ease;pointer-events:none"></div>
           </div>
           <div aria-hidden="true" style="position:relative;display:grid;grid-template-columns:1.4fr 1fr .8fr;border-top:1px solid rgba(201,160,116,.2)">
             <div style="padding:14px 20px;border-right:1px solid rgba(201,160,116,.2)"><small style="display:block;font:600 9.5px Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8A8177">Проект</small><b style="display:block;margin-top:6px;font:400 14px 'Noto Serif Display', serif;color:#E2C7A2;white-space:nowrap">ASD · Кухня на заказ</b></div>
@@ -361,11 +362,11 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { ready: false, w: 1280, slide: 0, reviews: [], cur: 0, cnt: 0, hov: -1, toast: '', toastOn: false, sheet: 1, sheets: 3 };
-  bpRef = React.createRef(); prevRef = React.createRef(); marqRef = React.createRef();
+  state = { ready: false, w: 1280, slide: 0, reviews: [], cur: 0, cnt: 0, hov: -1, toast: '', toastOn: false, sheet: 1, sheets: 3, mode: '2d' };
+  bpRef = React.createRef(); k3Ref = React.createRef(); prevRef = React.createRef(); marqRef = React.createRef();
   reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   SLIDES = [
-    { src: 'img/works/kuhni/kuhni-121-738113.webp', label: 'Кухни' },
+    { src: 'img/works/kuhni/kuhni-261-10b74b.webp', label: 'Кухни' },
     { src: 'img/works/tv-zony/tv-zony-001-4479ee.webp', label: 'ТВ-зоны' },
     { src: 'img/works/shkafy/shkafy-017-94616f.webp', label: 'Шкафы' },
   ];
@@ -390,6 +391,7 @@ class Component extends DCLogic {
     this.onR = () => this.setState({ w: window.innerWidth });
     window.addEventListener('resize', this.onR); this.onR();
     this.heroIn();
+    this.fx3d();
     this.reveal();
     if (!this.reduce) {
       this.slideT = setInterval(() => this.setState((s) => ({ slide: (s.slide + 1) % this.SLIDES.length })), 6500);
@@ -402,12 +404,30 @@ class Component extends DCLogic {
       if (window.Api) window.Api.listReviews().then((list) => this.setState({ reviews: list || [] }, () => { this.reveal(); this.showQ(0); })).catch(() => {});
     });
     this.loadScript('js/kitchens.js').then(() => this.bpInit());
+    if (!this.reduce) this.loadScript('js/gl3d.js').then(() => this.loadScript('js/kitchen3d.js')).then(() => { if (window.ASDKitchen3D && this.k3Ref.current) this.k3d = window.ASDKitchen3D.mount(this.k3Ref.current); });
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.onR); clearInterval(this.slideT); clearTimeout(this.qT); clearTimeout(this.toastT);
     (this.bpTimers || []).forEach(clearTimeout); if (this.io) this.io.disconnect(); if (this.bpIo) this.bpIo.disconnect();
   }
 
+  fx3d() {
+    if (this.reduce || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const par = document.querySelector('[data-par]'), hero = par && par.parentNode;
+    if (hero) {
+      hero.addEventListener('pointermove', (e) => { const r = hero.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5; par.style.transform = 'perspective(1800px) rotateY(' + (x * 3) + 'deg) rotateX(' + (-y * 2.4) + 'deg) scale(1.05)'; });
+      hero.addEventListener('pointerleave', () => { par.style.transform = ''; });
+    }
+    let cur = null;
+    document.addEventListener('pointermove', (e) => {
+      const el = e.target.closest && e.target.closest('[data-tilt]');
+      if (cur && cur !== el) { cur.style.transform = ''; cur.style.boxShadow = ''; cur = null; }
+      if (!el) return; cur = el;
+      const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = 'perspective(1100px) rotateY(' + (x * 7) + 'deg) rotateX(' + (-y * 7) + 'deg) translateZ(0)';
+      el.style.boxShadow = '0 40px 70px -40px rgba(20,18,15,.55)';
+    }, { passive: true });
+  }
   heroIn() {
     if (this.reduce) return;
     const ease = 'cubic-bezier(.2,.8,.2,1)';
@@ -489,7 +509,12 @@ class Component extends DCLogic {
       const tick = (now) => { const p = Math.min(1, Math.max(0, (now - t0) / 1100)); el.textContent = this.fmt(Math.round(v * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(tick); };
       requestAnimationFrame(tick);
     });
-    this.bpTimers.push(setTimeout(() => this.bpNext(), 7.2 * 1000 * k + 5000));
+    this.bpTimers.push(setTimeout(() => this.to3d(), 7.2 * 1000 * k + 1800));
+  }
+  to3d() {
+    if (!this.k3d || !this.bpVisible || document.hidden) { this.bpTimers.push(setTimeout(() => (this.k3d ? this.to3d() : this.bpNext()), this.k3d ? 1000 : 3200)); return; }
+    this.setState({ mode: '3d' });
+    this.k3d.play(this.bpIdx, () => { this.setState({ mode: '2d' }); this.k3d.stop(); this.bpNext(); });
   }
   bpNext() {
     if (!this.bpVisible || document.hidden) { this.bpTimers.push(setTimeout(() => this.bpNext(), 1000)); return; }
@@ -573,7 +598,7 @@ class Component extends DCLogic {
       quotes, multiQuotes: top.length > 1,
       qcPrev: () => this.showQ(cur - 1), qcNext: () => this.showQ(cur + 1),
       qcPause: () => { this.qPaused = true; clearTimeout(this.qT); }, qcResume: () => { this.qPaused = false; this.showQ(this.state.cur); },
-      bpRef: this.bpRef, sheetNo: String(this.state.sheet).padStart(2, '0') + ' / ' + String(this.state.sheets).padStart(2, '0'),
+      bpRef: this.bpRef, k3Ref: this.k3Ref, k3Op: this.state.mode === '3d' ? 1 : 0, svgOp: this.state.mode === '3d' ? 0 : 1, svgTf: this.state.mode === '3d' ? 'perspective(900px) rotateX(38deg) scale(.86)' : 'none', bpLabel: this.state.mode === '3d' ? '3D-модель · онлайн' : 'Чертёж · онлайн', sheetNo: String(this.state.sheet).padStart(2, '0') + ' / ' + String(this.state.sheets).padStart(2, '0'),
       toast: this.state.toast, toastOp: this.state.toastOn ? 1 : 0, toastY: this.state.toastOn ? '0px' : '20px',
     };
   }

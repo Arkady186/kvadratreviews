@@ -1,0 +1,10 @@
+<!doctype html><meta charset=utf-8><body style="margin:0;background:transparent">
+<div id=h style="position:relative;width:900px;height:1000px"></div>
+<script src="../js/gl3d.js"></script><script src="../js/samples3d.js"></script><script src="../js/kitchen3d.js"></script>
+<script>
+var q=new URLSearchParams(location.search), h=document.getElementById('h');
+if(q.get('w')){h.style.width=q.get('w')+'px';h.style.height=q.get('h')+'px';}
+if(q.get('k')!=null){ASDKitchen3D.mount(h).still(+q.get('k'));}
+else if(q.get('s')!=null){ASDSamples.mount(h,{single:+q.get('s'),still:true});}
+else {ASDSamples.mount(h,{still:true});}
+</script>
