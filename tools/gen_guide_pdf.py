@@ -214,7 +214,7 @@ em { font-style: italic; color: #8C6239 }
 .cv-tx h1 em { color: #E2C7A2 }
 .cv-tx p { margin: 7mm 0 0; max-width: 105mm; font: 400 10.5pt/1.6 Manrope, sans-serif; color: #CFC7BC }
 .cv-bot { position: absolute; left: 16mm; right: 16mm; bottom: 14mm; display: flex; gap: 0; border-top: .3mm solid rgba(251,250,247,.22) }
-.cv-bot span { flex: 1; padding-top: 4mm; font: 300 12pt 'Noto Serif Display', serif; color: #E9E3DA }
+.cv-bot span { flex: 1; padding-top: 4mm; font: 500 9.4pt/1.55 Manrope, sans-serif; color: #E9E3DA }
 /* введение */
 .in-head { display: flex; justify-content: space-between }
 .q3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; margin: 12mm 0 0 }
@@ -240,7 +240,7 @@ em { font-style: italic; color: #8C6239 }
 .no { color: #A79E93 }
 .note-s { margin: 3mm 0 0; font: 400 7.5pt/1.5 Manrope, sans-serif; color: #8A8177 }
 .tip { margin-top: 9mm; background: #1D1A16; color: #EDE6DB; border-radius: 5mm; padding: 7mm 8mm; display: grid; grid-template-columns: 26mm 1fr; gap: 4mm }
-.tip b { font: 600 7.5pt Manrope, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: #C9A074; padding-top: 1.5mm } .tip p { margin: 0; font: 300 12pt/1.5 'Noto Serif Display', serif }
+.tip b { font: 600 7.5pt Manrope, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: #C9A074; padding-top: 1.5mm } .tip p { margin: 0; font: 500 10.5pt/1.5 Manrope, sans-serif }
 /* страница фасада */
 .fpage { padding: 0 }
 .fp-ph { position: absolute; left: 0; right: 0; top: 0; height: 132mm } .fp-ph img { width: 100%; height: 100%; object-fit: cover; display: block }
@@ -257,7 +257,7 @@ h5 { margin: 0 0 2mm; font: 600 7pt Manrope, sans-serif; letter-spacing: .18em; 
 ul.pl, ul.mi { list-style: none; margin: 0; padding: 0 } ul li { position: relative; padding-left: 5mm; margin: 0 0 2.4mm; font: 400 10.5pt/1.45 Manrope, sans-serif; color: #2E2924 }
 ul.pl li::before { content: ""; position: absolute; left: .4mm; top: 1.7mm; width: 1.8mm; height: 1.8mm; background: #B98D5E; transform: rotate(45deg) }
 ul.mi li::before { content: ""; position: absolute; left: 0; top: 2.4mm; width: 2.6mm; height: .4mm; background: #B4534A }
-.where { margin-top: 8mm; background: #FBFAF7; border-radius: 3mm; padding: 4mm 5mm } .where p { margin: 1.5mm 0 0; font: 300 14pt/1.35 'Noto Serif Display', serif }
+.where { margin-top: 8mm; background: #FBFAF7; border-radius: 3mm; padding: 4mm 5mm } .where p { margin: 1.5mm 0 0; font: 500 10.9pt/1.35 Manrope, sans-serif }
 /* корпуса */
 .cp { display: grid; grid-template-columns: 70mm 1fr; gap: 7mm; margin-bottom: 7mm; background: #FBFAF7; border-radius: 5mm; overflow: hidden; height: 108mm }
 .cp-ph img { width: 100%; height: 100%; object-fit: cover; display: block } .cp-tx { padding: 7mm 7mm 6mm 0 }
@@ -276,7 +276,7 @@ ul.mi li::before { content: ""; position: absolute; left: 0; top: 2.4mm; width: 
 .mc { background: #FBFAF7; border-radius: 4mm; padding: 5mm 5.5mm } .mc h3 { font-size: 15pt } .mc .sub { margin-bottom: 2.5mm }
 .mc .mb { margin: 0 0 2.5mm; font: 400 8.5pt/1.4 Manrope, sans-serif; color: #6B635A } .mc ul li { font-size: 8.5pt; margin-bottom: 1.4mm } .mc ul.mi { margin-top: 2mm }
 .mc h5 { margin-top: 3mm }
-.tipc { background: #1D1A16; color: #EDE6DB } .tipc b { font: 600 7pt Manrope, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: #C9A074 } .tipc p { margin: 3mm 0 0; font: 300 11.5pt/1.45 'Noto Serif Display', serif }
+.tipc { background: #1D1A16; color: #EDE6DB } .tipc b { font: 600 7pt Manrope, sans-serif; letter-spacing: .2em; text-transform: uppercase; color: #C9A074 } .tipc p { margin: 3mm 0 0; font: 500 9.5pt/1.5 Manrope, sans-serif }
 .mgrid.f { gap: 4mm } .mgrid.f .mc { padding: 4mm 5mm } .mgrid.f .mc ul li { font-size: 8.2pt }
 /* цены и комнаты */
 .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm }
