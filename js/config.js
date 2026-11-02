@@ -6,8 +6,9 @@ window.SITE = {
   tagline: 'Мебель на заказ',
 
   /* Контакты. Пустое поле на сайте просто не показывается. */
-  phone: '',                        // например '+7 900 000-00-00'
-  whatsapp: '',                     // ссылка вида https://wa.me/79000000000
+  phone: '+7 982 206-63-19',        // телефон для связи
+  whatsapp: 'https://wa.me/qr/CUXN5RGDK4NJH1',  // WhatsApp
+  max: 'https://max.ru/u/f9LHodD0cOKu8Lmf9UZ8HfUI0ai50OGQHe9nSD17VQqKK6NJkg2ElEu_T6E',  // MAX
   telegram: '',                     // ссылка вида https://t.me/имя
   city: 'Работаем по югу России',
 

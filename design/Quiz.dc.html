@@ -105,7 +105,17 @@
             </sc-if>
 
             <sc-if value="{{ isContacts }}" hint-placeholder-val="{{ false }}">
-              <sc-if value="{{ sendErr }}" hint-placeholder-val="{{ false }}">
+              <sc-if value="{{ hasCall }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-bottom:22px;padding:20px 22px;border-radius:18px;background:#1D1A16;color:#FBFAF7;display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;justify-content:space-between">
+                  <div style="min-width:220px">
+                    <div style="font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#C9A074">Телефон компании</div>
+                    <div style="margin-top:10px;font:300 clamp(1.7rem,3vw,2.2rem)/1.1 'Noto Serif Display', serif;font-variant-numeric:tabular-nums">{{ callPhone }}</div>
+                    <p style="margin:8px 0 0;color:#B8AFA3;font:400 14px/1.55 Manrope, sans-serif">Звонок бесплатный. Для консультации свяжитесь с нами самостоятельно.</p>
+                  </div>
+                  <a href="{{ callHref }}" style="display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 28px;border-radius:999px;background:#B98D5E;color:#14120F;text-decoration:none;font:600 15px Manrope, sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke-linejoin="round"></path></svg>Позвонить</a>
+                </div>
+              </sc-if>
+                            <sc-if value="{{ sendErr }}" hint-placeholder-val="{{ false }}">
                 <div role="alert" style="margin-bottom:20px;padding:12px 16px;border-radius:12px;background:#F8E9E4;color:#8A2B1C;font:500 14px/1.5 Manrope, sans-serif">{{ sendErr }}</div>
               </sc-if>
               <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:18px 20px">
@@ -161,6 +171,7 @@
           <p style="margin:0;max-width:52ch;color:#6B635A;font:400 16px/1.7 Manrope, sans-serif">{{ doneP1 }}<strong style="color:#1A1714">{{ donePhone }}</strong>{{ doneP1b }}</p>
           <p style="margin:0;max-width:52ch;color:#6B635A;font:400 16px/1.7 Manrope, sans-serif">{{ doneP2 }}</p>
           <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px">
+            <a href="{{ callHref }}" style="display:inline-flex;align-items:center;height:54px;padding:0 26px;border-radius:999px;background:#B98D5E;color:#14120F;text-decoration:none;font:600 15px Manrope, sans-serif">Позвонить: {{ callPhone }}</a>
             <a href="Works.dc.html" style="display:inline-flex;align-items:center;gap:12px;height:54px;padding:0 26px;border-radius:999px;background:#1A1714;color:#FBFAF7;text-decoration:none;font:600 15px Manrope, sans-serif;transition:gap .4s cubic-bezier(.2,.8,.2,1)" style-hover="gap:18px;color:#FBFAF7">Смотреть работы
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16M14 6l6 6-6 6"></path></svg>
             </a>
@@ -368,6 +379,7 @@ class Component extends DCLogic {
       step, stepName: this.TITLES[step], bar: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (i <= step ? 1 : 0)), q, showSkip: step >= 2 && step <= 6, skipKitchen: () => this.set({ kitchen: [-1, -1, -1, -1, -1], skipped: true, stepErr: '' }, () => this.go(7)), optCols: step === 1 && s.w > 640 ? 'repeat(2, minmax(0,1fr))' : 'minmax(0,1fr)',
       showItemsOther: step === 1 && s.items.includes(this.OTHER_ITEM), itemsOther: s.itemsOther, onItemsOther: (e) => this.set({ itemsOther: e.target.value }),
       showStageOther: step === 7 && s.stage === this.OTHER_STAGE, stageOther: s.stageOther, onStageOther: (e) => this.set({ stageOther: e.target.value }),
+      hasCall: !!((window.SITE||{}).phone), callPhone: (window.SITE||{}).phone || '', callHref: 'tel:' + ((window.SITE||{}).phone || '').replace(/[^+\d]/g, ''),
       isFiles: false, isContacts: step === 9,
       dropBd: s.over ? '#1A1714' : '#B5ACA1', dropBg: s.over ? '#fff' : '#F7F4EF',
       dragOn: (e) => { e.preventDefault(); if (!s.over) this.setState({ over: true }); }, dragOff: (e) => { e.preventDefault(); this.setState({ over: false }); },

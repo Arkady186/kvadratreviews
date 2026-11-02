@@ -137,6 +137,7 @@ class Component extends DCLogic {
     const contacts = [];
     if (S.phone) contacts.push({ href: 'tel:' + S.phone.replace(/[^+\d]/g, ''), label: S.phone, target: '_self' });
     if (S.whatsapp) contacts.push({ href: S.whatsapp, label: 'WhatsApp', target: '_blank' });
+    if (S.max) contacts.push({ href: S.max, label: 'MAX', target: '_blank' });
     if (S.telegram) contacts.push({ href: S.telegram, label: 'Telegram', target: '_blank' });
     const KINDS = [['bug', 'Ошибка на сайте'], ['ui', 'Неудобно или криво'], ['idea', 'Предложение'], ['other', 'Другое']];
     return {

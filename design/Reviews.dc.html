@@ -89,16 +89,6 @@
                 <input name="name" maxlength="60" autocomplete="given-name" placeholder="Как вас зовут" value="{{ name }}" onInput="{{ onName }}" style="height:54px;padding:0 18px;border:1px solid {{ nameBd }};border-radius:14px;background:#fff;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none;transition:border-color .2s, box-shadow .2s" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></input>
                 <sc-if value="{{ eName }}" hint-placeholder-val="{{ false }}"><span style="color:#A33A28;font:500 13.5px Manrope, sans-serif">Напишите имя, хотя бы 2 буквы</span></sc-if>
               </label>
-              <label style="display:flex;flex-direction:column;gap:8px">
-                <span style="font:600 14px Manrope, sans-serif">Что мы для вас делали?</span>
-                <span style="position:relative;display:block">
-                <select name="topic" value="{{ topic }}" onChange="{{ onTopic }}" style="width:100%;height:54px;padding:0 44px 0 18px;border:1px solid #DCD5CA;border-radius:14px;background:#fff;-webkit-appearance:none;appearance:none;font:400 16px Manrope, sans-serif;color:#1A1714;outline:none;cursor:pointer" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)">
-                  <option value="">Выберите, если хотите</option>
-                  <sc-for list="{{ topics }}" as="t"><option value="{{ t.id }}">{{ t.title }}</option></sc-for>
-                </select>
-                <svg aria-hidden="true" width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="#1A1714" stroke-width="1.4" style="position:absolute;right:18px;top:50%;margin-top:-4px;pointer-events:none"><path d="M1 1l5 5 5-5"></path></svg>
-                </span>
-              </label>
               <label ref="{{ bodyRef }}" style="display:flex;flex-direction:column;gap:8px">
                 <span style="font:600 14px Manrope, sans-serif">Ваш отзыв</span>
                 <textarea name="body" maxlength="800" placeholder="Что понравилось? Как прошли замеры и установка?" value="{{ body }}" onInput="{{ onBody }}" style="min-height:160px;padding:16px 18px;border:1px solid {{ bodyBd }};border-radius:14px;background:#fff;font:400 16px/1.6 Manrope, sans-serif;color:#1A1714;resize:vertical;outline:none;transition:border-color .2s, box-shadow .2s" style-focus="border-color:#1A1714;box-shadow:0 0 0 4px rgba(185,141,94,.2)"></textarea>
@@ -147,7 +137,7 @@
               <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px">
                 <span style="font:700 15.5px Manrope, sans-serif">{{ r.name }}</span>
                 <span role="img" aria-label="{{ r.aria }}" style="display:flex;gap:2px;font-size:15px"><sc-for list="{{ r.stars }}" as="st"><span aria-hidden="true" style="color:{{ st }}">★</span></sc-for></span>
-                <span style="color:#8A8177;font:400 13.5px Manrope, sans-serif">{{ r.date }}</span>
+                
               </div>
               <p style="margin:8px 0 0;max-width:62ch;font:400 17px/1.75 Manrope, sans-serif;overflow-wrap:anywhere;text-wrap:pretty">{{ r.body }}</p>
               <sc-if value="{{ r.hasTags }}" hint-placeholder-val="{{ false }}">
@@ -232,7 +222,7 @@ class Component extends DCLogic {
     if (this.state.website || Date.now() - this.openedAt < 2500) { this.finish('pending', name, true); return; }
     this.setState({ sending: true });
     try {
-      await window.Api.submitReview({ rating, name, body, topic: this.state.topic });
+      await window.Api.submitReview({ rating, name, body });
       this.finish('pending', name, true);
       if (!window.Api.configured) this.load();
     } catch (er) {
@@ -277,7 +267,7 @@ class Component extends DCLogic {
     const filters = fsrc.map(([id, t]) => { const on = id === s.filter; return { label: t, n: counts[id] || 0, on: String(on), pick: () => this.setState({ filter: id }, () => this.animList()), bg: on ? '#1A1714' : 'transparent', fg: on ? '#FBFAF7' : '#1A1714', bd: on ? '#1A1714' : 'rgba(26,23,20,.18)' }; });
     const list = all.filter((r) => s.filter === 'all' || r.topic === s.filter).map((r) => ({
       initial: (r.name || '?').charAt(0).toUpperCase(), name: r.name, stars: this.stars(r.rating), aria: 'Оценка ' + r.rating + ' из 5', date: this.fmtDate(r.created_at), body: r.body,
-      topic: r.topic ? catName(r.topic) : false, sample: !!r.sample, hasTags: !!(r.topic || r.sample),
+      topic: false, sample: !!r.sample, hasTags: !!r.sample,
     }));
     const shown = s.hoverStar || s.rating;
     const starInputs = [1, 2, 3, 4, 5].map((n) => ({
@@ -303,7 +293,7 @@ class Component extends DCLogic {
       bodyErr: s.errs.body ? 'Расскажите чуть подробнее, хотя бы 10 символов' : '', bodyBd: s.errs.body ? '#A33A28' : '#DCD5CA',
       website: s.website, onWebsite: (e) => this.setState({ website: e.target.value }),
       submit: (e) => this.submit(e), sending: s.sending, sendLabel: s.sending ? 'Отправляем…' : 'Отправить отзыв',
-      showFilters: fsrc.length >= 3, filters, list, loading: !s.ready || (!all.length && !s.loadErr && s.status === 'checking'),
+      showFilters: false, filters, list, loading: !s.ready || (!all.length && !s.loadErr && s.status === 'checking'),
       emptyList: s.ready && s.status !== 'checking' && !list.length,
       emptyTitle: s.loadErr ? 'Отзывы не загрузились' : 'Первый отзыв — ваш', emptyText: s.loadErr || 'Расскажите, как всё прошло. Нам и будущим клиентам это очень важно.',
       toastOp: s.toastOn ? 1 : 0, toastY: s.toastOn ? '0px' : '20px',
