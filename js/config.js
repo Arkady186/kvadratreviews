@@ -9,7 +9,7 @@ window.SITE = {
   phone: '+7 918 551-33-30',        // телефон для связи
   whatsapp: 'https://wa.me/qr/CUXN5RGDK4NJH1',  // WhatsApp
   max: 'https://max.ru/u/f9LHodD0cOKu8Lmf9UZ8HfUI0ai50OGQHe9nSD17VQqKK6NJkg2ElEu_T6E',  // MAX
-  telegram: '',                     // ссылка вида https://t.me/имя
+  telegram: 'https://t.me/Lud_milo_chka',  // Telegram
   city: 'Работаем по югу России',
 
   /* Supabase — бесплатное хранилище отзывов (инструкция в README.md).
