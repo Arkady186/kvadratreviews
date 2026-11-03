@@ -8,6 +8,7 @@
     { id: 'ldsp', name: 'ЛДСП', note: 'ламинированная плита', tex: function () { return T.wood({ tone: '#C79B6B', dark: 'rgba(110,70,35,', lines: 90, seed: 11 }); }, side: '#B88D5F', gloss: 6 },
     { id: 'plenka', name: 'Плёнка ПВХ', note: 'МДФ, вакуумное прессование', tex: function () { return T.solid({ tone: '#E6E1D7', frame: true, seed: 4 }); }, side: '#E9E5DD', gloss: 14 },
     { id: 'hpl', name: 'Пластик HPL', note: 'слоистый пластик', tex: function () { return T.marble({ tone: '#D9D6D1', vein: '70,68,66', veins: 12, seed: 21 }); }, side: '#1B1A19', gloss: 30 },
+    { id: 'agt', name: 'Акрил AGT', note: 'МДФ с акриловым покрытием', tex: function () { return T.solid({ tone: '#3B3E43', shine: true, seed: 14 }); }, side: '#3B3E43', gloss: 95 },
     { id: 'emal', name: 'Эмаль', note: 'краска и лак по МДФ', tex: function () { return T.solid({ tone: '#5E6B60', shine: true, seed: 8 }); }, side: '#5E6B60', gloss: 70 },
     { id: 'massiv', name: 'Массив', note: 'цельная древесина', tex: function () { return T.wood({ tone: '#9C6B3E', dark: 'rgba(60,32,12,', lines: 120, knots: 2, planks: 3, seed: 5 }); }, side: '#8A5C33', gloss: 10 }
   ];
@@ -17,7 +18,7 @@
     opts = opts || {};
     var cv = document.createElement('canvas');
     cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab';
-    cv.setAttribute('role', 'img'); cv.setAttribute('aria-label', '3D-образцы фасадов: ЛДСП, плёнка ПВХ, пластик HPL, эмаль, массив');
+    cv.setAttribute('role', 'img'); cv.setAttribute('aria-label', '3D-образцы фасадов: ЛДСП, плёнка ПВХ, пластик HPL, акрил AGT, эмаль, массив');
     host.appendChild(cv);
     var sc; try { sc = new G.Scene(cv, { preserve: !!opts.still, light: [0.35, 0.75, 0.9], ambient: [0.44, 0.43, 0.42], fov: 0.5 }); } catch (e) { cv.remove(); return null; }
     var single = opts.single != null ? opts.single : -1;

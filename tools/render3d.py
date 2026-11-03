@@ -4,7 +4,7 @@ import os
 from playwright.sync_api import sync_playwright
 from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); OUT = os.path.join(ROOT, '_pdf'); os.makedirs(OUT, exist_ok=True)
-jobs = [('fan', '', 900, 1000)] + [('s%d' % i, 's=%d' % i, 600, 900) for i in range(5)] + [('k%d' % i, 'k=%d' % i, 1400, 900) for i in range(3)]
+jobs = [('fan', '', 900, 1000)] + [('s%d' % i, 's=%d' % i, 600, 900) for i in range(6)] + [('k%d' % i, 'k=%d' % i, 1400, 900) for i in range(3)]
 with sync_playwright() as p:
     b = p.chromium.launch(args=['--use-gl=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'])
     for name, qs, w, h in jobs:
