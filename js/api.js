@@ -281,6 +281,33 @@ const Api = (() => {
     return payload;
   }
 
+
+  /* Ответы опроса БЕЗ персональных данных: клиент получает короткий код, называет его при звонке,
+     а мы по коду находим его ответы в админке. Имя/телефон клиента не собираются: в поля name/phone
+     (обязательные в таблице) пишем код и заглушку. device_id/fp не отправляем — так опрос можно пройти повторно. */
+  function newCode() { return String(Math.floor(10000 + Math.random() * 90000)); }
+  async function submitAnswers(lead) {
+    const code = newCode();
+    const payload = {
+      id: uuid(), items: lead.items, items_other: lead.itemsOther || null, stage: lead.stage, plan: lead.plan,
+      name: 'Код ' + code, phone: 'Без номера', comment: null, files: [],
+    };
+    const kText = lead.kitchen ? KITCHEN_LABELS.filter(([k]) => lead.kitchen[k]).map(([k, t]) => t + ': ' + lead.kitchen[k]).join('\n') : '';
+    if (!configured) {
+      payload.created_at = new Date().toISOString(); payload.status = 'new'; if (lead.kitchen && Object.keys(lead.kitchen).length) payload.kitchen = lead.kitchen;
+      const list = LS.get('kv_leads_demo', []); list.push(payload); LS.set('kv_leads_demo', list);
+      return code;
+    }
+    const send = (body) => rest('/rest/v1/leads', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(body) });
+    const withK = lead.kitchen && Object.keys(lead.kitchen).length ? Object.assign({}, payload, { kitchen: lead.kitchen }) : null;
+    const noK = Object.assign({}, payload); if (kText) noK.comment = ('Кухонная техника\n' + kText).slice(0, 2000);
+    try { if (withK) await send(withK); else await send(noK); }
+    catch (e) {
+      if (withK && e.status === 400) await send(noK); else if (/too many|flood/i.test(e.message || '')) throw new Error('Сейчас много обращений. Просто позвоните нам.'); else throw e;
+    }
+    return code;
+  }
+
   async function adminLeads() {
     const t = adminToken(); if (!t) { const e = new Error('auth'); e.code = 'auth'; throw e; }
     try { return await rest('/rest/v1/leads?select=*&order=created_at.desc&limit=500', {}, t); }
@@ -341,7 +368,7 @@ const Api = (() => {
   return {
     configured, listReviews, myStatus, myLeadStatus, leadSentQuick, submitBug, adminBugs, adminBugPatch, adminBugDelete, submitReview, deviceId,
     adminToken, adminLogin, adminLogout, adminList, adminSet, adminDelete,
-    submitLead, MAX_FILES, MAX_BYTES, adminLeads, adminLeadPatch, adminLeadDelete, adminSignFiles,
+    submitLead, submitAnswers, MAX_FILES, MAX_BYTES, adminLeads, adminLeadPatch, adminLeadDelete, adminSignFiles,
   };
 })();
 

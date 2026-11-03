@@ -106,7 +106,15 @@
 
             <sc-if value="{{ isContacts }}" hint-placeholder-val="{{ false }}">
               <sc-if value="{{ hasCall }}" hint-placeholder-val="{{ true }}">
-                <div style="margin-bottom:22px;padding:20px 22px;border-radius:18px;background:#1D1A16;color:#FBFAF7;display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;justify-content:space-between">
+<div style="margin-bottom:16px;padding:18px 22px;border-radius:18px;background:#FBF3E8;border:1px solid #E6D3B8">
+                <div style="font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8C6239">Ваш код</div>
+                <div style="margin-top:8px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px">
+                  <span style="font:300 clamp(2rem,4vw,2.8rem)/1 'Noto Serif Display', serif;letter-spacing:.08em;font-variant-numeric:tabular-nums;color:#1A1714">{{ codeText }}</span>
+                  <button type="button" onClick="{{ copyCode }}" style="height:38px;padding:0 16px;border-radius:999px;border:1px solid rgba(26,23,20,.25);background:transparent;color:#1A1714;font:600 13.5px Manrope, sans-serif;cursor:pointer">{{ copyLabel }}</button>
+                </div>
+                <p style="margin:10px 0 0;color:#6B635A;font:400 14px/1.55 Manrope, sans-serif">{{ codeHint }}</p>
+              </div>
+                              <div style="margin-bottom:22px;padding:20px 22px;border-radius:18px;background:#1D1A16;color:#FBFAF7;display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;justify-content:space-between">
                   <div style="min-width:220px">
                     <div style="font:600 11.5px/1 Manrope, sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#C9A074">Телефон компании</div>
                     <div style="margin-top:10px;font:300 clamp(1.7rem,3vw,2.2rem)/1.1 'Noto Serif Display', serif;font-variant-numeric:tabular-nums">{{ callPhone }}</div>
@@ -159,7 +167,7 @@
           <h3 style="margin:0 0 22px;font:300 28px/1.1 'Noto Serif Display', serif;letter-spacing:-.01em">Как это <em style="font-style:italic;color:#E2C7A2">работает</em></h3>
           <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
             <li style="display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">01</span><span style="color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif"><b style="color:#FBFAF7;font-weight:600">Вы отвечаете на вопросы.</b> Так мы сразу понимаем, что вам нужно.</span></li>
-            <li style="display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">02</span><span style="color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif"><b style="color:#FBFAF7;font-weight:600">Вы звоните или пишете нам</b> в MAX или WhatsApp.</span></li>
+            <li style="display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">02</span><span style="color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif"><b style="color:#FBFAF7;font-weight:600">Вы звоните или пишете нам</b> и называете код: мы видим ваши ответы.</span></li>
             <li style="display:grid;grid-template-columns:36px 1fr;gap:10px;padding:16px 0;border-top:1px solid rgba(251,250,247,.14);border-bottom:1px solid rgba(251,250,247,.14)"><span style="font:italic 300 18px 'Noto Serif Display', serif;color:#C9A074">03</span><span style="color:#A79E93;font:400 14.5px/1.6 Manrope, sans-serif"><b style="color:#FBFAF7;font-weight:600">Готовим проект мебели</b> под размеры и стиль вашего дома.</span></li>
           </ol>
           <p style="margin:20px 0 0;color:#A79E93;font:400 14px Manrope, sans-serif">Консультация ни к чему вас не обязывает.</p>
@@ -188,7 +196,7 @@ class Component extends DCLogic {
   KEYS = ['bought', 'fridge', 'dishwasher', 'microwave', 'oven'];
   K = 5; LAST = 9; wantsKitchen(items) { return items.includes(0) || items.includes(1); } OTHER_ITEM = 9; OTHER_STAGE = 6;
   state = { ready: false, w: 1280, step: 1, items: [], itemsOther: '', stage: -1, stageOther: '', plan: -1, name: '', phone: '', comment: '', consent: false, site: '',
-    kitchen: [-1, -1, -1, -1, -1], skipped: false, files: [], stepErr: '', errs: {}, sendErr: '', sending: false, sendLabel: '', over: false, result: null };
+    kitchen: [-1, -1, -1, -1, -1], skipped: false, files: [], stepErr: '', errs: {}, sendErr: '', sending: false, sendLabel: '', over: false, result: null, code: '', saveSt: '' };
   formRef = React.createRef(); titleRef = React.createRef(); nameRef = React.createRef(); phoneRef = React.createRef(); doneRef = React.createRef();
   itemsOtherRef = React.createRef(); stageOtherRef = React.createRef();
   reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -208,7 +216,6 @@ class Component extends DCLogic {
     this.boot().then(() => {
       this.setState({ ready: true });
       const A = window.Api; if (!A) return;
-      if (A.leadSentQuick()) this.already(); else A.myLeadStatus().then((r) => { if (r === 'sent') this.already(); });
     });
   }
   componentWillUnmount() { window.removeEventListener('resize', this.onR); window.removeEventListener('beforeunload', this.onUnload); }
@@ -264,10 +271,11 @@ class Component extends DCLogic {
   }
   next() {
     const s = this.state;
-    if (s.step === 1) { if (this.wantsKitchen(s.items)) { this.setState({ skipped: false }); this.go(2); } else { this.setState({ kitchen: [-1, -1, -1, -1, -1], skipped: true }); this.go(7); } return; }
+    if (s.step === 1) { this.setState({ skipped: false }); this.go(2); return; }
+    if (s.step === 8) { this.go(9); this.saveAnswers(); return; }
     this.go(s.step + 1);
   }
-  prev() { const s = this.state; this.go(s.step === 7 && s.skipped ? 1 : s.step - 1); }
+  prev() { const s = this.state; this.go(s.step === 7 && s.skipped ? 2 : s.step - 1); }
   err(m) { this.setState({ stepErr: m }); return false; }
   go(n) {
     this.setState({ step: n, stepErr: '' }, () => {
@@ -277,6 +285,20 @@ class Component extends DCLogic {
       const f = this.formRef.current;
       if (f) { const top = f.getBoundingClientRect().top + window.scrollY - 96; if (Math.abs(window.scrollY - top) > 40) window.scrollTo({ top: Math.max(0, top), behavior: this.reduce ? 'auto' : 'smooth' }); }
     });
+  }
+  async saveAnswers() {
+    const s = this.state;
+    const sig = JSON.stringify([s.items, s.itemsOther, s.stage, s.stageOther, s.plan, s.kitchen, s.skipped]);
+    if (s.code && this.sig === sig) return;
+    this.sig = sig; this.setState({ code: '', saveSt: 'saving' });
+    try {
+      const code = await window.Api.submitAnswers({
+        kitchen: s.skipped ? null : this.KEYS.reduce((o, k, i) => { if (s.kitchen[i] >= 0) o[k] = this.KQ[i].opts[s.kitchen[i]]; return o; }, {}),
+        items: s.items.map((i) => this.ITEMS[i]), itemsOther: s.items.includes(this.OTHER_ITEM) ? s.itemsOther.trim() : '',
+        stage: s.stage === this.OTHER_STAGE ? 'Свой вариант: ' + s.stageOther.trim() : this.STAGES[s.stage], plan: this.PLANS[s.plan],
+      });
+      this.setState({ code, saveSt: 'ok' });
+    } catch (e) { this.sig = ''; this.setState({ code: '', saveSt: 'fail' }); }
   }
   async submit(e) {
     e.preventDefault();
@@ -347,7 +369,10 @@ class Component extends DCLogic {
       showItemsOther: step === 1 && s.items.includes(this.OTHER_ITEM), itemsOther: s.itemsOther, onItemsOther: (e) => this.set({ itemsOther: e.target.value }),
       showStageOther: step === 7 && s.stage === this.OTHER_STAGE, stageOther: s.stageOther, onStageOther: (e) => this.set({ stageOther: e.target.value }),
       hasCall: !!((window.SITE||{}).phone), callPhone: (window.SITE||{}).phone || '', callHref: 'tel:' + ((window.SITE||{}).phone || '').replace(/[^+\d]/g, ''),
-      nextDisp: last ? 'none' : 'inline-flex', maxHref: (window.SITE||{}).max || '#', waHref: (window.SITE||{}).whatsapp || '#',
+      nextDisp: last ? 'none' : 'inline-flex',
+      codeText: s.saveSt === 'ok' ? s.code : (s.saveSt === 'fail' ? '—' : '…'), copyLabel: s.copied ? 'Скопировано' : 'Скопировать',
+      copyCode: () => { try { navigator.clipboard.writeText(s.code); this.setState({ copied: true }); setTimeout(() => this.setState({ copied: false }), 1800); } catch (e) {} },
+      codeHint: s.saveSt === 'ok' ? 'Назовите этот код, когда позвоните или напишете нам: мы увидим ваши ответы и не будем переспрашивать.' : (s.saveSt === 'fail' ? 'Не удалось сохранить ответы. Просто позвоните нам и расскажите, что вам нужно.' : 'Сохраняем ваши ответы…'), maxHref: (window.SITE||{}).max || '#', waHref: (window.SITE||{}).whatsapp || '#',
       isFiles: false, isContacts: step === 9,
       dropBd: s.over ? '#1A1714' : '#B5ACA1', dropBg: s.over ? '#fff' : '#F7F4EF',
       dragOn: (e) => { e.preventDefault(); if (!s.over) this.setState({ over: true }); }, dragOff: (e) => { e.preventDefault(); this.setState({ over: false }); },

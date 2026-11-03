@@ -109,8 +109,8 @@
         <article class="ld ${l.status === 'done' ? 'ld--done' : ''}" data-lid="${esc(l.id)}">
           <div class="ld__head">
             <span class="ld__name">${esc(l.name)}</span>
-            <a class="ld__phone" href="tel:${esc(tel)}">${esc(l.phone)}</a>
-            <button class="btn btn--sm" type="button" data-copy-phone="${esc(l.phone)}">Скопировать номер</button>
+            ${l.phone === 'Без номера' ? '<span class="ld__phone">клиент позвонит сам</span>' : `<a class="ld__phone" href="tel:${esc(tel)}">${esc(l.phone)}</a>
+            <button class="btn btn--sm" type="button" data-copy-phone="${esc(l.phone)}">Скопировать номер</button>`}
             <span class="ld__date">${fmtDT(l.created_at)}</span>
           </div>
           <dl class="ld__rows">
