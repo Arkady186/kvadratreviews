@@ -239,12 +239,34 @@ MOBILE_CSS = (
     'footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))!important}'
     '@media(pointer:coarse),(max-width:820px){input,textarea,select{font-size:16px!important}}'
 )
+
+import re as _re
+SITE_URL = 'https://asd-mebel.ru/'
+OG_IMG = SITE_URL + 'img/works/kuhni/kuhni-261-10b74b.webp'
+def seo_head(out, helm):
+    t = _re.search(r'<title>([^<]*)</title>', helm); d = _re.search(r'<meta name="description" content="([^"]*)"', helm)
+    t = t.group(1) if t else 'ASD — мебель на заказ'; d = d.group(1) if d else ''
+    url = SITE_URL if out == 'index.html' else SITE_URL + out
+    h = ('<link rel="canonical" href="%s">\n<meta property="og:type" content="website">\n<meta property="og:locale" content="ru_RU">\n'
+         '<meta property="og:site_name" content="ASD">\n<meta property="og:title" content="%s">\n<meta property="og:description" content="%s">\n'
+         '<meta property="og:url" content="%s">\n<meta property="og:image" content="%s">\n<meta name="twitter:card" content="summary_large_image">') % (url, t, d, url, OG_IMG)
+    if out == 'index.html':
+        h += '\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"FurnitureStore","name":"ASD","description":"Мебель на заказ: кухни, шкафы, санузлы, ТВ-зоны и офисная мебель","url":"%s","telephone":"+79185513330","areaServed":"Юг России","image":"%s"}</script>' % (SITE_URL, OG_IMG)
+    return h
+NOSCRIPT = ('<noscript><div style="max-width:720px;margin:0 auto;padding:40px 20px;font:16px/1.6 sans-serif"><h1>ASD — мебель на заказ</h1>'
+    '<p>Кухни, шкафы, санузлы, ТВ-зоны и офисная мебель на заказ. Работаем по югу России.</p>'
+    '<p>Телефон: <a href="tel:+79185513330">+7 918 551-33-30</a></p>'
+    '<p><a href="works.html">Наши работы</a> · <a href="reviews.html">Отзывы</a> · <a href="guide.html">Гид по материалам</a> · <a href="quiz.html">Дизайн-проект</a></p>'
+    '<p>Для просмотра фотографий и отзывов нужен включённый JavaScript.</p></div></noscript>\n')
+for out in ['robots.txt']:
+    open(os.path.join(OUT, out), 'w', encoding='utf-8').write('User-agent: *\nAllow: /\nDisallow: /admin.html\nSitemap: ' + SITE_URL + 'sitemap.xml\n')
+open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join('<url><loc>%s</loc></url>\n' % (SITE_URL if o == 'index.html' else SITE_URL + o) for o in pages) + '</urlset>\n')
 for out, (js, helm) in pages.items():
     name = [k for k, v in PAGES.items() if v == out][0]
     html = '<!DOCTYPE html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' \
-        + helm + '\n<link rel="stylesheet" href="css/dc.css">\n<style>' + MOBILE_CSS + '</style>\n</head>\n<body>\n' \
+        + helm + '\n' + seo_head(out, helm) + '\n<link rel="stylesheet" href="css/dc.css">\n<style>' + MOBILE_CSS + '</style>\n</head>\n<body>\n' \
         + '<div data-dc="%s" style="display:contents"></div>\n' % name \
-        + '<noscript><p style="padding:40px;font:16px sans-serif">Для работы сайта нужен включённый JavaScript.</p></noscript>\n' \
+        + NOSCRIPT \
         + '<script src="js/dc.js"></script>\n<script src="js/dc-site.js"></script>\n<script>\n' + js + '\nDC.start();\n</script>\n</body>\n</html>\n'
     open(os.path.join(OUT, out), 'w', encoding='utf-8').write(html)
     print('ok', out, len(html))
